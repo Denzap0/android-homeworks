@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1034183834/Homework2.iml" filepath="$PROJECT_DIR$/.idea/modules/1034183834/Homework2.iml" group="My Application/Homework2" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1904900839/My Application.iml" filepath="$PROJECT_DIR$/.idea/modules/1904900839/My Application.iml" group="My Application" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1619756793/app.iml" filepath="$PROJECT_DIR$/.idea/modules/1619756793/app.iml" group="My Application/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1034183833/homework1.iml" filepath="$PROJECT_DIR$/.idea/modules/1034183833/homework1.iml" group="My Application/homework1" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1339753004/homework2.iml" filepath="$PROJECT_DIR$/.idea/modules/1339753004/homework2.iml" group="My Application/app/homework2" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/homework22.iml" filepath="$PROJECT_DIR$/.idea/modules/homework22.iml" group="My Application/homework22" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-43721426/myapplication.iml" filepath="$PROJECT_DIR$/.idea/modules/-43721426/myapplication.iml" group="My Application/homework1/myapplication" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1326591302/test.iml" filepath="$PROJECT_DIR$/.idea/modules/-1326591302/test.iml" group="My Application/test" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1445519593/test1.iml" filepath="$PROJECT_DIR$/.idea/modules/1445519593/test1.iml" group="My Application/homework1/test1" />
+    </modules>
+  </component>
+</project>
