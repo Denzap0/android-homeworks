@@ -9,13 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Part2.ActivityTwo"></activity>
-        <activity android:name=".Part2.MainActivity2" />
         <activity
             android:name=".Part1.Activity2"
             android:label="@string/title_activity_2"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Part1.MainActivity">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Part1.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

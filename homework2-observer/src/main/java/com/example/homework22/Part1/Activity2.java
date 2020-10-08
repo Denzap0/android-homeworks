@@ -50,7 +50,7 @@ public class Activity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Activity2.this, MainActivity.class);
-                startActivity(intent);
+                MyObserver.getINSTANCE().notify(resValues);
                 finish();
             }
         });

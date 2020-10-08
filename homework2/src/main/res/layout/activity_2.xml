@@ -4,18 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Part1.Activity2">
+    tools:context=".Part1.Activity2"
+    android:background="@drawable/math">
 
     <TextView
         android:id="@+id/resultNotify"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="40dp"
+        android:background="#FF8700"/>
 
     <Button
         android:id="@+id/seeResult"
         android:text="@string/see_result"
+        android:background="@drawable/custom_count_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

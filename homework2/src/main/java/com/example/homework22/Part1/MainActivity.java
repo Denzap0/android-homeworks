@@ -6,9 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.homework22.R;
@@ -27,21 +32,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final LinearLayout valuesLayout = findViewById(R.id.resultsLayout);
+        final Button generateNumbersButton = (Button) findViewById(R.id.generateNumbers);
+        generateNumbersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < 4; i++) {
+                    values.add((int) (Math.random() * 99 + 1));
+                }
+                TextView textViewA = (TextView) findViewById(R.id.textViewA);
+                TextView textViewB = (TextView) findViewById(R.id.textViewB);
+                TextView textViewC = (TextView) findViewById(R.id.textViewC);
+                TextView textViewD = (TextView) findViewById(R.id.textViewD);
 
-        for (int i = 0; i < 4; i++) {
-            values.add((int) (Math.random() * 99 + 1));
-        }
-        TextView textViewA = (TextView) findViewById(R.id.textViewA);
-        TextView textViewB = (TextView) findViewById(R.id.textViewB);
-        TextView textViewC = (TextView) findViewById(R.id.textViewC);
-        TextView textViewD = (TextView) findViewById(R.id.textViewD);
+                textViewA.setText("a: " + values.get(0));
+                textViewB.setText("b: " + values.get(1));
+                textViewC.setText("c: " + values.get(2));
+                textViewD.setText("d: " + values.get(3));
 
-        textViewA.setText("a: " + values.get(0));
-        textViewB.setText("b: " + values.get(1));
-        textViewC.setText("c: " + values.get(2));
-        textViewD.setText("d: " + values.get(3));
-        Button btn = (Button) findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
+                generateNumbersButton.setBackgroundColor(Color.GREEN);
+                textViewA.setBackgroundColor(Color.GREEN);
+                textViewB.setBackgroundColor(Color.GREEN);
+                textViewC.setBackgroundColor(Color.GREEN);
+                textViewD.setBackgroundColor(Color.GREEN);
+            }
+        });
+
+        Button countButton = (Button) findViewById(R.id.count);
+        countButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Activity2.class);

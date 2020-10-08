@@ -6,77 +6,124 @@
     android:layout_height="match_parent"
     tools:context=".Part1.MainActivity">
 
+
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/count"
         android:text="@string/btnFirstActivity"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:textSize="30sp"
+        android:drawableStart="@drawable/ic_study_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_count_button"/>
+
+    <Button
+        android:id="@+id/generateNumbers"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/colorPrimary"
+        android:text="Generate numbers" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="50dp"
+        android:text="dssgdsgsgdsg"/>
+    <TableLayout
+        android:id="@+id/valuesLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        android:layout_marginBottom="240dp"
+        android:background="@color/colorPrimary">
+        <TableRow>
 
-    <TextView
-        android:id="@+id/textViewA"
-        android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textViewA"
+                android:text="a: "
+                android:textSize="40dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/textViewB"
+                android:text="b: "
+                android:textSize="40dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/textViewC"
+                android:text="c: "
+                android:textSize="40dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/textViewD"
+                android:text="d: "
+                android:textSize="40dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp" />
+        </TableRow>
+    </TableLayout>
+
+
+    <LinearLayout
+        android:id="@+id/resultsLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:textSize="10sp"/>
+        >
+        <TextView
+            android:id="@+id/sumTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E4FF00"
+            android:textSize="30sp"
+            android:text="sum: " />
 
-    <TextView
-        android:id="@+id/textViewB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/sumArTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E4FF00"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="sumArithmetic: "/>
 
-    <TextView
-        android:id="@+id/textViewC"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/funcTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E4FF00"
+            android:text="function: "
+            android:textSize="30sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewD"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/sumTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="440dp"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/sumArTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="450dp"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/funcTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="460dp"
-        android:textSize="10sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
