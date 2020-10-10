@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_folder_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/attractions"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_local_dining_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/dining"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_school_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/education"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_people_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/family"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_favorite_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/health"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_business_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/office"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_shopping_cart_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/promotions"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_radio_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/radio"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_book_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/recipes"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="57dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_directions_bike_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/sport"
+            android:layout_gravity="center_vertical"
+            android:textSize="30sp"
+
+            />
+
+    </TableRow>
+
+
+
+
+</TableLayout>

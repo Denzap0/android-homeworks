@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_folder_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/attractions"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_local_dining_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/dining"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_school_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/education"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_people_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/family"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_favorite_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/health"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_business_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/office"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_shopping_cart_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/promotions"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_radio_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/radio"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_book_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/recipes"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableStart="@drawable/ic_baseline_directions_bike_24"
+        android:drawablePadding="30dp"
+        android:gravity="center_vertical"
+        android:text="@string/sport"
+        android:textSize="25sp" />
+
+
+</LinearLayout>
