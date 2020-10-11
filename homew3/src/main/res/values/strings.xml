@@ -33,4 +33,7 @@
     <string name="directions">Directions</string>
     <string name="call">Call</string>
     <string name="save">Save</string>
+    <string name="sertificates">Sertificates</string>
+    <string name="views">Views</string>
+    <string name="layouts">Layouts</string>
 </resources>
