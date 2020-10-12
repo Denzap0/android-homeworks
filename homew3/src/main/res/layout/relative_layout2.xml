@@ -7,7 +7,7 @@
         android:id="@+id/photo"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="#AAAAAA" />
+        android:background="@color/gray" />
 
     <ImageView
         android:layout_width="50dp"

@@ -12,7 +12,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:text="@string/android"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -31,7 +31,7 @@
             android:layout_height="100dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -45,14 +45,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/_125"
-                android:textColor="#000000" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="@string/posts"
-                android:textColor="#000000" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -67,14 +67,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/_20k"
-                android:textColor="#000000" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="@string/followers"
-                android:textColor="#000000" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,14 +89,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/_22"
-                android:textColor="#000000" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="@string/following"
-                android:textColor="#000000" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
 
@@ -109,7 +109,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="40dp"
         android:text="@string/username"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cap_linear"/>
 
@@ -120,7 +120,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="@string/address_description"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/username"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -137,7 +137,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
 
         <ImageView
             android:layout_width="50dp"
@@ -145,7 +145,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
 
         <ImageView
             android:layout_width="50dp"
@@ -153,7 +153,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
 
         <ImageView
             android:layout_width="50dp"
@@ -161,7 +161,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
 
         <ImageView
             android:layout_width="50dp"
@@ -169,7 +169,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
 
         <ImageView
             android:layout_width="50dp"
@@ -177,7 +177,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
     </LinearLayout>
 
     <LinearLayout
@@ -228,7 +228,7 @@
                 android:paddingStart="40dp"
                 android:paddingEnd="10dp"
                 android:text="@string/call"
-                android:textColor="#2B61F7" />
+                android:textColor="@color/blue" />
         </LinearLayout>
 
         <LinearLayout
@@ -249,7 +249,7 @@
                 android:paddingStart="35dp"
                 android:paddingEnd="10dp"
                 android:text="@string/save"
-                android:textColor="#2B61F7" />
+                android:textColor="@color/blue" />
         </LinearLayout>
 
         <LinearLayout
@@ -270,7 +270,7 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="10dp"
                 android:text="@string/directions"
-                android:textColor="#2B61F7" />
+                android:textColor="@color/blue" />
         </LinearLayout>
 
 
@@ -281,7 +281,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="70dp"
-        android:background="#AAAAAA"
+        android:background="@color/gray"
         app:layout_constraintTop_toBottomOf="@id/acc_info"/>
 
     <LinearLayout
@@ -296,7 +296,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
 
         <ImageView
             android:layout_width="83dp"
@@ -305,7 +305,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
 
         <ImageView
             android:layout_width="83dp"
@@ -314,6 +314,6 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:background="#AAAAAA" />
+            android:background="@color/gray" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

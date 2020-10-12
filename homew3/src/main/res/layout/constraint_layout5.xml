@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="50dp"
-            android:background="#AAAAAA"
+            android:background="@color/gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -63,7 +63,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"
             android:text="@string/sertificates"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/sertificates"
             app:layout_constraintLeft_toLeftOf="@id/sertificates" />
 
@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="50dp"
-                android:background="#AAAAAA"
+                android:background="@color/gray"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="@string/layouts"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/gray"
                 app:layout_constraintBottom_toBottomOf="@id/layouts"
                 app:layout_constraintLeft_toLeftOf="@id/layouts" />
 
@@ -148,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="50dp"
-                android:background="#AAAAAA"
+                android:background="@color/gray"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -158,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="@string/views"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/views"
                 app:layout_constraintLeft_toLeftOf="@id/views" />
 

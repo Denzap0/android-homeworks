@@ -109,7 +109,7 @@
             android:layout_height="53dp"
             android:layout_marginStart="10dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_baseline_favorite_24" />
+            android:src="@drawable/ic_baseline_favorite_24_gray" />
 
         <TextView
             android:layout_width="match_parent"
