@@ -35,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
     static TreeMap<String, String> contacts = new TreeMap<>();
     RecyclerView recyclerView;
+    ListItemActionListener listItemActionListener;
+
+    interface ListItemActionListener{
+        void onItemClicked(String name, String communication);
+    }
 
 
     @Override
@@ -43,7 +48,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.contacts_list);
-        recyclerView.setAdapter(new ContactsAdapter(contacts));
+        recyclerView.setAdapter(new ContactsAdapter(contacts, new ListItemActionListener() {
+            @Override
+            public void onItemClicked(String name, String communication) {
+                Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
+                intent.putExtra("old_name", name);
+                intent.putExtra("old_communication", communication);
+                startActivityForResult(intent, 2);
+            }
+        }));
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         findViewById(R.id.add_contact_button).setOnClickListener(new View.OnClickListener() {
@@ -63,10 +76,32 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && resultCode == RESULT_OK && data != null){
             contacts.put(data.getStringExtra("name"), data.getStringExtra("communication"));
-
-            recyclerView.setAdapter(new ContactsAdapter(contacts));
+            recyclerView.setAdapter(new ContactsAdapter(contacts, new ListItemActionListener() {
+                @Override
+                public void onItemClicked(String name, String communication) {
+                    Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
+                    intent.putExtra("old_name", name);
+                    intent.putExtra("old_communication", communication);
+                    startActivityForResult(intent, 2);
+                }
+            }));
             Log.d("AAA", contacts.toString());
         }
+
+        if(requestCode == 2 && resultCode == RESULT_OK && data != null){
+            contacts.remove(data.getStringExtra("old_name"));
+            contacts.put(data.getStringExtra("new_name"), data.getStringExtra("new_communication"));
+            recyclerView.setAdapter(new ContactsAdapter(contacts, new ListItemActionListener() {
+                @Override
+                public void onItemClicked(String name, String communication) {
+                    Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
+                    intent.putExtra("old_name", name);
+                    intent.putExtra("old_communication", communication);
+                    startActivityForResult(intent, 2);
+                }
+            }));
+        }
+
 
     }
 
@@ -74,17 +109,24 @@ public class MainActivity extends AppCompatActivity {
 
         private TreeMap<String, String> contacts;
         private int count = 0;
+        private ListItemActionListener listItemActionListener;
 
 
-        public ContactsAdapter(TreeMap<String, String> contacts) {
+        public ContactsAdapter(TreeMap<String, String> contacts, ListItemActionListener listItemActionListener) {
             this.contacts = contacts;
+            this.listItemActionListener = listItemActionListener;
+        }
+
+        public void setContacts(TreeMap<String,String> contacts){
+            this.contacts = contacts;
+            notifyDataSetChanged();
         }
 
         @NonNull
         @Override
         public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.contact, parent, false);
-            return new ItemViewHolder(view);
+            return new ItemViewHolder(view, listItemActionListener);
         }
 
         @Override
@@ -110,16 +152,26 @@ public class MainActivity extends AppCompatActivity {
             ImageView contactIcon;
             TextView contactName;
             TextView contactCommunication;
+            private ListItemActionListener listItemActionListener;
 
-            public ItemViewHolder(@NonNull View itemView) {
+            public ItemViewHolder(@NonNull View itemView, ListItemActionListener listItemActionListener) {
                 super(itemView);
 
                 contactIcon = itemView.findViewById(R.id.contact_icon);
                 contactName = itemView.findViewById(R.id.contact_name);
                 contactCommunication = itemView.findViewById(R.id.contact_communication);
+                this.listItemActionListener = listItemActionListener;
             }
 
-            public void bind(String contactName, String contactCommunication) {
+            public void bind(final String contactName, final String contactCommunication) {
+                contactIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(listItemActionListener != null){
+                            listItemActionListener.onItemClicked(contactName, contactCommunication);
+                        }
+                    }
+                });
                 if (contactCommunication.contains("@")) {
                     this.contactIcon.setImageResource(R.drawable.ic_baseline_contact_mail_24);
                 } else {
