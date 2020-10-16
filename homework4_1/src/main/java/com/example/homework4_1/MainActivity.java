@@ -22,9 +22,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -34,11 +36,6 @@ public class MainActivity extends AppCompatActivity {
     static TreeMap<String, String> contacts = new TreeMap<>();
     RecyclerView recyclerView;
 
-    static {
-        contacts.put("Denzap", "1234567");
-        contacts.put("Masha", "@");
-        contacts.put("Vasya", "13");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && resultCode == RESULT_OK && data != null){
             contacts.put(data.getStringExtra("name"), data.getStringExtra("communication"));
+
             recyclerView.setAdapter(new ContactsAdapter(contacts));
+            Log.d("AAA", contacts.toString());
         }
 
     }
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         private TreeMap<String, String> contacts;
         private int count = 0;
+
 
         public ContactsAdapter(TreeMap<String, String> contacts) {
             this.contacts = contacts;
