@@ -1,12 +1,15 @@
 package com.example.homework4_1;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.graphics.drawable.DrawableWrapper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
@@ -29,6 +32,7 @@ import java.util.TreeMap;
 public class MainActivity extends AppCompatActivity {
 
     static TreeMap<String, String> contacts = new TreeMap<>();
+    RecyclerView recyclerView;
 
     static {
         contacts.put("Denzap", "1234567");
@@ -41,17 +45,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final RecyclerView recyclerView = findViewById(R.id.contacts_list);
+        recyclerView = findViewById(R.id.contacts_list);
         recyclerView.setAdapter(new ContactsAdapter(contacts));
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         findViewById(R.id.add_contact_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contacts.put("Grisha", "1535");
-                recyclerView.setAdapter(new ContactsAdapter(contacts));
+                Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
+                ArrayList<String> namesArrayList = new ArrayList<>(contacts.keySet());
+                intent.putExtra("contacts", namesArrayList);
+                startActivityForResult(intent, 1);
+
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && resultCode == RESULT_OK && data != null){
+            contacts.put(data.getStringExtra("name"), data.getStringExtra("communication"));
+            recyclerView.setAdapter(new ContactsAdapter(contacts));
+        }
+
     }
 
     static class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemViewHolder> {
