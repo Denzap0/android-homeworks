@@ -1,5 +1,6 @@
 package com.example.homework4_1;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,21 +18,20 @@ import java.util.TreeMap;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemViewHolder> implements Filterable {
 
-    private TreeMap<String, String> contactsLocal;
-    private TreeMap<String, String> contactsAll;
-    private int count = 0;
+    private TreeMap<String, String> contactsLocal = new TreeMap<>();
+    private TreeMap<String, String> contactsAll = new TreeMap<>();
     private MainActivity.ListItemActionListener listItemActionListener;
 
 
     public ContactsAdapter(TreeMap<String, String> contacts, MainActivity.ListItemActionListener listItemActionListener) {
-        this.contactsLocal = contacts;
-        contactsAll = new TreeMap<>(contacts);
+        contactsLocal.putAll(contacts);
+        contactsAll.putAll(contacts);
         this.listItemActionListener = listItemActionListener;
     }
 
     public void setContacts(TreeMap<String, String> contacts) {
-        this.contactsLocal = contacts;
-        contactsAll = new TreeMap<>(contacts);
+        contactsLocal.clear();
+        contactsLocal.putAll(contacts);
         notifyDataSetChanged();
     }
 
@@ -44,15 +44,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        int countLocal = 0;
+        int count = 0;
+        Log.d("cccccccontactsl", contactsLocal.toString());
         for (Map.Entry<String, String> entry : contactsLocal.entrySet()) {
-            if (countLocal == count) {
+            if(count == position) {
                 holder.bind(entry.getKey(), entry.getValue());
-                break;
             }
-            countLocal++;
+            count++;
         }
-        count++;
+
     }
 
     @Override
@@ -73,9 +73,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
                 filteredContacts.putAll(contactsAll);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
+                Log.d("ALLLL", contactsAll.toString());
                 for (Map.Entry<String, String> contact : contactsAll.entrySet()) {
                     if (contact.getKey().toLowerCase().contains(filterPattern)) {
                         filteredContacts.put(contact.getKey(), contact.getValue());
+                        Log.d("FILTEREDDDDD", filteredContacts.toString());
 
                     }
                 }
@@ -89,6 +91,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
         protected void publishResults(CharSequence constraint, FilterResults results) {
             contactsLocal.clear();
             contactsLocal.putAll((Map)results.values);
+            Log.d("LOCALLLLL", contactsLocal.toString());
             notifyDataSetChanged();
         }
     };

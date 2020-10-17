@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.contacts_list);
-        adapter = new ContactsAdapter(contacts,listItemActionListener);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter = new ContactsAdapter(contacts,listItemActionListener);
+                Log.d("newText", newText.toString());
                 adapter.getFilter().filter(newText);
                 recyclerView.setAdapter(adapter);
                 return false;
@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             contacts.put(data.getStringExtra("name"), data.getStringExtra("communication"));
-            adapter = new ContactsAdapter(contacts, listItemActionListener);
+            Log.d("AAAA", contacts.toString());
+            adapter = new ContactsAdapter(contacts,listItemActionListener);
             recyclerView.setAdapter(adapter);
 
         }
