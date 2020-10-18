@@ -8,4 +8,10 @@
     <string name="edit_name">Edit name</string>
     <string name="edit_communication">Edit communication</string>
     <string name="search">Search</string>
+    <string name="add_new_contact">Add new contact</string>
+    <string name="add_contact">Add contact</string>
+    <string name="ok">Ok</string>
+    <string name="edit_user">Edit user</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
 </resources>

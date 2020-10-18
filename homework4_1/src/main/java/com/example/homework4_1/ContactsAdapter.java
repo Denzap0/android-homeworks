@@ -45,7 +45,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         int count = 0;
-        Log.d("cccccccontactsl", contactsLocal.toString());
         for (Map.Entry<String, String> entry : contactsLocal.entrySet()) {
             if(count == position) {
                 holder.bind(entry.getKey(), entry.getValue());
@@ -73,11 +72,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
                 filteredContacts.putAll(contactsAll);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                Log.d("ALLLL", contactsAll.toString());
                 for (Map.Entry<String, String> contact : contactsAll.entrySet()) {
                     if (contact.getKey().toLowerCase().contains(filterPattern)) {
                         filteredContacts.put(contact.getKey(), contact.getValue());
-                        Log.d("FILTEREDDDDD", filteredContacts.toString());
 
                     }
                 }

@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("newText", newText.toString());
                 adapter.getFilter().filter(newText);
                 recyclerView.setAdapter(adapter);
                 return false;
@@ -96,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             contacts.put(data.getStringExtra("name"), data.getStringExtra("communication"));
-            Log.d("AAAA", contacts.toString());
             adapter = new ContactsAdapter(contacts,listItemActionListener);
             recyclerView.setAdapter(adapter);
 
@@ -104,9 +102,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
             contacts.remove(data.getStringExtra("old_name"));
-            contacts.put(data.getStringExtra("new_name"), data.getStringExtra("new_communication"));
-            adapter = new ContactsAdapter(contacts,listItemActionListener);
-            recyclerView.setAdapter(adapter);
+            if(data.getBooleanExtra("isRemove", true)){
+                adapter = new ContactsAdapter(contacts, listItemActionListener);
+                recyclerView.setAdapter(adapter);
+            }else {
+                contacts.put(data.getStringExtra("new_name"), data.getStringExtra("new_communication"));
+                adapter = new ContactsAdapter(contacts, listItemActionListener);
+                recyclerView.setAdapter(adapter);
+            }
         }
 
 

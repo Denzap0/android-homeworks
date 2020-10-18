@@ -18,6 +18,7 @@ public class EditContactActivity extends AppCompatActivity {
         final EditText editName = findViewById(R.id.edit_name);
         final EditText editCommunication = findViewById(R.id.edit_communication);
         Button editButton = findViewById(R.id.edit_button);
+        Button removeButton = findViewById(R.id.remove_contact);
 
         final Bundle bundle = getIntent().getExtras();
 
@@ -32,6 +33,18 @@ public class EditContactActivity extends AppCompatActivity {
                     intent.putExtra("old_name", bundle.getString("old_name").toString());
                     intent.putExtra("new_name", editName.getText().toString());
                     intent.putExtra("new_communication", editCommunication.getText().toString());
+                    intent.putExtra("isRemove", false);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            });
+
+            removeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("old_name", bundle.getString("old_name".toString()));
+                    intent.putExtra("isRemove", true);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
