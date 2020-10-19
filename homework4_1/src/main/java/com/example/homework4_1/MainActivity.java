@@ -98,17 +98,17 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             contacts.put(data.getStringExtra("name"), data.getStringExtra("communication"));
-            adapter = new ContactsAdapter(contacts,listItemActionListener);
+            adapter = new ContactsAdapter(contacts, listItemActionListener);
             recyclerView.setAdapter(adapter);
 
         }
 
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
             contacts.remove(data.getStringExtra("old_name"));
-            if(data.getBooleanExtra("isRemove", true)){
+            if (data.getBooleanExtra("isRemove", true)) {
                 adapter = new ContactsAdapter(contacts, listItemActionListener);
                 recyclerView.setAdapter(adapter);
-            }else {
+            } else {
                 contacts.put(data.getStringExtra("new_name"), data.getStringExtra("new_communication"));
                 adapter = new ContactsAdapter(contacts, listItemActionListener);
                 recyclerView.setAdapter(adapter);
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        adapter = new ContactsAdapter(contacts,listItemActionListener);
+        adapter = new ContactsAdapter(contacts, listItemActionListener);
         recyclerView.setAdapter(adapter);
     }
 
