@@ -9,7 +9,12 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class EditContactActivity extends AppCompatActivity {
+
+    ArrayList<String> contacts = new ArrayList<>();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,20 +27,27 @@ public class EditContactActivity extends AppCompatActivity {
 
         final Bundle bundle = getIntent().getExtras();
 
-        if(bundle != null){
+        if (bundle != null) {
             editName.setHint(bundle.getString("old_name"));
             editCommunication.setHint(bundle.getString("old_communication"));
+            contacts = bundle.getStringArrayList("contacts");
 
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.putExtra("old_name", bundle.getString("old_name").toString());
-                    intent.putExtra("new_name", editName.getText().toString());
-                    intent.putExtra("new_communication", editCommunication.getText().toString());
-                    intent.putExtra("isRemove", false);
-                    setResult(RESULT_OK, intent);
-                    finish();
+                    if (editName.getText().toString().isEmpty()) {
+                        openAttentionEmptyDialog();
+                    } else if (contacts.contains(editName.getText().toString())) {
+                        openAttentionContainsDialog();
+                    } else {
+                        Intent intent = new Intent();
+                        intent.putExtra("old_name", bundle.getString("old_name").toString());
+                        intent.putExtra("new_name", editName.getText().toString());
+                        intent.putExtra("new_communication", editCommunication.getText().toString());
+                        intent.putExtra("isRemove", false);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
                 }
             });
 
@@ -52,7 +64,15 @@ public class EditContactActivity extends AppCompatActivity {
         }
 
 
+    }
 
+    public void openAttentionEmptyDialog() {
+        AlertEmptyDialog dialog = new AlertEmptyDialog();
+        dialog.show(getSupportFragmentManager(), "Alert dialog");
+    }
 
+    public void openAttentionContainsDialog() {
+        AlertContainsDialog dialog = new AlertContainsDialog();
+        dialog.show(getSupportFragmentManager(), "Alert dialog");
     }
 }

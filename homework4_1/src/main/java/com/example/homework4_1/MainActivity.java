@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,9 +35,11 @@ public class MainActivity extends AppCompatActivity {
     ListItemActionListener listItemActionListener = new ListItemActionListener() {
         @Override
         public void onItemClicked(String name, String communication) {
+            ArrayList<String> namesArrayList = new ArrayList<>(contacts.keySet());
             Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
             intent.putExtra("old_name", name);
             intent.putExtra("old_communication", communication);
+            intent.putExtra("contacts", namesArrayList);
             startActivityForResult(intent, 2);
         }
     };
@@ -115,6 +118,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        adapter = new ContactsAdapter(contacts,listItemActionListener);
+        recyclerView.setAdapter(adapter);
+    }
 
 }
 

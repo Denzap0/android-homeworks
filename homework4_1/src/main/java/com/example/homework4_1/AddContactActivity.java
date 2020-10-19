@@ -5,16 +5,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class AddContactActivity extends AppCompatActivity {
 
@@ -43,8 +40,11 @@ public class AddContactActivity extends AppCompatActivity {
             EditText editName = findViewById(R.id.edit_name);
             EditText editCommunication = findViewById(R.id.edit_communication);
             if(editName.getText().toString().isEmpty()){
-                openAttentionDialog();
-            }else {
+                openAttentionEmptyDialog();
+            }else if(contacts.contains(editName.getText().toString())){
+                openAttentionContainsDialog();
+            }
+            else {
                 Intent intent = new Intent();
                 intent.putExtra("name", editName.getText().toString());
                 intent.putExtra("communication", editCommunication.getText().toString());
@@ -55,8 +55,14 @@ public class AddContactActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void openAttentionDialog(){
-        AlertDialog dialog = new AlertDialog();
+    public void openAttentionEmptyDialog(){
+        AlertEmptyDialog dialog = new AlertEmptyDialog();
         dialog.show(getSupportFragmentManager(), "Alert dialog");
     }
+
+    public void openAttentionContainsDialog(){
+        AlertContainsDialog dialog = new AlertContainsDialog();
+        dialog.show(getSupportFragmentManager(), "Alert dialog");
+    }
+
 }
