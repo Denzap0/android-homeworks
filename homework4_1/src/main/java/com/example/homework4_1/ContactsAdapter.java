@@ -88,7 +88,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
         protected void publishResults(CharSequence constraint, FilterResults results) {
             contactsLocal.clear();
             contactsLocal.putAll((Map)results.values);
-            Log.d("LOCALLLLL", contactsLocal.toString());
             notifyDataSetChanged();
         }
     };
