@@ -19,10 +19,6 @@ import java.util.Random;
 
 public class Circle extends View{
 
-
-    private static final int WIDTH = 150;
-    private static final int HEIGHT = 200;
-
     private int centerX;
     private int centerY;
 
@@ -36,13 +32,9 @@ public class Circle extends View{
     private final int bigRadius = 300;
 
 
-
     public Circle(Context context) {
         super(context);
     }
-
-
-
 
     public Circle(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

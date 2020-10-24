@@ -20,22 +20,23 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Switch sw;
+    private Circle circle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sw = findViewById(R.id.switchBar);
+        circle = findViewById(R.id.circle);
 
-        final Switch sw = findViewById(R.id.switchBar);
-        Log.d("BBBB", sw.getTextOn().toString());
-        Log.d("CCCC", sw.getTextOff().toString());
-        final Circle circle = findViewById(R.id.circle);
         circle.setListener(new Circle.Listener() {
             @Override
             public void onEvent(float x, float y, Paint paint) {
-                if(!sw.isChecked() ){
+                if (!sw.isChecked()) {
                     Toast toast = Toast.makeText(getApplicationContext(), "x: " + x + " y: " + y, Toast.LENGTH_SHORT);
                     toast.show();
-                }else{
+                } else {
                     Snackbar snackbar = Snackbar.make(circle, "x: " + x + " y: " + y, Snackbar.LENGTH_SHORT)
                             .setTextColor(paint.getColor());
                     snackbar.show();
