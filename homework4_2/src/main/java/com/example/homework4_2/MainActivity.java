@@ -1,22 +1,11 @@
 package com.example.homework4_2;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
-
-
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 

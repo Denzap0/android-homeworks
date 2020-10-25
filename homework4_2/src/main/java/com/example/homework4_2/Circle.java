@@ -6,15 +6,10 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
 import androidx.annotation.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Circle extends View{
