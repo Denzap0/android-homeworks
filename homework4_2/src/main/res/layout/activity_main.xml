@@ -25,8 +25,9 @@
         android:layout_marginTop="100dp"
         android:textOff="@string/toast"
         android:textOn="@string/snack"
-        android:textSize="20sp"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:textSize="12sp"
+        tools:ignore="UseSwitchCompatOrMaterialXml"
+        android:showText="true" />
 
     <View
         android:id="@+id/view1"
