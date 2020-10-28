@@ -10,6 +10,7 @@ public class MyObserver {
     }
 
     private static MyObserver INSTANCE;
+    private final List<MyObserverActionListener> listeners = new ArrayList<>();
 
     public static MyObserver getINSTANCE() {
         if (INSTANCE == null) {
@@ -36,7 +37,7 @@ public class MyObserver {
         }
     }
 
-    private final List<MyObserverActionListener> listeners = new ArrayList<>();
+
 
     private MyObserver() {
     }

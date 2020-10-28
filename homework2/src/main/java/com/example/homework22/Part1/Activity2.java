@@ -22,7 +22,7 @@ import static java.lang.String.valueOf;
 
 public class Activity2 extends AppCompatActivity {
 
-    ArrayList<Integer> values = new ArrayList<>();
+    private ArrayList<Integer> values = new ArrayList<>();
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -30,20 +30,25 @@ public class Activity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2);
 
-        Bundle arguments = getIntent().getExtras();
-        if (arguments != null) {
-            values = arguments.getIntegerArrayList("values");
+        if(getIntent() != null) {
+            Bundle arguments = getIntent().getExtras();
+
+            if (arguments != null) {
+                values = arguments.getIntegerArrayList("values");
+            }
         }
 
 
         final ArrayList<String> resValues = new ArrayList<>();
 
-        resValues.add(valueOf(sum(values)));
-        resValues.add(valueOf(sumArithmetic(values)));
-        resValues.add(valueOf(func(values)));
+        if(!values.isEmpty()) {
+            resValues.add(valueOf(Calculations.sum(values)));
+            resValues.add(valueOf(Calculations.sumArithmetic(values)));
+            resValues.add(valueOf(Calculations.func(values)));
 
-        TextView resultNotify = (TextView) findViewById(R.id.resultNotify);
-        resultNotify.setText("Result is ready");
+            TextView resultNotify = (TextView) findViewById(R.id.resultNotify);
+            resultNotify.setText("Result is ready");
+        }
 
         Button btn = (Button) findViewById(R.id.seeResult);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -58,30 +63,7 @@ public class Activity2 extends AppCompatActivity {
 
     }
 
-    protected double sumArithmetic(ArrayList<Integer> values) {
-        return (double) sum(values) / values.size();
-    }
 
-    protected int sum(ArrayList<Integer> values) {
-
-        int sum = 0;
-        for (int i = 0; i < values.size(); i++) {
-            sum += values.get(i);
-        }
-        return sum;
-    }
-
-    protected double func(ArrayList<Integer> values) {
-        double sum = 0;
-        for (int i = 0; i < values.size() / 2; i++) {
-            sum += values.get(i);
-        }
-        double residual = values.get(values.size() / 2);
-        for (int i = values.size() / 2 + 1; i < values.size(); i++) {
-            residual -= values.get(i);
-        }
-        return sum / residual;
-    }
 
 
 }

@@ -19,11 +19,21 @@ import android.widget.TextView;
 import com.example.homework22.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<Integer> values = new ArrayList<>();
-    ArrayList<Double> resultForObserver = new ArrayList<>();
+    private ArrayList<Integer> values = new ArrayList<>();
+    private ArrayList<Double> resultForObserver = new ArrayList<>();
+
+    private TextView textViewA;
+    private TextView textViewB;
+    private TextView textViewC;
+    private TextView textViewD;
+    private TextView sumTextView;
+    private TextView sumArTextView;
+    private TextView funcTextView;
 
 
     @SuppressLint("SetTextI18n")
@@ -31,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        textViewA = (TextView) findViewById(R.id.textViewA);
+        textViewB = (TextView) findViewById(R.id.textViewB);
+        textViewC = (TextView) findViewById(R.id.textViewC);
+        textViewD = (TextView) findViewById(R.id.textViewD);
+        sumTextView = (TextView) findViewById(R.id.sumTextView);
+        sumArTextView = (TextView) findViewById(R.id.sumArTextView);
+        funcTextView = (TextView) findViewById(R.id.funcTextView);
 
         final LinearLayout valuesLayout = findViewById(R.id.resultsLayout);
         final Button generateNumbersButton = (Button) findViewById(R.id.generateNumbers);
@@ -40,11 +58,16 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < 4; i++) {
                     values.add((int) (Math.random() * 99 + 1));
                 }
-                TextView textViewA = (TextView) findViewById(R.id.textViewA);
-                TextView textViewB = (TextView) findViewById(R.id.textViewB);
-                TextView textViewC = (TextView) findViewById(R.id.textViewC);
-                TextView textViewD = (TextView) findViewById(R.id.textViewD);
 
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < i; j++) {
+                        if (values.get(i).equals(values.get(j))) {
+                            values.remove(i);
+                            values.add(i, (int) (Math.random() * 99 + 1));
+                        }
+                    }
+
+                }
                 textViewA.setText("a: " + values.get(0));
                 textViewB.setText("b: " + values.get(1));
                 textViewC.setText("c: " + values.get(2));
@@ -62,13 +85,18 @@ public class MainActivity extends AppCompatActivity {
         countButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Activity2.class);
-                intent.putIntegerArrayListExtra("values", values);
-                startActivityForResult(intent, 1);
+                if (values.isEmpty()) {
+                    TextView resultTextView = findViewById(R.id.resultTextView);
+                    resultTextView.setText("Please generate numbers(press Generate numbers)");
+                    ImageView arrow = findViewById(R.id.arrow);
+                    arrow.setVisibility(View.VISIBLE);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, Activity2.class);
+                    intent.putIntegerArrayListExtra("values", values);
+                    startActivityForResult(intent, 1);
+                }
             }
         });
-
-
 
 
     }
@@ -77,15 +105,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1){
-            if(resultCode == Activity.RESULT_OK && data != null){
-
-                TextView sumTextView = (TextView) findViewById(R.id.sumTextView);
-                TextView sumArTextView = (TextView) findViewById(R.id.sumArTextView);
-                TextView funcTextView = (TextView) findViewById(R.id.funcTextView);
-                if(data.getStringArrayListExtra("result") != null) {
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                if (data.getStringArrayListExtra("result") != null) {
                     ArrayList<String> result = data.getStringArrayListExtra("result");
-                    if(!result.isEmpty()) {
+                    if (!result.isEmpty()) {
                         sumTextView.setText("sum: " + result.get(0));
                         sumArTextView.setText("Arithmetic result: " + result.get(1));
                         funcTextView.setText("Function: " + result.get(2));

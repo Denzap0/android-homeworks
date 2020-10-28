@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Part1.MainActivity">
+    tools:context=".Part1.MainActivity"
+    android:background="@drawable/math">
 
 
     <Button
@@ -18,7 +19,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/custom_count_button"/>
+        android:background="@drawable/custom_count_button" />
 
     <Button
         android:id="@+id/generateNumbers"
@@ -28,17 +29,30 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@color/colorPrimary"
+        android:background="#FF0000"
         android:text="Generate numbers" />
 
     <TextView
+        android:id="@+id/resultTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="50dp"
-        android:text="dssgdsgsgdsg"/>
+        />
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="54dp"
+        android:layout_height="58dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginBottom="124dp"
+        android:src="@drawable/ic_baseline_arrow_downward_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:visibility="invisible"/>
+
     <TableLayout
         android:id="@+id/valuesLayout"
         android:layout_width="wrap_content"
@@ -56,14 +70,16 @@
                 android:text="a: "
                 android:textSize="40dp"
                 android:layout_width="100dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:background="#FF0000"/>
 
             <TextView
                 android:id="@+id/textViewB"
                 android:text="b: "
                 android:textSize="40dp"
                 android:layout_width="100dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:background="#FF0000"/>
         </TableRow>
 
         <TableRow>
@@ -73,14 +89,16 @@
                 android:text="c: "
                 android:textSize="40dp"
                 android:layout_width="100dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:background="#FF0000"/>
 
             <TextView
                 android:id="@+id/textViewD"
                 android:text="d: "
                 android:textSize="40dp"
                 android:layout_width="100dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:background="#FF0000"/>
         </TableRow>
     </TableLayout>
 
@@ -100,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#E4FF00"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:text="sum: " />
 
         <TextView
@@ -108,7 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#E4FF00"
-            android:textSize="30sp"
+            android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:text="sumArithmetic: "/>
@@ -119,7 +137,7 @@
             android:layout_height="wrap_content"
             android:background="#E4FF00"
             android:text="function: "
-            android:textSize="30sp"
+            android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>

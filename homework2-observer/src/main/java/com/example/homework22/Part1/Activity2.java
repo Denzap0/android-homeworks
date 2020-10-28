@@ -22,7 +22,7 @@ import static java.lang.String.valueOf;
 
 public class Activity2 extends AppCompatActivity {
 
-    ArrayList<Integer> values = new ArrayList<>();
+    private ArrayList<Integer> values = new ArrayList<>();
 
     @SuppressLint("SetTextI18n")
     @Override

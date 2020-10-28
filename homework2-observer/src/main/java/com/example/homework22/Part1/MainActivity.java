@@ -71,21 +71,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
-    @SuppressLint("SetTextI18n")
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("AAA", "fafafa");
-        if(requestCode == 1){
-            if(resultCode == Activity.RESULT_OK && data != null){
-
-            }
-        }
-
-    }
 }
