@@ -15,7 +15,9 @@ import java.util.ArrayList;
 
 public class AddContactActivity extends AppCompatActivity {
 
-    ArrayList<String> contacts = new ArrayList<>();
+    private ArrayList<String> contacts = new ArrayList<>();
+    EditText editName;
+    EditText editCommunication;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,19 +39,15 @@ public class AddContactActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.add_tick){
-            EditText editName = findViewById(R.id.edit_name);
-            EditText editCommunication = findViewById(R.id.edit_communication);
+            editName = findViewById(R.id.edit_name);
+            editCommunication = findViewById(R.id.edit_communication);
             if(editName.getText().toString().isEmpty()){
                 openAttentionEmptyDialog();
             }else if(contacts.contains(editName.getText().toString())){
                 openAttentionContainsDialog();
             }
             else {
-                Intent intent = new Intent();
-                intent.putExtra("name", editName.getText().toString());
-                intent.putExtra("communication", editCommunication.getText().toString());
-                setResult(RESULT_OK, intent);
-                finish();
+                backToMain();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -63,6 +61,14 @@ public class AddContactActivity extends AppCompatActivity {
     public void openAttentionContainsDialog(){
         AlertContainsDialog dialog = new AlertContainsDialog();
         dialog.show(getSupportFragmentManager(), "Alert dialog");
+    }
+
+    private void backToMain(){
+        Intent intent = new Intent();
+        intent.putExtra("name", editName.getText().toString());
+        intent.putExtra("communication", editCommunication.getText().toString());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 }

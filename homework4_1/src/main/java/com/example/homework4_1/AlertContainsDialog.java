@@ -16,12 +16,7 @@ public class AlertContainsDialog extends AppCompatDialogFragment {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
         builder.setTitle("Attemption")
                 .setMessage("This name already exist")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
+                .setPositiveButton("Ok", null);
         return builder.create();
     }
 }

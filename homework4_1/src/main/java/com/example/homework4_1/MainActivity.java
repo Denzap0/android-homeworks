@@ -1,38 +1,28 @@
 package com.example.homework4_1;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SearchView;
-import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    static TreeMap<String, String> contacts = new TreeMap<>();
+    TreeMap<String, String> contacts = new TreeMap<>();
 
-    RecyclerView recyclerView;
-    ListItemActionListener listItemActionListener = new ListItemActionListener() {
+    private RecyclerView recyclerView;
+    private ListItemActionListener listItemActionListener = new ListItemActionListener() {
         @Override
         public void onItemClicked(String name, String communication) {
             ArrayList<String> namesArrayList = new ArrayList<>(contacts.keySet());
@@ -43,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 2);
         }
     };
-    ContactsAdapter adapter;
+    private ContactsAdapter adapter;
 
     interface ListItemActionListener {
         void onItemClicked(String name, String communication);

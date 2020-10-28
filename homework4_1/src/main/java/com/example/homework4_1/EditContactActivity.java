@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class EditContactActivity extends AppCompatActivity {
 
-    ArrayList<String> contacts = new ArrayList<>();
+    private ArrayList<String> contacts = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
