@@ -1,59 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-
-    <LinearLayout android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="410dp"
             android:layout_height="250dp"
-            android:background="@color/gray"
-            />
+            android:background="@color/gray" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="@string/title"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <LinearLayout
-            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:text="@string/price"/>
+                android:text="@string/price" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_marginStart="20dp"
-                android:text="@string/location"
-                android:drawableEnd="@drawable/ic_baseline_place_24"/>
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/ic_baseline_place_24"
+                android:text="@string/location" />
         </LinearLayout>
-        <LinearLayout
+
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp">
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/description">
-            </EditText>
-        </LinearLayout>
-        
+            android:layout_height="match_parent"
+            android:text="@string/description" />
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -63,23 +58,23 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_marginEnd="70dp"
-                android:text="@string/inventory"/>
+                android:layout_weight="1"
+                android:text="@string/inventory" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_marginStart="90dp"
-                android:text="@string/weight"/>
+                android:layout_weight="1"
+                android:text="@string/weight" />
         </LinearLayout>
-    </LinearLayout>
+    </>
+
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/ic_baseline_photo_camera_24" />
-
 
 
 </FrameLayout>
