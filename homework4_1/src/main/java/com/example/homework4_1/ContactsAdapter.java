@@ -130,4 +130,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
         }
     }
 
+    public void addItem(Contact contact){
+        contactsAll.add(contact);
+        notifyDataSetChanged();
+    }
+
 }

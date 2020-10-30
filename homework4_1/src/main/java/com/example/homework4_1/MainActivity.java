@@ -30,11 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ListItemActionListener listItemActionListener = new ListItemActionListener() {
         @Override
         public void onItemClicked(Contact contact) {
-            Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
-            intent.putExtra("old_name", contact.getName());
-            intent.putExtra("old_communication", contact.getCommunication());
-            intent.putExtra("contacts", getNamesList().toString());
-            startActivityForResult(intent, 2);
+            startEditActivity(contact);
         }
     };
     private ContactsAdapter adapter;
@@ -59,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
                 intent.putExtra("contacts", getNamesList());
                 startActivityForResult(intent, 1);
-
             }
         });
     }
@@ -90,9 +85,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            contacts.add(new Contact(data.getStringExtra("name"),data.getStringExtra("communication"), (ConnectType) data.getExtras().get("connectType")));
-            adapter = new ContactsAdapter(contacts, listItemActionListener);
-            recyclerView.setAdapter(adapter);
+//            contacts.add(new Contact(data.getStringExtra("name"),data.getStringExtra("communication"), (ConnectType) data.getExtras().get("connectType")));
+//            adapter = new ContactsAdapter(contacts, listItemActionListener);
+            adapter.addItem(new Contact(data.getStringExtra("name"),data.getStringExtra("communication"), (ConnectType) data.getExtras().get("connectType")));
+//            recyclerView.setAdapter(adapter);
 
         }
 
@@ -135,6 +131,14 @@ public class MainActivity extends AppCompatActivity {
             namesList.add(contacts.get(i).getName());
         }
         return namesList;
+    }
+
+    private void startEditActivity(Contact contact){
+        Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
+        intent.putExtra("old_name", contact.getName());
+        intent.putExtra("old_communication", contact.getCommunication());
+        intent.putExtra("contacts", getNamesList().toString());
+        startActivityForResult(intent, 2);
     }
 }
 
