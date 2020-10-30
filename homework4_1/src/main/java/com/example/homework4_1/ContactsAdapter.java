@@ -18,8 +18,6 @@ import com.example.homework4_1.Contact.Contact;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemViewHolder> implements Filterable {
 
@@ -35,7 +33,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
     }
 
     public void setContacts(List<Contact> contacts) {
+        contactsAll.clear();
         contactsLocal.clear();
+        contactsAll.addAll(contacts);
         contactsLocal.addAll(contacts);
         notifyDataSetChanged();
     }
@@ -132,6 +132,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
 
     public void addItem(Contact contact){
         contactsAll.add(contact);
+        contactsLocal.add(contact);
         notifyDataSetChanged();
     }
 

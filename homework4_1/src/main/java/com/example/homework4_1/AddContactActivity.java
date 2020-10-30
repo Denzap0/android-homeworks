@@ -25,18 +25,19 @@ public class AddContactActivity extends AppCompatActivity {
     private List<String> contacts;
     EditText editName;
     EditText editCommunication;
-    Switch sw;
+    Switch communicationSwich;
+    Bundle bundle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contact_activity);
 
-        sw = findViewById(R.id.switchConnect);
+        communicationSwich = findViewById(R.id.switchConnect);
         editName = findViewById(R.id.edit_name);
         editCommunication = findViewById(R.id.edit_communication);
 
-        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        communicationSwich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -46,8 +47,11 @@ public class AddContactActivity extends AppCompatActivity {
                 }
             }
         });
-
-        Bundle bundle = getIntent().getExtras();
+        if(getIntent() != null) {
+            bundle = getIntent().getExtras();
+        }else{
+            bundle = new Bundle();
+        }
         if (bundle != null) {
             contacts = bundle.getStringArrayList("contacts");
             if(contacts == null){
@@ -91,7 +95,7 @@ public class AddContactActivity extends AppCompatActivity {
     private void backToMain(){
         Intent intent = new Intent();
 
-        if(sw.isChecked()){
+        if(communicationSwich.isChecked()){
             intent.putExtra("name", editName.getText().toString());
             intent.putExtra("communication", editCommunication.getText().toString());
             intent.putExtra("connectType", ConnectType.EMAIL);

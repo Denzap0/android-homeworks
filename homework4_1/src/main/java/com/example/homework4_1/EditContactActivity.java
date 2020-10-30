@@ -24,7 +24,8 @@ public class EditContactActivity extends AppCompatActivity {
     private EditText editName;
     private Button editButton;
     private Button removeButton;
-    Switch sw;
+    Switch communicationSwitch;
+    Bundle bundle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,9 +36,13 @@ public class EditContactActivity extends AppCompatActivity {
         editCommunication = findViewById(R.id.edit_communication);
         editButton = findViewById(R.id.edit_button);
         removeButton = findViewById(R.id.remove_contact);
-        sw = findViewById(R.id.switchConnect);
+        communicationSwitch = findViewById(R.id.switchConnect);
 
-        final Bundle bundle = getIntent().getExtras();
+        if(getIntent() != null){
+            bundle = getIntent().getExtras();
+        }else{
+            bundle = new Bundle();
+        }
 
         if (bundle != null) {
             editName.setHint(bundle.getString("old_name"));
@@ -46,7 +51,6 @@ public class EditContactActivity extends AppCompatActivity {
             if(contacts == null){
                 contacts = new ArrayList<>();
             }
-
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -59,7 +63,6 @@ public class EditContactActivity extends AppCompatActivity {
                     }
                 }
             });
-
             removeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -67,8 +70,6 @@ public class EditContactActivity extends AppCompatActivity {
                 }
             });
         }
-
-
     }
 
     public void openAttentionEmptyDialog() {
@@ -87,7 +88,7 @@ public class EditContactActivity extends AppCompatActivity {
         intent.putExtra("new_name", editName.getText().toString());
         intent.putExtra("new_communication", editCommunication.getText().toString());
         intent.putExtra("isRemove", false);
-        if(sw.isChecked()){
+        if(communicationSwitch.isChecked()){
             intent.putExtra("connectType", ConnectType.EMAIL);
         }else{
             intent.putExtra("connectType", ConnectType.PHONE);

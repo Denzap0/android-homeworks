@@ -1,5 +1,7 @@
 package com.example.homework4_1.Contact;
 
+import java.util.Objects;
+
 public class Contact {
 
     String name;
@@ -34,5 +36,20 @@ public class Contact {
 
     public void setCommunication(String communication) {
         this.communication = communication;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contact contact = (Contact) o;
+        return Objects.equals(name, contact.name) &&
+                connectType == contact.connectType &&
+                Objects.equals(communication, contact.communication);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, connectType, communication);
     }
 }
