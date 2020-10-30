@@ -2,6 +2,7 @@ package com.example.homework4_1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,29 +15,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homework4_1.Contact.ConnectType;
+import com.example.homework4_1.Contact.Contact;
+
 import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    TreeMap<String, String> contacts = new TreeMap<>();
+    private List<Contact> contacts = new ArrayList<>();
+
 
     private RecyclerView recyclerView;
     private ListItemActionListener listItemActionListener = new ListItemActionListener() {
         @Override
-        public void onItemClicked(String name, String communication) {
-            ArrayList<String> namesArrayList = new ArrayList<>(contacts.keySet());
+        public void onItemClicked(Contact contact) {
             Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
-            intent.putExtra("old_name", name);
-            intent.putExtra("old_communication", communication);
-            intent.putExtra("contacts", namesArrayList);
+            intent.putExtra("old_name", contact.getName());
+            intent.putExtra("old_communication", contact.getCommunication());
+            intent.putExtra("contacts", getNamesList().toString());
             startActivityForResult(intent, 2);
         }
     };
     private ContactsAdapter adapter;
 
     interface ListItemActionListener {
-        void onItemClicked(String name, String communication);
+        void onItemClicked(Contact contact);
     }
 
 
@@ -53,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
-                ArrayList<String> namesArrayList = new ArrayList<>(contacts.keySet());
-                intent.putExtra("contacts", namesArrayList);
+                intent.putExtra("contacts", getNamesList());
                 startActivityForResult(intent, 1);
 
             }
@@ -87,19 +90,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            contacts.put(data.getStringExtra("name"), data.getStringExtra("communication"));
+            contacts.add(new Contact(data.getStringExtra("name"),data.getStringExtra("communication"), (ConnectType) data.getExtras().get("connectType")));
             adapter = new ContactsAdapter(contacts, listItemActionListener);
             recyclerView.setAdapter(adapter);
 
         }
 
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
-            contacts.remove(data.getStringExtra("old_name"));
+            for(int i = 0; i < contacts.size(); i++) {
+                if(contacts.get(i).getName().equals(data.getStringExtra("old_name"))){
+                    contacts.remove(i);
+                }
+
+            }
             if (data.getBooleanExtra("isRemove", true)) {
                 adapter = new ContactsAdapter(contacts, listItemActionListener);
                 recyclerView.setAdapter(adapter);
             } else {
-                contacts.put(data.getStringExtra("new_name"), data.getStringExtra("new_communication"));
+
+                contacts.add(new Contact(data.getStringExtra("new_name"), data.getStringExtra("new_communication"), (ConnectType) data.getExtras().get("connectType")));
                 adapter = new ContactsAdapter(contacts, listItemActionListener);
                 recyclerView.setAdapter(adapter);
             }
@@ -120,5 +129,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    private ArrayList<String> getNamesList(){
+        ArrayList<String> namesList = new ArrayList<>();
+        for(int i = 0; i < contacts.size(); i++){
+            namesList.add(contacts.get(i).getName());
+        }
+        return namesList;
+    }
 }
 

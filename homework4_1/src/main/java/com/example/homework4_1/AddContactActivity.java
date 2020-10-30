@@ -5,27 +5,52 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.homework4_1.Contact.ConnectType;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddContactActivity extends AppCompatActivity {
 
-    private ArrayList<String> contacts = new ArrayList<>();
+    private List<String> contacts;
     EditText editName;
     EditText editCommunication;
+    Switch sw;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contact_activity);
+
+        sw = findViewById(R.id.switchConnect);
+        editName = findViewById(R.id.edit_name);
+        editCommunication = findViewById(R.id.edit_communication);
+
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    editCommunication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_mail_24,0,0,0);
+                }else{
+                    editCommunication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_local_phone_24,0,0,0);
+                }
+            }
+        });
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             contacts = bundle.getStringArrayList("contacts");
+            if(contacts == null){
+                contacts = new ArrayList<>();
+            }
         }
     }
 
@@ -39,8 +64,6 @@ public class AddContactActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.add_tick){
-            editName = findViewById(R.id.edit_name);
-            editCommunication = findViewById(R.id.edit_communication);
             if(editName.getText().toString().isEmpty()){
                 openAttentionEmptyDialog();
             }else if(contacts.contains(editName.getText().toString())){
@@ -65,10 +88,19 @@ public class AddContactActivity extends AppCompatActivity {
 
     private void backToMain(){
         Intent intent = new Intent();
-        intent.putExtra("name", editName.getText().toString());
-        intent.putExtra("communication", editCommunication.getText().toString());
+
+        if(sw.isChecked()){
+            intent.putExtra("name", editName.getText().toString());
+            intent.putExtra("communication", editCommunication.getText().toString());
+            intent.putExtra("connectType", ConnectType.EMAIL);
+        }else{
+            intent.putExtra("name", editName.getText().toString());
+            intent.putExtra("communication", editCommunication.getText().toString());
+            intent.putExtra("connectType", ConnectType.PHONE);
+        }
         setResult(RESULT_OK, intent);
         finish();
     }
+
 
 }

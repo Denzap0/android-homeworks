@@ -14,4 +14,6 @@
     <string name="edit_user">Edit user</string>
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
+    <string name="email">EMAIL</string>
+    <string name="phone">PHONE</string>
 </resources>

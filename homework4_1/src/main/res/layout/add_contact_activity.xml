@@ -6,7 +6,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".AddContactActivity">
 
-
+    <Switch
+        android:id="@+id/switchConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_communication"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/edit_communication"
+        android:textOn="@string/email"
+        android:textOff="@string/phone"
+        android:showText="true"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <EditText
         android:id="@+id/edit_name"
@@ -27,6 +37,7 @@
         android:id="@+id/edit_communication"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        app:layout_constraintEnd_toStartOf="@id/switchConnect"
         app:layout_constraintTop_toBottomOf="@id/edit_name"
         android:layout_marginTop="15dp"
         android:hint="@string/enter_communication"

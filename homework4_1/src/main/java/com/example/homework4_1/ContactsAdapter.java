@@ -12,25 +12,31 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homework4_1.Contact.ConnectType;
+import com.example.homework4_1.Contact.Contact;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemViewHolder> implements Filterable {
 
-    private TreeMap<String, String> contactsLocal = new TreeMap<>();
-    private TreeMap<String, String> contactsAll = new TreeMap<>();
+    private List<Contact> contactsLocal = new ArrayList<>();
+    private List<Contact> contactsAll = new ArrayList<>();
     private MainActivity.ListItemActionListener listItemActionListener;
 
 
-    public ContactsAdapter(TreeMap<String, String> contacts, MainActivity.ListItemActionListener listItemActionListener) {
-        contactsLocal.putAll(contacts);
-        contactsAll.putAll(contacts);
+    public ContactsAdapter(List<Contact> contacts, MainActivity.ListItemActionListener listItemActionListener) {
+        contactsLocal.addAll(contacts);
+        contactsAll.addAll(contacts);
         this.listItemActionListener = listItemActionListener;
     }
 
-    public void setContacts(TreeMap<String, String> contacts) {
+    public void setContacts(List<Contact> contacts) {
         contactsLocal.clear();
-        contactsLocal.putAll(contacts);
+        contactsLocal.addAll(contacts);
         notifyDataSetChanged();
     }
 
@@ -43,13 +49,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        int count = 0;
-        for (Map.Entry<String, String> entry : contactsLocal.entrySet()) {
-            if(count == position) {
-                holder.bind(entry.getKey(), entry.getValue());
-            }
-            count++;
-        }
+        holder.bind(contactsLocal.get(position));
 
     }
 
@@ -66,14 +66,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
     private Filter contactsFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            TreeMap<String, String> filteredContacts = new TreeMap<>();
+            List<Contact> filteredContacts = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
-                filteredContacts.putAll(contactsAll);
+                filteredContacts.addAll(contactsAll);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Map.Entry<String, String> contact : contactsAll.entrySet()) {
-                    if (contact.getKey().toLowerCase().contains(filterPattern)) {
-                        filteredContacts.put(contact.getKey(), contact.getValue());
+                for (Contact contact : contactsAll) {
+                    if (contact.getName().toLowerCase().contains(filterPattern)) {
+                        filteredContacts.add(contact);
 
                     }
                 }
@@ -86,7 +86,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             contactsLocal.clear();
-            contactsLocal.putAll((Map)results.values);
+            contactsLocal.addAll((Collection<? extends Contact>) results.values);
             notifyDataSetChanged();
         }
     };
@@ -109,23 +109,23 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ItemVi
             this.listItemActionListener = listItemActionListener;
         }
 
-        public void bind(final String contactName, final String contactCommunication) {
+        public void bind(final Contact contact) {
 
             contactElement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listItemActionListener != null) {
-                        listItemActionListener.onItemClicked(contactName, contactCommunication);
+                        listItemActionListener.onItemClicked(contact);
                     }
                 }
             });
-            if (contactCommunication.contains("@")) {
+            if (contact.getConnectType() == ConnectType.EMAIL) {
                 this.contactIcon.setImageResource(R.drawable.ic_baseline_contact_mail_24);
             } else {
                 this.contactIcon.setImageResource(R.drawable.ic_baseline_contact_phone_24);
             }
-            this.contactName.setText(contactName);
-            this.contactCommunication.setText(contactCommunication);
+            this.contactName.setText(contact.getName());
+            this.contactCommunication.setText(contact.getCommunication());
 
         }
     }
