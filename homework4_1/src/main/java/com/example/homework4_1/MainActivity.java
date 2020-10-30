@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        adapter = new ContactsAdapter(contacts, listItemActionListener);
         recyclerView = findViewById(R.id.contacts_list);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -85,10 +86,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-//            contacts.add(new Contact(data.getStringExtra("name"),data.getStringExtra("communication"), (ConnectType) data.getExtras().get("connectType")));
-//            adapter = new ContactsAdapter(contacts, listItemActionListener);
-            adapter.addItem(new Contact(data.getStringExtra("name"),data.getStringExtra("communication"), (ConnectType) data.getExtras().get("connectType")));
-//            recyclerView.setAdapter(adapter);
+            contacts.add(new Contact(data.getStringExtra("name"),data.getStringExtra("communication"), (ConnectType) data.getExtras().get("connectType")));
+            adapter.setContacts(contacts);
 
         }
 
@@ -99,15 +98,11 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-            if (data.getBooleanExtra("isRemove", true)) {
-                adapter = new ContactsAdapter(contacts, listItemActionListener);
-                recyclerView.setAdapter(adapter);
-            } else {
+            if (!data.getBooleanExtra("isRemove", true)) {
 
                 contacts.add(new Contact(data.getStringExtra("new_name"), data.getStringExtra("new_communication"), (ConnectType) data.getExtras().get("connectType")));
-                adapter = new ContactsAdapter(contacts, listItemActionListener);
-                recyclerView.setAdapter(adapter);
             }
+            adapter.setContacts(contacts);
         }
 
 

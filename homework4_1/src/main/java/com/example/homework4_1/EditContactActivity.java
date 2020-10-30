@@ -10,6 +10,8 @@ import android.widget.Switch;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.homework4_1.AlertDialogs.AlertContainsDialog;
+import com.example.homework4_1.AlertDialogs.AlertEmptyDialog;
 import com.example.homework4_1.Contact.ConnectType;
 
 import java.util.ArrayList;
