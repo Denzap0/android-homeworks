@@ -22,6 +22,7 @@ public class Circle extends View{
     private Paint paint180 = new Paint();
     private Paint paint270 = new Paint();
     private Paint centerPaint = new Paint();
+    private Random rand = new Random();
 
     private final int smallRadius = 100;
     private final int bigRadius = 300;
@@ -89,9 +90,6 @@ public class Circle extends View{
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             colorChange(event.getX(), event.getY());
-            Intent intent = new Intent();
-            intent.putExtra("X", event.getX());
-            intent.putExtra("Y", event.getY());
             invalidate();
         }
         return super.onTouchEvent(event);
@@ -99,29 +97,15 @@ public class Circle extends View{
 
     private void colorChange(float touchX, float touchY) {
         if (checkInstance(touchX, touchY, centerX, centerY, smallRadius)) {
-            Random rand = new Random();
-            paint0.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-            paint90.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-            paint180.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-            paint270.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-            listener.onEvent(touchX, touchY, centerPaint);
-
+            centerClick(touchX,touchY);
         } else if (checkInstance(touchX, touchY, centerX, centerY, bigRadius) && touchX > centerX && touchY < centerY){
-            Random rand = new Random();
-            paint270.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-            listener.onEvent(touchX, touchY, paint270);
+            click270(touchX,touchY);
         }else if (checkInstance(touchX, touchY, centerX, centerY, bigRadius) && touchX > centerX && touchY > centerY){
-            Random rand = new Random();
-            paint0.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-            listener.onEvent(touchX, touchY, paint0);
+            click0(touchX,touchY);
         }else if (checkInstance(touchX, touchY, centerX, centerY, bigRadius) && touchX < centerX && touchY < centerY){
-            Random rand = new Random();
-            paint180.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-            listener.onEvent(touchX, touchY, paint180);
+            click180(touchX,touchY);
         }else if (checkInstance(touchX, touchY, centerX, centerY, bigRadius) && touchX < centerX && touchY > centerY){
-            Random rand = new Random();
-            paint90.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-            listener.onEvent(touchX, touchY, paint90);
+            click90(touchX,touchY);
         }
     }
 
@@ -129,6 +113,32 @@ public class Circle extends View{
         return Math.abs(x - centerX) * Math.abs(x - centerX) + Math.abs(y - centerY) * Math.abs(y - centerY) <= radius * radius;
     }
 
+    private void centerClick(float touchX, float touchY){
+        paint0.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        paint90.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        paint180.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        paint270.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        listener.onEvent(touchX, touchY, centerPaint);
+    }
 
+    private void click0(float touchX, float touchY){
+        paint0.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        listener.onEvent(touchX, touchY, paint0);
+    }
+
+    private void click90(float touchX, float touchY){
+        paint90.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        listener.onEvent(touchX, touchY, paint90);
+    }
+
+    private void click180(float touchX, float touchY){
+        paint180.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        listener.onEvent(touchX, touchY, paint180);
+    }
+
+    private void click270(float touchX, float touchY){
+        paint270.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        listener.onEvent(touchX, touchY, paint270);
+    }
 
 }
