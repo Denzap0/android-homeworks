@@ -114,31 +114,43 @@ public class Circle extends View{
     }
 
     private void centerClick(float touchX, float touchY){
-        paint0.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-        paint90.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-        paint180.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-        paint270.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+        changePaint(paint0);
+        changePaint(paint90);
+        changePaint(paint180);
+        changePaint(paint270);
         listener.onEvent(touchX, touchY, centerPaint);
     }
 
     private void click0(float touchX, float touchY){
-        paint0.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-        listener.onEvent(touchX, touchY, paint0);
+        changePaint(paint0);
+        if(listener != null) {
+            listener.onEvent(touchX, touchY, paint0);
+        }
     }
 
     private void click90(float touchX, float touchY){
-        paint90.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-        listener.onEvent(touchX, touchY, paint90);
+        changePaint(paint90);
+        if(listener != null) {
+            listener.onEvent(touchX, touchY, paint90);
+        }
     }
 
     private void click180(float touchX, float touchY){
-        paint180.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-        listener.onEvent(touchX, touchY, paint180);
+        changePaint(paint180);
+        if(listener != null) {
+            listener.onEvent(touchX, touchY, paint180);
+        }
     }
 
     private void click270(float touchX, float touchY){
-        paint270.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-        listener.onEvent(touchX, touchY, paint270);
+        changePaint(paint270);
+        if(listener != null) {
+            listener.onEvent(touchX, touchY, paint270);
+        }
+    }
+
+    private void changePaint(Paint paint){
+        paint.setARGB(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
     }
 
 }
