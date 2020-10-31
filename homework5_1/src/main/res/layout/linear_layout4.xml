@@ -118,52 +118,22 @@
         android:layout_marginTop="40dp">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/gray"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            style="@style/StoriesIconStyleTask4"/>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/gray"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            style="@style/StoriesIconStyleTask4"/>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/gray"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            style="@style/StoriesIconStyleTask4"/>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/gray"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            style="@style/StoriesIconStyleTask4"/>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/gray"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            style="@style/StoriesIconStyleTask4"/>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/gray"
-            android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp" />
+            style="@style/StoriesIconStyleTask4" />
     </LinearLayout>
 
     <LinearLayout

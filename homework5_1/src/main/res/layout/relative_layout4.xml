@@ -130,60 +130,27 @@
         android:layout_below="@id/address">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@color/gray" />
+            style="@style/StoriesIconStyleTask4" />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@color/gray" />
+            style="@style/StoriesIconStyleTask4" />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@color/gray" />
+            style="@style/StoriesIconStyleTask4" />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@color/gray" />
+            style="@style/StoriesIconStyleTask4" />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@color/gray" />
+            style="@style/StoriesIconStyleTask4" />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@color/gray" />
+            style="@style/StoriesIconStyleTask4" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/acc_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:orientation="horizontal"
+        style="@style/AccInfoStyleTask4"
         android:layout_below="@id/stories">
 
         <LinearLayout
@@ -288,31 +255,13 @@
         android:layout_below="@id/line">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:background="@color/gray"
-            android:layout_gravity="center_vertical"/>
+            style="@style/PhotosStyleTask4"/>
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:background="@color/gray"
-            android:layout_gravity="center_vertical"/>
+            style="@style/PhotosStyleTask4"/>
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:background="@color/gray"
-            android:layout_gravity="center_vertical"/>
+            style="@style/PhotosStyleTask4"/>
     </LinearLayout>
 
 </RelativeLayout>
