@@ -1,12 +1,13 @@
 package com.example.homework4_1.Contact;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Contact {
+public class Contact implements Serializable {
 
-    String name;
-    ConnectType connectType;
-    String communication;
+    private String name;
+    private ConnectType connectType;
+    private String communication;
 
     public Contact(String name, String communication, ConnectType connectType) {
         this.name = name;

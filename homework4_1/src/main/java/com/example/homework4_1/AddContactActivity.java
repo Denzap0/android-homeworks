@@ -22,11 +22,10 @@ import java.util.List;
 
 public class AddContactActivity extends AppCompatActivity {
 
-    private List<String> contacts;
-    EditText editName;
-    EditText editCommunication;
-    Switch communicationSwich;
-    Bundle bundle;
+    private EditText editName;
+    private EditText editCommunication;
+    private Switch communicationSwich;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,17 +46,6 @@ public class AddContactActivity extends AppCompatActivity {
                 }
             }
         });
-        if(getIntent() != null) {
-            bundle = getIntent().getExtras();
-        }else{
-            bundle = new Bundle();
-        }
-        if (bundle != null) {
-            contacts = bundle.getStringArrayList("contacts");
-            if(contacts == null){
-                contacts = new ArrayList<>();
-            }
-        }
     }
 
     @Override
@@ -72,8 +60,6 @@ public class AddContactActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.add_tick){
             if(editName.getText().toString().isEmpty()){
                 openAttentionEmptyDialog();
-            }else if(contacts.contains(editName.getText().toString())){
-                openAttentionContainsDialog();
             }
             else {
                 backToMain();

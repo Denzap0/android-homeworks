@@ -13,25 +13,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.homework4_1.AlertDialogs.AlertContainsDialog;
 import com.example.homework4_1.AlertDialogs.AlertEmptyDialog;
 import com.example.homework4_1.Contact.ConnectType;
+import com.example.homework4_1.Contact.Contact;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditContactActivity extends AppCompatActivity {
 
-    private List<String> contacts;
+    private Contact contact;
     private EditText editCommunication;
     private EditText editName;
     private Button editButton;
     private Button removeButton;
-    Switch communicationSwitch;
-    Bundle bundle;
+    private Switch communicationSwitch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_contact_activity);
 
+        Bundle bundle = new Bundle();
         editName = findViewById(R.id.edit_name);
         editCommunication = findViewById(R.id.edit_communication);
         editButton = findViewById(R.id.edit_button);
@@ -40,36 +41,33 @@ public class EditContactActivity extends AppCompatActivity {
 
         if(getIntent() != null){
             bundle = getIntent().getExtras();
-        }else{
-            bundle = new Bundle();
+            contact = (Contact) bundle.get("contact");
         }
 
-        if (bundle != null) {
-            editName.setHint(bundle.getString("old_name"));
-            editCommunication.setHint(bundle.getString("old_communication"));
-            contacts = bundle.getStringArrayList("contacts");
-            if(contacts == null){
-                contacts = new ArrayList<>();
-            }
-            editButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (editName.getText().toString().isEmpty()) {
-                        openAttentionEmptyDialog();
-                    } else if (contacts.contains(editName.getText().toString())) {
-                        openAttentionContainsDialog();
-                    } else {
-                        backToMainEdit(bundle);
-                    }
-                }
-            });
-            removeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    backToMainRemove(bundle);
-                }
-            });
+        if (bundle != null && contact != null) {
+            editName.setHint(contact.getName());
+            editCommunication.setHint(contact.getCommunication());
+
         }
+
+        final Bundle finalBundle = bundle;
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editName.getText().toString().isEmpty()) {
+                    openAttentionEmptyDialog();
+                } else if(contact != null){
+                    backToMainEdit(finalBundle);
+                }
+            }
+        });
+
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToMainRemove(finalBundle);
+            }
+        });
     }
 
     public void openAttentionEmptyDialog() {
@@ -84,7 +82,7 @@ public class EditContactActivity extends AppCompatActivity {
 
     private void backToMainEdit(Bundle bundle){
         Intent intent = new Intent();
-        intent.putExtra("old_name", bundle.getString("old_name"));
+        intent.putExtra("oldContact", contact);
         intent.putExtra("new_name", editName.getText().toString());
         intent.putExtra("new_communication", editCommunication.getText().toString());
         intent.putExtra("isRemove", false);
@@ -98,7 +96,7 @@ public class EditContactActivity extends AppCompatActivity {
     }
     private void backToMainRemove(Bundle bundle){
         Intent intent = new Intent();
-        intent.putExtra("old_name", bundle.getString("old_name".toString()));
+        intent.putExtra("oldContact", contact);
         intent.putExtra("isRemove", true);
         setResult(RESULT_OK, intent);
         finish();

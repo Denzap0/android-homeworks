@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddContactActivity.class);
-                intent.putExtra("contacts", getNamesList());
                 startActivityForResult(intent, 1);
             }
         });
@@ -94,11 +93,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
-            for (int i = 0; i < contacts.size(); i++) {
-                if (contacts.get(i).getName().equals(data.getStringExtra("old_name"))) {
-                    contacts.remove(i);
-                }
+            Contact contact = (Contact) data.getSerializableExtra("oldContact");
+            if(contact != null){
+                for (int i = 0; i < contacts.size(); i++) {
+                    if (contacts.get(i).getName().equals(contact.getName())) {
+                        contacts.remove(i);
+                    }
 
+                }
             }
             if (!data.getBooleanExtra("isRemove", true)) {
                 contacts.add(new Contact(data.getStringExtra("new_name"), data.getStringExtra("new_communication"), (ConnectType) data.getExtras().get("connectType")));
@@ -132,9 +134,7 @@ public class MainActivity extends AppCompatActivity {
     private void startEditActivity(Contact contact) {
 
         Intent intent = new Intent(MainActivity.this, EditContactActivity.class);
-        intent.putExtra("old_name", contact.getName());
-        intent.putExtra("old_communication", contact.getCommunication());
-        intent.putExtra("contacts", getNamesList().toString());
+        intent.putExtra("contact", contact);
         startActivityForResult(intent, 2);
     }
 }
