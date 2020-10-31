@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">homework4_2</string>
+    <string name="snack">Snack</string>
+    <string name="toast">Toast</string>
+</resources>
