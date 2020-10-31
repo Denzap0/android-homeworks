@@ -1,7 +1,6 @@
 package com.example.homework4_2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,7 +8,9 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
 import androidx.annotation.Nullable;
+
 import java.util.Random;
 
 public class Circle extends View{
