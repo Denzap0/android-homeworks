@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_folder_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/attractions"
+            style="@style/TextStyleTableTask1"
+
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_local_dining_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dining"
+            style="@style/TextStyleTableTask1"
+
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_school_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextStyleTableTask1"
+            android:text="@string/education"
+
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_people_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextStyleTableTask1"
+            android:text="@string/family"
+
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_favorite_24_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextStyleTableTask1"
+            android:text="@string/health"
+
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_business_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextStyleTableTask1"
+            android:text="@string/office"
+
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_shopping_cart_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextStyleTableTask1"
+            android:text="@string/promotions"
+
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_radio_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextStyleTableTask1"
+            android:text="@string/radio"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_book_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextStyleTableTask1"
+            android:text="@string/recipes"
+
+            />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            style="@style/IconStyleTableTask1"
+            android:src="@drawable/ic_baseline_directions_bike_24" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextStyleTableTask1"
+            android:text="@string/sport"
+
+            />
+
+    </TableRow>
+
+
+
+
+</TableLayout>
