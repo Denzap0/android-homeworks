@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.Contact.ContactComparator
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private val contacts: MutableList<Contact> = ArrayList()
     private var comparator: ContactComparator? = null
-    private val recyclerView: RecyclerView? = findViewById(R.id.contacts_list)
     private val listItemActionListener: ListItemActionListener = object : ListItemActionListener {
         override fun onItemClicked(contact: Contact?) {
             if (contact != null) {
@@ -35,12 +35,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         comparator = ContactComparator()
         adapter = ContactsAdapter(contacts, listItemActionListener)
-        if (recyclerView != null) {
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        }
 
-        findViewById<View>(R.id.add_contact_button).setOnClickListener {
+        contacts_list.adapter = adapter
+        contacts_list.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+
+        add_contact_button.setOnClickListener {
             val intent =
                 Intent(this@MainActivity, AddContactActivity::class.java)
             intent.putExtra("contacts", namesList)
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 adapter!!.filter.filter(newText)
-                recyclerView!!.adapter = adapter
+                contacts_list!!.adapter = adapter
                 return false
             }
         })
@@ -70,7 +70,9 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            val contact: Contact = Contact(data.getStringExtra("name").toString(),data.getStringExtra("communication").toString(),
+            val contact: Contact = Contact(
+                data.getStringExtra("name").toString(),
+                data.getStringExtra("communication").toString(),
                 data.extras?.get("connectType") as ConnectType
             )
             contacts.add(contact)
@@ -78,17 +80,12 @@ class MainActivity : AppCompatActivity() {
             adapter!!.setContacts(contacts)
         }
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
-            for (i in contacts.indices) {
-                if (contacts[i].name == data.getStringExtra("old_name")) {
-                    contacts.removeAt(i)
-                }
+            var contact: Contact = data.getSerializableExtra("contact") as Contact
+            contacts.remove(contact)
+            if(!data.getBooleanExtra("isRemove", true)) {
+                contacts.add(Contact(data.getStringExtra("new_name").toString(), data.getStringExtra("new_communication").toString(), data.extras?.get("connectType") as ConnectType))
             }
-            if (!data.getBooleanExtra("isRemove", true)) {
-                val contact: Contact = Contact(data.getStringExtra("name").toString(),data.getStringExtra("communication").toString(),
-                    data.extras?.get("connectType") as ConnectType
-                )
-                contacts.add(contact)
-            }
+
             Collections.sort(contacts, comparator)
             adapter!!.setContacts(contacts)
         }
@@ -101,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         adapter = ContactsAdapter(contacts, listItemActionListener)
-        recyclerView!!.adapter = adapter
+        contacts_list!!.adapter = adapter
     }
 
     private val namesList: ArrayList<String>
@@ -115,9 +112,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startEditActivity(contact: Contact) {
         val intent = Intent(this@MainActivity, EditContactActivity::class.java)
-        intent.putExtra("old_name", contact.name)
-        intent.putExtra("old_communication", contact.communication)
-        intent.putExtra("contacts", namesList.toString())
+        intent.putExtra("contact", contact)
         startActivityForResult(intent, 2)
     }
 }

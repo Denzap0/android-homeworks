@@ -9,66 +9,49 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework5_2.AlertDialogs.AlertEmptyDialog
 import com.example.homework5_2.Contact.ConnectType
+import com.example.homework5_2.Contact.Contact
 import kotlinx.android.synthetic.main.edit_contact_activity.*
 import java.util.*
 
 class EditContactActivity : AppCompatActivity() {
-    private var contacts: List<String>? = null
-    private var editCommunication: EditText? = null
-    private var editName: EditText? = null
-    private var editButton: Button? = null
-    private var removeButton: Button? = null
-    var communicationSwitch: Switch? = null
+
     var bundle: Bundle? = null
+    private var contact: Contact? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.edit_contact_activity)
-        editName = findViewById(R.id.edit_name)
-        editCommunication = findViewById(R.id.edit_communication)
-        editButton = findViewById(R.id.edit_button)
-        removeButton = findViewById(R.id.remove_contact)
-        communicationSwitch = findViewById(R.id.switchConnect)
-        bundle = if (intent != null) {
-            intent.extras
-        } else {
-            Bundle()
+
+        if (intent != null) {
+            bundle = intent.extras
+            contact = bundle?.getSerializable("contact") as Contact
         }
         if (bundle != null) {
-            edit_name.hint = bundle!!.getString("old_name")
-            edit_communication.hint = bundle!!.getString("old_communication")
-            contacts = bundle!!.getStringArrayList("contacts")
-            if (contacts == null) {
-                contacts = ArrayList()
-            }
-            edit_button.setOnClickListener(View.OnClickListener {
-                if (edit_name.text.toString().isEmpty()) {
-                    openAttentionEmptyDialog()
-                } else if (contacts!!.contains(edit_name.getText().toString())) {
-                    openAttentionContainsDialog()
-                } else {
-                    backToMainEdit(bundle!!)
-                }
-            })
-            remove_contact.setOnClickListener(View.OnClickListener { backToMainRemove(bundle!!) })
+            edit_name.hint = contact?.name
+            edit_communication.hint = contact?.communication
+
+
         }
+        edit_button.setOnClickListener(View.OnClickListener {
+            if (edit_name.text.toString().isEmpty()) {
+                openAttentionEmptyDialog()
+            } else {
+                backToMainEdit(bundle!!)
+            }
+        })
+        remove_contact.setOnClickListener(View.OnClickListener { backToMainRemove(bundle!!) })
     }
 
-    fun openAttentionEmptyDialog() {
-        val dialog = AlertEmptyDialog()
-        dialog.show(supportFragmentManager, "Alert dialog")
-    }
-
-    fun openAttentionContainsDialog() {
+    private fun openAttentionEmptyDialog() {
         val dialog = AlertEmptyDialog()
         dialog.show(supportFragmentManager, "Alert dialog")
     }
 
     private fun backToMainEdit(bundle: Bundle) {
         val intent = Intent()
-        intent.putExtra("old_name", bundle.getString("old_name"))
-        intent.putExtra("new_name", editName!!.text.toString())
-        intent.putExtra("new_communication", editCommunication!!.text.toString())
+        intent.putExtra("contact", contact)
+        intent.putExtra("new_name", edit_name!!.text.toString())
+        intent.putExtra("new_communication", edit_communication!!.text.toString())
         intent.putExtra("isRemove", false)
         if (switchConnect!!.isChecked) {
             intent.putExtra("connectType", ConnectType.EMAIL)
@@ -81,7 +64,7 @@ class EditContactActivity : AppCompatActivity() {
 
     private fun backToMainRemove(bundle: Bundle) {
         val intent = Intent()
-        intent.putExtra("old_name", bundle.getString("old_name"))
+        intent.putExtra("contact", contact)
         intent.putExtra("isRemove", true)
         setResult(RESULT_OK, intent)
         finish()
