@@ -1,5 +1,3 @@
 package com.example.homework6
 
-class File (private var name : String, private var src : String) {
-
-}
+class File (var name : String, var src : String)
