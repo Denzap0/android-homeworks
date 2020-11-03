@@ -17,6 +17,12 @@ class ContactsAdapter(
     private val contactsLocal: MutableList<Contact>? = ArrayList()
     private val contactsAll: MutableList<Contact> = ArrayList()
     private val listItemActionListener: MainActivity.ListItemActionListener
+        
+    init {
+        contactsLocal!!.addAll(contacts!!)
+        contactsAll.addAll(contacts)
+        this.listItemActionListener = listItemActionListener
+    }
     public fun setContacts(contacts: List<Contact>?) {
         contactsAll.clear()
         contactsLocal!!.clear()
@@ -103,9 +109,5 @@ class ContactsAdapter(
         notifyDataSetChanged()
     }
 
-    init {
-        contactsLocal!!.addAll(contacts!!)
-        contactsAll.addAll(contacts)
-        this.listItemActionListener = listItemActionListener
-    }
+    
 }
