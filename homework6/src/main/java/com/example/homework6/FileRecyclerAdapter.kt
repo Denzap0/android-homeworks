@@ -1,4 +1,3 @@
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -6,20 +5,20 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.homework6.File
 import com.example.homework6.ListItemActionListener
 import com.example.homework6.R
+import java.io.File
 
 class FileRecyclerAdapter(
     files: MutableList<File>,
     listItemActionListener: ListItemActionListener
 ) :
     RecyclerView.Adapter<FileRecyclerAdapter.ItemViewHolder>() {
-    private val files: MutableList<File>? = ArrayList()
+    private var files: MutableList<File>? = ArrayList()
     private val listItemActionListener: ListItemActionListener
 
     init {
-        this.files!!.addAll(files!!)
+        this.files = files
         this.listItemActionListener = listItemActionListener
     }
 
@@ -47,7 +46,7 @@ class FileRecyclerAdapter(
 
         fun bind(file : File) {
             fileElement.setOnClickListener { listItemActionListener?.onItemClicked(file) }
-            fileIcon.setImageResource(R.drawable.ic_baseline_text_fields_24)
+            fileName.text = file.name
         }
 
     }

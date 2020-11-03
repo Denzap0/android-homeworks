@@ -1,5 +1,7 @@
 package com.example.homework6
 
+import java.io.File
+
 interface ListItemActionListener {
-    fun onItemClicked(number: File)
+    fun onItemClicked(file: File)
 }
