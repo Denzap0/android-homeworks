@@ -1,3 +1,4 @@
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,18 @@ import com.example.homework6.File
 import com.example.homework6.ListItemActionListener
 import com.example.homework6.R
 
-class FileRecyclerAdapter (
-    files: List<File>?,
+class FileRecyclerAdapter(
+    files: MutableList<File>,
     listItemActionListener: ListItemActionListener
 ) :
     RecyclerView.Adapter<FileRecyclerAdapter.ItemViewHolder>() {
     private val files: MutableList<File>? = ArrayList()
     private val listItemActionListener: ListItemActionListener
 
-
+    init {
+        this.files!!.addAll(files!!)
+        this.listItemActionListener = listItemActionListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.file, parent, false)
@@ -34,26 +38,19 @@ class FileRecyclerAdapter (
 
     class ItemViewHolder(
         itemView: View,
-        listItemActionListener: ListItemActionListener?
+        private val listItemActionListener: ListItemActionListener?
     ) :
         RecyclerView.ViewHolder(itemView) {
         private var fileElement: LinearLayout = itemView.findViewById(R.id.fileComponent)
         private var fileIcon: ImageView = itemView.findViewById(R.id.fileImage)
         private var fileName: TextView = itemView.findViewById(R.id.fileName)
-        private val listItemActionListener: ListItemActionListener?
 
         fun bind(file : File) {
             fileElement.setOnClickListener { listItemActionListener?.onItemClicked(file) }
-            fileName.text = file.name
+            fileIcon.setImageResource(R.drawable.ic_baseline_text_fields_24)
         }
 
-        init {
-            this.listItemActionListener = listItemActionListener
-        }
     }
 
-    init {
-        this.files!!.addAll(files!!)
-        this.listItemActionListener = listItemActionListener
-    }
+
 }
