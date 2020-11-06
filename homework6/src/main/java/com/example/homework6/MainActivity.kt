@@ -38,8 +38,9 @@ class MainActivity : AppCompatActivity() {
             val intent: Intent = Intent(this@MainActivity, EditFileActivity::class.java)
             intent.putExtra("file", file)
             val namesArrayList : ArrayList<String> = ArrayList(fileNames)
+
             intent.putStringArrayListExtra("fileNames", namesArrayList)
-            startActivityForResult(intent, 123)
+            startActivityForResult(intent, 1)
         }
 
     }
@@ -53,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         if (File(filesDir, namesFile).exists()) {
             fileNames = readFileToList(namesFile)
         }
-        Log.d("aaa", fileNames.toString())
 
         updateLocalFiles()
         filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
@@ -63,17 +63,24 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 123 && resultCode == Activity.RESULT_OK && data != null) {
-            val oldFile = data.extras?.get("oldFile") as File
-            val newFile = data.extras?.get("newFile") as File
-            val isRemove = data.getBooleanExtra("isRemove", false)
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && !data.getBooleanExtra("isRemove", false)) {
+            val oldFile = data.extras!!.get("oldFile") as File
+            val newFile : File = data.extras?.get("newFile") as File
 
-            if(isRemove){
-                files.remove(oldFile)
-            }else{
-                files.remove(oldFile)
-                files.add(newFile)
-            }
+            fileNames.remove(oldFile.name)
+            files.remove(oldFile)
+            fileNames.add(newFile.name)
+            files.add(newFile)
+            updateFileNames()
+            updateLocalFiles()
+
+        }else if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getBooleanExtra("isRemove", false)){
+            val oldFile = data.extras!!.get("oldFile") as File
+
+            files.remove(oldFile)
+            fileNames.remove(oldFile)
+            updateFileNames()
+            updateLocalFiles()
         }
 
 
@@ -143,6 +150,17 @@ class MainActivity : AppCompatActivity() {
         filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
     }
 
+    private fun updateFileNames(){
+        File(filesDir,namesFile).delete()
+        for(i in 0..fileNames.size - 1){
+            FileOutputStream(File(filesDir, namesFile), true)
+                .bufferedWriter()
+                .use { out ->
+                    out.append(fileNames[i].toString())
+                    out.newLine()
+                }
+        }
+    }
 
     private fun addFileName(fileName: String) {
         FileOutputStream(File(filesDir, namesFile), true)

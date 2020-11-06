@@ -1,10 +1,7 @@
 package com.example.homework6
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.text.Editable
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +13,7 @@ import java.io.FileOutputStream
 class EditFileActivity : AppCompatActivity() {
 
     private lateinit var file: File
-    private lateinit var fileNames : ArrayList<String>
+    private lateinit var fileNames: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,34 +23,42 @@ class EditFileActivity : AppCompatActivity() {
         file = bundle!!.get("file") as File
         fileNames = bundle.getStringArrayList("fileNames") as ArrayList<String>
         nameOfFileForEdit.setText(file.name.toString())
-        text.setText(
-            FileInputStream(file)
+        if (file.exists()) {
+            val fIn = FileInputStream(file)
                 .bufferedReader()
-                .readText()
-        )
+                .use { iIn -> iIn.readText() }
+
+            text.setText(fIn)
+
+
+        }
         editButton.setOnClickListener {
             if (fileNames.contains(nameOfFileForEdit.text.toString()) && nameOfFileForEdit.text.toString() != file.name) {
                 showContainsDialog()
-            }else{
+            } else {
                 file.delete()
                 val newFile : File = File(filesDir, nameOfFileForEdit.text.toString())
                 FileOutputStream(newFile)
                     .bufferedWriter()
-                    .write(text.text.toString())
-                val intent : Intent = Intent()
+                    .use { out ->
+                        out.write(text.text.toString())
+                    }
+                val intent: Intent = Intent()
                 intent.putExtra("oldFile", file)
                 intent.putExtra("newFile", newFile)
                 intent.putExtra("isRemove", false)
-                setResult(Activity.RESULT_OK, intent)
+                setResult(RESULT_OK, intent)
+                finish()
             }
         }
 
         deleteButton.setOnClickListener {
             file.delete()
-            val intent : Intent = Intent()
+            val intent: Intent = Intent()
             intent.putExtra("oldFile", file)
             intent.putExtra("isRemove", false)
-            setResult(Activity.RESULT_OK, intent)
+            setResult(RESULT_OK, intent)
+            finish()
         }
 
     }
@@ -61,6 +66,7 @@ class EditFileActivity : AppCompatActivity() {
     private fun showContainsDialog() {
         AlertDialog.Builder(this)
             .setTitle("File with this name already exist")
+            .setPositiveButton("Ok", null)
             .show()
     }
 }
