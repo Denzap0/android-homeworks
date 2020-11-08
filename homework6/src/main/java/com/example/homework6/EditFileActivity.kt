@@ -56,7 +56,7 @@ class EditFileActivity : AppCompatActivity() {
             file.delete()
             val intent: Intent = Intent()
             intent.putExtra("oldFile", file)
-            intent.putExtra("isRemove", false)
+            intent.putExtra("isRemove", true)
             setResult(RESULT_OK, intent)
             finish()
         }

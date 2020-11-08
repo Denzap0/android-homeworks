@@ -4,11 +4,9 @@ import FileRecyclerAdapter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
@@ -20,14 +18,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.util.zip.Inflater
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,35 +34,46 @@ class MainActivity : AppCompatActivity() {
         override fun onItemClicked(file: File) {
             val intent: Intent = Intent(this@MainActivity, EditFileActivity::class.java)
             intent.putExtra("file", file)
-            val namesArrayList : ArrayList<String> = ArrayList(fileNames)
+            val namesArrayList: ArrayList<String> = ArrayList(fileNames)
 
             intent.putStringArrayListExtra("fileNames", namesArrayList)
             startActivityForResult(intent, 1)
         }
 
     }
-    private val namesFile = "nameFile"
 
+    private val namesFile = "nameFile"
+    private var storageType: File? = null
+
+
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        if (File(filesDir, namesFile).exists()) {
+        storageTypeRead()
+        if (File(storageType, namesFile).exists()) {
             fileNames = readFileToList(namesFile)
         }
-
         updateLocalFiles()
         filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
         filesRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+        add_file_button.setOnClickListener(View.OnClickListener {
+            openAddFileDialog()
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && !data.getBooleanExtra("isRemove", false)) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && !data.getBooleanExtra(
+                "isRemove",
+                true
+            )
+        ) {
             val oldFile = data.extras!!.get("oldFile") as File
-            val newFile : File = data.extras?.get("newFile") as File
+            val newFile: File = data.extras!!.get("newFile") as File
 
             fileNames.remove(oldFile.name)
             files.remove(oldFile)
@@ -74,13 +82,36 @@ class MainActivity : AppCompatActivity() {
             updateFileNames()
             updateLocalFiles()
 
-        }else if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getBooleanExtra("isRemove", false)){
+        } else if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getBooleanExtra(
+                "isRemove",
+                false
+            )
+        ) {
             val oldFile = data.extras!!.get("oldFile") as File
 
             files.remove(oldFile)
-            fileNames.remove(oldFile)
+            fileNames.remove(oldFile.name)
             updateFileNames()
             updateLocalFiles()
+        } else if(requestCode == 2 && resultCode == Activity.RESULT_OK){
+            val sharedPreferences = getSharedPreferences("settingsFile", Context.MODE_PRIVATE)
+            if(sharedPreferences.getBoolean("isExternal", false)){
+                storageType = applicationContext.getExternalFilesDir(null)
+                if (File(storageType, namesFile).exists()) {
+                    fileNames = readFileToList(namesFile)
+                }
+                updateFileNames()
+                updateLocalFiles()
+                filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
+            }else{
+                storageType = applicationContext.filesDir
+                if (File(storageType, namesFile).exists()) {
+                    fileNames = readFileToList(namesFile)
+                }
+                updateFileNames()
+                updateLocalFiles()
+                filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
+            }
         }
 
 
@@ -93,23 +124,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.add_file) {
-            openAddFileDialog()
+        if (item.itemId == R.id.settings) {
+            openSettingsActivity()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun readFileToList(fileName: String): MutableList<String> =
-        File(filesDir, fileName).useLines { it.toMutableList() }
+    private fun readFileToList(nameFile: String): MutableList<String> =
+        File(storageType, nameFile).useLines { it.toMutableList() }
+
+    private fun storageTypeRead(){
+        val sharedPrefs = getSharedPreferences("settingsFile", Context.MODE_PRIVATE)
+        storageType = if (!sharedPrefs.getBoolean("isExternal", false)) {
+            applicationContext.filesDir
+        } else {
+            applicationContext.getExternalFilesDir(null)?.absoluteFile
+        }
+    }
 
     @SuppressLint("SetTextI18n")
     private fun openAddFileDialog() {
 
-        val editText: EditText = EditText(this)
+        val editText = EditText(this)
         editText.inputType = InputType.TYPE_CLASS_TEXT
         val textView: TextView = TextView(this)
         textView.setTextColor(Color.RED)
-        val layout: LinearLayout = LinearLayout(this)
+        val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
         layout.addView(editText)
         layout.addView(textView)
@@ -122,21 +162,25 @@ class MainActivity : AppCompatActivity() {
         btn.setOnClickListener(View.OnClickListener {
             if (!fileNames.contains(editText.text.toString())) {
                 addFile(editText.text.toString())
-                addFileName(editText.text.toString())
+                addFileNameInFiles(editText.text.toString())
+                updateFileNames()
                 updateLocalFiles()
                 dialog.dismiss()
             } else {
                 textView.text = "File with this name already exist"
             }
         })
+    }
 
-
+    private fun openSettingsActivity() {
+        val intent = Intent(this@MainActivity, StorageTypeActivity::class.java)
+        startActivityForResult(intent, 2)
     }
 
     private fun addFile(fileName: String) {
         fileNames.add(fileName)
-        if (File(filesDir, fileName).createNewFile()) {
-            files.add(File(filesDir, fileName))
+        if (File(storageType, fileName).createNewFile()) {
+            files.add(File(storageType, fileName))
         }
     }
 
@@ -144,16 +188,16 @@ class MainActivity : AppCompatActivity() {
         if (fileNames.isNotEmpty()) {
             files.clear()
             fileNames.forEach {
-                files.add(File(filesDir, it))
+                files.add(File(storageType, it))
             }
         }
         filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
     }
 
-    private fun updateFileNames(){
-        File(filesDir,namesFile).delete()
-        for(i in 0..fileNames.size - 1){
-            FileOutputStream(File(filesDir, namesFile), true)
+    private fun updateFileNames() {
+        File(storageType, namesFile).delete()
+        for (i in 0 until fileNames.size) {
+            FileOutputStream(File(storageType, namesFile), true)
                 .bufferedWriter()
                 .use { out ->
                     out.append(fileNames[i].toString())
@@ -162,13 +206,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun addFileName(fileName: String) {
-        FileOutputStream(File(filesDir, namesFile), true)
+    private fun addFileNameInFiles(fileName: String) {
+        FileOutputStream(File(storageType, namesFile), true)
             .bufferedWriter()
             .use { out ->
                 out.append(fileName)
                 out.newLine()
             }
-
     }
+
 }
