@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/LinearStyleTask1"
+        android:text="@string/attractions"
+        app:drawableStartCompat="@drawable/ic_baseline_folder_24" />
+
+    <TextView
+        style="@style/LinearStyleTask1"
+        android:text="@string/dining"
+        app:drawableStartCompat="@drawable/ic_baseline_local_dining_24" />
+
+    <TextView
+        style="@style/LinearStyleTask1"
+        android:text="@string/education"
+        app:drawableStartCompat="@drawable/ic_baseline_school_24" />
+
+    <TextView
+        style="@style/LinearStyleTask1"
+        android:text="@string/family"
+        app:drawableStartCompat="@drawable/ic_baseline_people_24" />
+
+    <TextView
+        style="@style/LinearStyleTask1"
+        android:text="@string/health"
+        app:drawableStartCompat="@drawable/ic_baseline_favorite_24_gray" />
+
+    <TextView
+        style="@style/LinearStyleTask1"
+        android:text="@string/office"
+        app:drawableStartCompat="@drawable/ic_baseline_business_24" />
+
+    <TextView
+        style="@style/LinearStyleTask1"
+        android:text="@string/promotions"
+        app:drawableStartCompat="@drawable/ic_baseline_shopping_cart_24" />
+
+    <TextView
+        style="@style/LinearStyleTask1"
+        android:text="@string/radio"
+        app:drawableStartCompat="@drawable/ic_baseline_radio_24" />
+
+    <TextView
+        style="@style/LinearStyleTask1"
+        android:text="@string/recipes"
+        app:drawableStartCompat="@drawable/ic_baseline_book_24" />
+
+    <TextView
+        android:text="@string/sport"
+        style="@style/LinearStyleTask1"
+        app:drawableStartCompat="@drawable/ic_baseline_directions_bike_24" />
+</LinearLayout>
