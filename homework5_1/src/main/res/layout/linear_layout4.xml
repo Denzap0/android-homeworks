@@ -17,9 +17,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="20dp">
-
-
-
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -225,11 +222,6 @@
                 android:paddingEnd="10dp"
                 android:textColor="@color/blue"/>
         </LinearLayout>
-
-
-
-
-
     </LinearLayout>
 
     <ImageView
@@ -271,6 +263,4 @@
         android:layout_marginTop="30dp"
         />
     </LinearLayout>
-
-
 </LinearLayout>

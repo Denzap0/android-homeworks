@@ -16,10 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/attractions"
-            style="@style/TextStyleTableTask1"
-
-
-            />
+            style="@style/TextStyleTableTask1" />
 
     </TableRow>
 
@@ -36,10 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dining"
-            style="@style/TextStyleTableTask1"
-
-
-            />
+            style="@style/TextStyleTableTask1" />
 
     </TableRow>
 
@@ -56,10 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyleTableTask1"
-            android:text="@string/education"
-
-
-            />
+            android:text="@string/education" />
 
     </TableRow>
 
@@ -76,10 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyleTableTask1"
-            android:text="@string/family"
-
-
-            />
+            android:text="@string/family" />
 
     </TableRow>
 
@@ -96,10 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyleTableTask1"
-            android:text="@string/health"
-
-
-            />
+            android:text="@string/health" />
 
     </TableRow>
 
@@ -116,10 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyleTableTask1"
-            android:text="@string/office"
-
-
-            />
+            android:text="@string/office" />
 
     </TableRow>
 
@@ -136,10 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyleTableTask1"
-            android:text="@string/promotions"
-
-
-            />
+            android:text="@string/promotions" />
 
     </TableRow>
 
@@ -156,9 +135,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyleTableTask1"
-            android:text="@string/radio"
-
-            />
+            android:text="@string/radio" />
 
     </TableRow>
 
@@ -175,9 +152,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyleTableTask1"
-            android:text="@string/recipes"
-
-            />
+            android:text="@string/recipes" />
 
     </TableRow>
 
@@ -194,13 +169,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyleTableTask1"
-            android:text="@string/sport"
-
-            />
+            android:text="@string/sport" />
 
     </TableRow>
-
-
-
-
 </TableLayout>

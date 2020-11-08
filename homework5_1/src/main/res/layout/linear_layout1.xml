@@ -55,6 +55,4 @@
         android:text="@string/sport"
         style="@style/LinearStyleTask1"
         app:drawableStartCompat="@drawable/ic_baseline_directions_bike_24" />
-
-
 </LinearLayout>
