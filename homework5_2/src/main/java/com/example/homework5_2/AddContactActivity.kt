@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.CompoundButton
-import android.widget.EditText
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework5_2.AlertDialogs.AlertEmptyDialog
 import com.example.homework5_2.Contact.ConnectType
-import kotlinx.android.synthetic.main.add_contact_activity.*
-import java.util.*
+import kotlinx.android.synthetic.main.add_contact_activity.switchConnect
+import kotlinx.android.synthetic.main.add_contact_activity.edit_name
+import kotlinx.android.synthetic.main.add_contact_activity.edit_communication
 
 class AddContactActivity : AppCompatActivity() {
 

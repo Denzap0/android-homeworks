@@ -3,7 +3,12 @@ package com.example.homework5_2
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Filterable
+import android.widget.Filter
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
