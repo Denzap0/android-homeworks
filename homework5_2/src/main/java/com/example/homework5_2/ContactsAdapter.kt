@@ -16,7 +16,13 @@ class ContactsAdapter(
     RecyclerView.Adapter<ContactsAdapter.ItemViewHolder>(), Filterable {
     private val contactsLocal: MutableList<Contact>? = ArrayList()
     private val contactsAll: MutableList<Contact> = ArrayList()
-    private val listItemActionListener: MainActivity.ListItemActionListener
+    private var listItemActionListener: MainActivity.ListItemActionListener
+        
+    init {
+        contactsLocal!!.addAll(contacts!!)
+        contactsAll.addAll(contacts)
+        this.listItemActionListener = listItemActionListener
+    }
     public fun setContacts(contacts: List<Contact>?) {
         contactsAll.clear()
         contactsLocal?.clear()
@@ -109,6 +115,7 @@ class ContactsAdapter(
         notifyDataSetChanged()
     }
 
+
     init {
         if (contacts != null) {
             contactsLocal?.addAll(contacts)
@@ -117,3 +124,5 @@ class ContactsAdapter(
         this.listItemActionListener = listItemActionListener
     }
 }
+
+
