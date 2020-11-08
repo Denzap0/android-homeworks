@@ -3,15 +3,15 @@ package com.example.homework5_2
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework5_2.AlertDialogs.AlertEmptyDialog
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
-import kotlinx.android.synthetic.main.edit_contact_activity.*
-import java.util.*
+import kotlinx.android.synthetic.main.edit_contact_activity.edit_communication
+import kotlinx.android.synthetic.main.edit_contact_activity.edit_name
+import kotlinx.android.synthetic.main.edit_contact_activity.edit_button
+import kotlinx.android.synthetic.main.edit_contact_activity.remove_contact
+import kotlinx.android.synthetic.main.edit_contact_activity.switchConnect
 
 class EditContactActivity : AppCompatActivity() {
 
@@ -24,7 +24,7 @@ class EditContactActivity : AppCompatActivity() {
 
         if (intent != null) {
             bundle = intent.extras
-            contact = bundle?.getSerializable("contact") as Contact
+            contact = bundle!!.getSerializable("contact") as Contact
         }
         if (bundle != null) {
             edit_name.hint = contact?.name
@@ -53,11 +53,7 @@ class EditContactActivity : AppCompatActivity() {
         intent.putExtra("new_name", edit_name!!.text.toString())
         intent.putExtra("new_communication", edit_communication!!.text.toString())
         intent.putExtra("isRemove", false)
-        if (switchConnect!!.isChecked) {
-            intent.putExtra("connectType", ConnectType.EMAIL)
-        } else {
-            intent.putExtra("connectType", ConnectType.PHONE)
-        }
+        intent.putExtra("connectType", if(switchConnect.isChecked) ConnectType.EMAIL else ConnectType.PHONE)
         setResult(RESULT_OK, intent)
         finish()
     }

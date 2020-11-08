@@ -11,7 +11,8 @@ import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.Contact.ContactComparator
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import java.util.Collections
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     private val contacts: MutableList<Contact> = ArrayList()
@@ -32,13 +33,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         comparator = ContactComparator()
         adapter = ContactsAdapter(contacts, listItemActionListener)
-
         contacts_list.adapter = adapter
         contacts_list.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-
         add_contact_button.setOnClickListener {
             val intent =
                 Intent(this@MainActivity, AddContactActivity::class.java)
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                adapter!!.filter.filter(newText)
+                adapter?.filter?.filter(newText)
                 contacts_list!!.adapter = adapter
                 return false
             }
@@ -76,17 +75,27 @@ class MainActivity : AppCompatActivity() {
             )
             contacts.add(contact)
             Collections.sort(contacts, comparator)
-            adapter!!.setContacts(contacts)
+            adapter?.setContacts(contacts)
         }
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
             var contact: Contact = data.getSerializableExtra("contact") as Contact
-            contacts.remove(contact)
-            if(!data.getBooleanExtra("isRemove", true)) {
-                contacts.add(Contact(data.getStringExtra("new_name").toString(), data.getStringExtra("new_communication").toString(), data.extras?.get("connectType") as ConnectType))
+            for (i in 0 until contacts.size) {
+                if (contacts[i].name == contact.name) {
+                    contacts.removeAt(i)
+                }
+            }
+            if (!data.getBooleanExtra("isRemove", true)) {
+                contacts.add(
+                    Contact(
+                        data.getStringExtra("new_name").toString(),
+                        data.getStringExtra("new_communication").toString(),
+                        data.extras?.get("connectType") as ConnectType
+                    )
+                )
             }
 
             Collections.sort(contacts, comparator)
-            adapter!!.setContacts(contacts)
+            adapter?.setContacts(contacts)
         }
     }
 

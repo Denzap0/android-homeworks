@@ -21,11 +21,8 @@ class AddContactActivity : AppCompatActivity() {
         setContentView(R.layout.add_contact_activity)
 
         switchConnect.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                edit_communication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_mail_24, 0, 0, 0)
-            } else {
-                edit_communication.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_local_phone_24, 0, 0, 0)
-            }
+            val iconId = if (isChecked) R.drawable.ic_baseline_mail_24 else R.drawable.ic_baseline_local_phone_24
+            edit_communication.setCompoundDrawablesWithIntrinsicBounds(iconId, 0,0,0)
         })
         bundle = if (intent != null) {
             intent.extras
@@ -57,15 +54,10 @@ class AddContactActivity : AppCompatActivity() {
     }
 
     private fun backToMain() {
-        val intent = Intent()
-        if (switchConnect!!.isChecked) {
-            intent.putExtra("name", edit_name!!.text.toString())
-            intent.putExtra("communication", edit_communication!!.text.toString())
-            intent.putExtra("connectType", ConnectType.EMAIL)
-        } else {
-            intent.putExtra("name", edit_name!!.text.toString())
-            intent.putExtra("communication", edit_communication!!.text.toString())
-            intent.putExtra("connectType", ConnectType.PHONE)
+        val intent = Intent().apply {
+            putExtra("name", edit_name.text.toString())
+            putExtra("communication", edit_communication.text.toString())
+            putExtra("connectType", if (switchConnect.isChecked) ConnectType.EMAIL else ConnectType.PHONE)
         }
         setResult(RESULT_OK, intent)
         finish()

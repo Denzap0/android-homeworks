@@ -19,9 +19,12 @@ class ContactsAdapter(
     private val listItemActionListener: MainActivity.ListItemActionListener
     public fun setContacts(contacts: List<Contact>?) {
         contactsAll.clear()
-        contactsLocal!!.clear()
-        contactsAll.addAll(contacts!!)
-        contactsLocal.addAll(contacts)
+        contactsLocal?.clear()
+        if (contacts != null) {
+            contactsAll.addAll(contacts)
+            contactsLocal?.addAll(contacts)
+        }
+
         notifyDataSetChanged()
     }
 
@@ -31,7 +34,7 @@ class ContactsAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(contactsLocal!![position])
+        contactsLocal?.get(position)?.let { holder.bind(it) }
     }
 
     override fun getItemCount(): Int {
@@ -61,8 +64,10 @@ class ContactsAdapter(
         }
 
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
-            contactsLocal!!.clear()
-            contactsLocal.addAll((results.values as Collection<Contact>))
+            contactsLocal?.clear()
+            contactsLocal?.apply {
+                ((results.values as Collection<Contact>))
+            }
             notifyDataSetChanged()
         }
     }
@@ -79,11 +84,12 @@ class ContactsAdapter(
         private val listItemActionListener: MainActivity.ListItemActionListener?
         fun bind(contact: Contact) {
             contactElement.setOnClickListener { listItemActionListener?.onItemClicked(contact) }
-            if (contact.connectType == ConnectType.EMAIL) {
-                contactIcon.setImageResource(R.drawable.ic_baseline_contact_mail_24)
+            val resId = if (contact.connectType == ConnectType.EMAIL) {
+                R.drawable.ic_baseline_contact_mail_24
             } else {
-                contactIcon.setImageResource(R.drawable.ic_baseline_contact_phone_24)
+                R.drawable.ic_baseline_contact_phone_24
             }
+            contactIcon.setImageResource(resId)
             contactName.text = contact.name
             contactCommunication.text = contact.communication
         }
@@ -99,13 +105,15 @@ class ContactsAdapter(
 
     fun addItem(contact: Contact) {
         contactsAll.add(contact)
-        contactsLocal!!.add(contact)
+        contactsLocal?.add(contact)
         notifyDataSetChanged()
     }
 
     init {
-        contactsLocal!!.addAll(contacts!!)
-        contactsAll.addAll(contacts)
+        if (contacts != null) {
+            contactsLocal?.addAll(contacts)
+            contactsAll.addAll(contacts)
+        }
         this.listItemActionListener = listItemActionListener
     }
 }
