@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         storageType = if (!sharedPrefs.getBoolean("isExternal", false)) {
             applicationContext.filesDir
         } else {
-            applicationContext.getExternalFilesDir(null)?.absoluteFile
+            applicationContext.getExternalFilesDir(null)
         }
     }
 
@@ -178,9 +178,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addFile(fileName: String) {
-        fileNames.add(fileName)
         if (File(storageType, fileName).createNewFile()) {
             files.add(File(storageType, fileName))
+            fileNames.add(fileName)
         }
     }
 
