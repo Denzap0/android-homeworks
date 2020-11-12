@@ -72,7 +72,6 @@ class MainActivity : AppCompatActivity() {
             }
             updateFileNames()
             updateLocalFiles()
-            filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
         }
 
 
