@@ -94,24 +94,13 @@ class MainActivity : AppCompatActivity() {
             updateFileNames()
             updateLocalFiles()
         } else if(requestCode == 2 && resultCode == Activity.RESULT_OK){
-            val sharedPreferences = getSharedPreferences("settingsFile", Context.MODE_PRIVATE)
-            if(sharedPreferences.getBoolean("isExternal", false)){
-                storageType = applicationContext.getExternalFilesDir(null)
-                if (File(storageType, namesFile).exists()) {
-                    fileNames = readFileToList(namesFile)
-                }
-                updateFileNames()
-                updateLocalFiles()
-                filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
-            }else{
-                storageType = applicationContext.filesDir
-                if (File(storageType, namesFile).exists()) {
-                    fileNames = readFileToList(namesFile)
-                }
-                updateFileNames()
-                updateLocalFiles()
-                filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
+            storageTypeRead()
+            if (File(storageType, namesFile).exists()) {
+                fileNames = readFileToList(namesFile)
             }
+            updateFileNames()
+            updateLocalFiles()
+            filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
         }
 
 
@@ -136,9 +125,10 @@ class MainActivity : AppCompatActivity() {
     private fun storageTypeRead(){
         val sharedPrefs = getSharedPreferences("settingsFile", Context.MODE_PRIVATE)
         storageType = if (!sharedPrefs.getBoolean("isExternal", false)) {
-            applicationContext.filesDir
-        } else {
             applicationContext.getExternalFilesDir(null)
+
+        } else {
+            applicationContext.filesDir
         }
     }
 

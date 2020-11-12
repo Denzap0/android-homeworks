@@ -37,7 +37,7 @@ class EditFileActivity : AppCompatActivity() {
                 showContainsDialog()
             } else {
                 file.delete()
-                val newFile : File = File(filesDir, nameOfFileForEdit.text.toString())
+                val newFile : File = File(file.parentFile, nameOfFileForEdit.text.toString())
                 FileOutputStream(newFile)
                     .bufferedWriter()
                     .use { out ->
