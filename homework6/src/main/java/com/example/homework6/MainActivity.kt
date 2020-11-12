@@ -6,11 +6,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -45,8 +43,6 @@ class MainActivity : AppCompatActivity() {
     private val namesFile = "nameFile"
     private var storageType: File? = null
 
-
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -67,33 +63,9 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && !data.getBooleanExtra(
-                "isRemove",
-                true
-            )
-        ) {
-            val oldFile = data.extras!!.get("oldFile") as File
-            val newFile: File = data.extras!!.get("newFile") as File
-
-            fileNames.remove(oldFile.name)
-            files.remove(oldFile)
-            fileNames.add(newFile.name)
-            files.add(newFile)
-            updateFileNames()
-            updateLocalFiles()
-
-        } else if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getBooleanExtra(
-                "isRemove",
-                false
-            )
-        ) {
-            val oldFile = data.extras!!.get("oldFile") as File
-
-            files.remove(oldFile)
-            fileNames.remove(oldFile.name)
-            updateFileNames()
-            updateLocalFiles()
-        } else if(requestCode == 2 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            editContact(data)
+        } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
             storageTypeRead()
             if (File(storageType, namesFile).exists()) {
                 fileNames = readFileToList(namesFile)
@@ -122,7 +94,7 @@ class MainActivity : AppCompatActivity() {
     private fun readFileToList(nameFile: String): MutableList<String> =
         File(storageType, nameFile).useLines { it.toMutableList() }
 
-    private fun storageTypeRead(){
+    private fun storageTypeRead() {
         val sharedPrefs = getSharedPreferences("settingsFile", Context.MODE_PRIVATE)
         storageType = if (!sharedPrefs.getBoolean("isExternal", false)) {
             applicationContext.getExternalFilesDir(null)
@@ -151,7 +123,7 @@ class MainActivity : AppCompatActivity() {
         val btn: Button = dialog!!.getButton(AlertDialog.BUTTON_POSITIVE)
         btn.setOnClickListener(View.OnClickListener {
             if (!fileNames.contains(editText.text.toString())) {
-                addFile(editText.text.toString())
+                addFile(File(storageType, editText.text.toString()))
                 addFileNameInFiles(editText.text.toString())
                 updateFileNames()
                 updateLocalFiles()
@@ -167,11 +139,11 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, 2)
     }
 
-    private fun addFile(fileName: String) {
-        if (File(storageType, fileName).createNewFile()) {
-            files.add(File(storageType, fileName))
-            fileNames.add(fileName)
-        }
+    private fun addFile(file: File) {
+        file.createNewFile()
+        files.add(File(storageType, file.name))
+        fileNames.add(file.name)
+
     }
 
     private fun updateLocalFiles() {
@@ -203,6 +175,19 @@ class MainActivity : AppCompatActivity() {
                 out.append(fileName)
                 out.newLine()
             }
+    }
+
+    private fun editContact(data: Intent?) {
+        val oldFile = data?.extras!!.get("oldFile") as File
+        files.remove(oldFile)
+        fileNames.remove(oldFile.name)
+        if (!data.getBooleanExtra("isRemove", false)) {
+            val newFile: File = data.extras!!.get("newFile") as File
+            addFile(newFile)
+            addFileNameInFiles(newFile.name)
+        }
+        updateFileNames()
+        updateLocalFiles()
     }
 
 }
