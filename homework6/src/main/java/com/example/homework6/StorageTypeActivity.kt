@@ -48,9 +48,8 @@ class StorageTypeActivity : AppCompatActivity() {
                         editor.apply()
                     } else {
                         switchStorage.isChecked = false
-//                        val toast : Toast = Toast.ma
-//                        toast.setText("No permissions")
-//                        toast.show()
+                        val toast : Toast = Toast.makeText(this, "No permissions", Toast.LENGTH_SHORT)
+                        toast.show()
                     }
                 } else {
                     isExternal = true

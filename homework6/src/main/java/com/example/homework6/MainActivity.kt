@@ -16,7 +16,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,14 +40,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val namesFile = "nameFile"
-    private var storageType: File? = null
+    private var storagePath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         storageTypeRead()
-        if (File(storageType, namesFile).exists()) {
+        if (File(storagePath, namesFile).exists()) {
             fileNames = readFileToList(namesFile)
         }
         updateLocalFiles()
@@ -67,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             editContact(data)
         } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
             storageTypeRead()
-            if (File(storageType, namesFile).exists()) {
+            if (File(storagePath, namesFile).exists()) {
                 fileNames = readFileToList(namesFile)
             }
             updateFileNames()
@@ -91,15 +90,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun readFileToList(nameFile: String): MutableList<String> =
-        File(storageType, nameFile).useLines { it.toMutableList() }
+        File(storagePath, nameFile).useLines { it.toMutableList() }
 
     private fun storageTypeRead() {
         val sharedPrefs = getSharedPreferences("settingsFile", Context.MODE_PRIVATE)
-        storageType = if (!sharedPrefs.getBoolean("isExternal", false)) {
-            applicationContext.getExternalFilesDir(null)
+        storagePath = if (!sharedPrefs.getBoolean("isExternal", false)) {
+            applicationContext.getExternalFilesDir(null)?.absolutePath
 
         } else {
-            applicationContext.filesDir
+            applicationContext.filesDir.absolutePath
         }
     }
 
@@ -122,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         val btn: Button = dialog!!.getButton(AlertDialog.BUTTON_POSITIVE)
         btn.setOnClickListener(View.OnClickListener {
             if (!fileNames.contains(editText.text.toString())) {
-                addFile(File(storageType, editText.text.toString()))
+                addFile(File(storagePath, editText.text.toString()))
                 addFileNameInFiles(editText.text.toString())
                 updateFileNames()
                 updateLocalFiles()
@@ -140,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun addFile(file: File) {
         file.createNewFile()
-        files.add(File(storageType, file.name))
+        files.add(File(storagePath, file.name))
         fileNames.add(file.name)
 
     }
@@ -149,16 +148,16 @@ class MainActivity : AppCompatActivity() {
         if (fileNames.isNotEmpty()) {
             files.clear()
             fileNames.forEach {
-                files.add(File(storageType, it))
+                files.add(File(storagePath, it))
             }
         }
         filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
     }
 
     private fun updateFileNames() {
-        File(storageType, namesFile).delete()
+        File(storagePath, namesFile).delete()
         for (i in 0 until fileNames.size) {
-            FileOutputStream(File(storageType, namesFile), true)
+            FileOutputStream(File(storagePath, namesFile), true)
                 .bufferedWriter()
                 .use { out ->
                     out.append(fileNames[i].toString())
@@ -168,7 +167,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addFileNameInFiles(fileName: String) {
-        FileOutputStream(File(storageType, namesFile), true)
+        FileOutputStream(File(storagePath, namesFile), true)
             .bufferedWriter()
             .use { out ->
                 out.append(fileName)
@@ -177,11 +176,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun editContact(data: Intent?) {
-        val oldFile = data?.extras!!.get("oldFile") as File
+        val oldFile = data?.extras?.get("oldFile") as File
         files.remove(oldFile)
         fileNames.remove(oldFile.name)
         if (!data.getBooleanExtra("isRemove", false)) {
-            val newFile: File = data.extras!!.get("newFile") as File
+            val newFile: File = data.extras?.get("newFile") as File
             addFile(newFile)
             addFileNameInFiles(newFile.name)
         }

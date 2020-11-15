@@ -41,7 +41,6 @@ class FileRecyclerAdapter(
     ) :
         RecyclerView.ViewHolder(itemView) {
         private var fileElement: LinearLayout = itemView.findViewById(R.id.fileComponent)
-        private var fileIcon: ImageView = itemView.findViewById(R.id.fileImage)
         private var fileName: TextView = itemView.findViewById(R.id.fileName)
 
         fun bind(file : File) {
