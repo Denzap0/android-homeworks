@@ -25,7 +25,7 @@ class ContactsAdapter(
         
     init {
         if(contacts != null) {
-            contactsLocal!!.addAll(contacts!!)
+            contactsLocal!!.addAll(contacts)
             contactsAll.addAll(contacts)
         }
         this.listItemActionListener = listItemActionListener
@@ -61,7 +61,7 @@ class ContactsAdapter(
     private val contactsFilter: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence): FilterResults {
             val filteredContacts: MutableList<Contact> = ArrayList()
-            if (constraint == null || constraint.length == 0) {
+            if (constraint.isEmpty()) {
                 filteredContacts.addAll(contactsAll)
             } else {
                 val filterPattern = constraint.toString().toLowerCase().trim { it <= ' ' }

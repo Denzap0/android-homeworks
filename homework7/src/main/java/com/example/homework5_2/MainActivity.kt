@@ -87,20 +87,22 @@ class MainActivity : AppCompatActivity() {
             adapter?.setContacts(contacts)
         }
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
-            var contact: Contact = data.getSerializableExtra("contact") as Contact
+            val oldContact: Contact = data.getSerializableExtra("contact") as Contact
             for (i in 0 until contacts.size) {
-                if (contacts[i].name == contact.name) {
+                if (contacts[i].name == oldContact.name) {
                     contacts.removeAt(i)
                 }
             }
             if (!data.getBooleanExtra("isRemove", true)) {
-                contacts.add(
-                    Contact(
-                        data.getStringExtra("new_name").toString(),
-                        data.getStringExtra("new_communication").toString(),
-                        data.extras?.get("connectType") as ConnectType
-                    )
+                val newContact = Contact(
+                    data.getStringExtra("new_name").toString(),
+                    data.getStringExtra("new_communication").toString(),
+                    data.extras?.get("connectType") as ConnectType
                 )
+                contacts.add(newContact)
+                updateContactInDB(oldContact, newContact)
+            }else{
+                deleteContactFromDB(oldContact)
             }
 
             Collections.sort(contacts, comparator)
@@ -167,7 +169,20 @@ class MainActivity : AppCompatActivity() {
         (applicationContext as App).dbHelper?.writableDatabase?.insert("ContactsBase", null, contentValues)
     }
 
-    private fun deleteContactFromDB(){
+    private fun updateContactInDB(oldContact: Contact, newContact: Contact){
+        val contentValues = ContentValues().apply {
+            put("name", newContact.name)
+            put("communication", newContact.communication)
+            put("connect_type", if(newContact.connectType == ConnectType.PHONE) 0 else 1)
+        }
+        (applicationContext as App).dbHelper?.writableDatabase?.update(
+            "ContactsBase",
+            contentValues,
+            "name = ?",
+            arrayOf(oldContact.name))
+    }
 
+    private fun deleteContactFromDB(contact: Contact){
+        (applicationContext as App).dbHelper?.writableDatabase?.delete("ContactsBase", "name = ?", arrayOf(contact.name))
     }
 }
