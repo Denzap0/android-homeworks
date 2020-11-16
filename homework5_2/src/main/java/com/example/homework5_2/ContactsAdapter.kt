@@ -19,21 +19,21 @@ class ContactsAdapter(
     listItemActionListener: MainActivity.ListItemActionListener
 ) :
     RecyclerView.Adapter<ContactsAdapter.ItemViewHolder>(), Filterable {
-    private val contactsLocal: MutableList<Contact>? = ArrayList()
-    private val contactsAll: MutableList<Contact> = ArrayList()
+    private val contactsLocal = mutableListOf<Contact>()
+    private val contactsAll = mutableListOf<Contact>()
     private var listItemActionListener: MainActivity.ListItemActionListener
         
     init {
-        contactsLocal!!.addAll(contacts!!)
+        contactsLocal.addAll(contacts!!)
         contactsAll.addAll(contacts)
         this.listItemActionListener = listItemActionListener
     }
     public fun setContacts(contacts: List<Contact>?) {
         contactsAll.clear()
-        contactsLocal?.clear()
+        contactsLocal.clear()
         if (contacts != null) {
             contactsAll.addAll(contacts)
-            contactsLocal?.addAll(contacts)
+            contactsLocal.addAll(contacts)
         }
 
         notifyDataSetChanged()
@@ -45,11 +45,11 @@ class ContactsAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        contactsLocal?.get(position)?.let { holder.bind(it) }
+        contactsLocal[position].let { holder.bind(it) }
     }
 
     override fun getItemCount(): Int {
-        return contactsLocal?.size ?: 0
+        return contactsLocal.size ?: 0
     }
 
     override fun getFilter(): Filter {
@@ -58,8 +58,8 @@ class ContactsAdapter(
 
     private val contactsFilter: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence): FilterResults {
-            val filteredContacts: MutableList<Contact> = ArrayList()
-            if (constraint == null || constraint.length == 0) {
+            val filteredContacts = mutableListOf<Contact>()
+            if (constraint.isEmpty()) {
                 filteredContacts.addAll(contactsAll)
             } else {
                 val filterPattern = constraint.toString().toLowerCase().trim { it <= ' ' }
@@ -75,10 +75,8 @@ class ContactsAdapter(
         }
 
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
-            contactsLocal?.clear()
-            contactsLocal?.apply {
-                ((results.values as Collection<Contact>))
-            }
+            contactsLocal.clear()
+            contactsLocal.addAll(results.values as MutableList<Contact>)
             notifyDataSetChanged()
         }
     }
@@ -88,11 +86,13 @@ class ContactsAdapter(
         listItemActionListener: MainActivity.ListItemActionListener?
     ) :
         RecyclerView.ViewHolder(itemView) {
-        var contactElement: LinearLayout
-        var contactIcon: ImageView
-        var contactName: TextView
-        var contactCommunication: TextView
-        private val listItemActionListener: MainActivity.ListItemActionListener?
+        var contactElement: LinearLayout = itemView.findViewById(R.id.contact_element)
+        var contactIcon: ImageView = itemView.findViewById(R.id.contact_icon)
+        var contactName: TextView = itemView.findViewById(R.id.contact_name)
+        var contactCommunication: TextView = itemView.findViewById(R.id.contact_communication)
+        private val listItemActionListener: MainActivity.ListItemActionListener? =
+            listItemActionListener
+
         fun bind(contact: Contact) {
             contactElement.setOnClickListener { listItemActionListener?.onItemClicked(contact) }
             val resId = if (contact.connectType == ConnectType.EMAIL) {
@@ -105,28 +105,12 @@ class ContactsAdapter(
             contactCommunication.text = contact.communication
         }
 
-        init {
-            contactElement = itemView.findViewById(R.id.contact_element)
-            contactIcon = itemView.findViewById(R.id.contact_icon)
-            contactName = itemView.findViewById(R.id.contact_name)
-            contactCommunication = itemView.findViewById(R.id.contact_communication)
-            this.listItemActionListener = listItemActionListener
-        }
     }
 
     fun addItem(contact: Contact) {
         contactsAll.add(contact)
-        contactsLocal?.add(contact)
+        contactsLocal.add(contact)
         notifyDataSetChanged()
-    }
-
-
-    init {
-        if (contacts != null) {
-            contactsLocal?.addAll(contacts)
-            contactsAll.addAll(contacts)
-        }
-        this.listItemActionListener = listItemActionListener
     }
 }
 
