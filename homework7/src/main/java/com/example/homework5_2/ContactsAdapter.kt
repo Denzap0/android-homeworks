@@ -24,8 +24,10 @@ class ContactsAdapter(
     private var listItemActionListener: MainActivity.ListItemActionListener
         
     init {
-        contactsLocal!!.addAll(contacts!!)
-        contactsAll.addAll(contacts)
+        if(contacts != null) {
+            contactsLocal!!.addAll(contacts!!)
+            contactsAll.addAll(contacts)
+        }
         this.listItemActionListener = listItemActionListener
     }
     public fun setContacts(contacts: List<Contact>?) {
@@ -76,9 +78,7 @@ class ContactsAdapter(
 
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
             contactsLocal?.clear()
-            contactsLocal?.apply {
-                ((results.values as Collection<Contact>))
-            }
+            contactsLocal?.addAll(results.values as MutableList<Contact>)
             notifyDataSetChanged()
         }
     }
@@ -121,13 +121,7 @@ class ContactsAdapter(
     }
 
 
-    init {
-        if (contacts != null) {
-            contactsLocal?.addAll(contacts)
-            contactsAll.addAll(contacts)
-        }
-        this.listItemActionListener = listItemActionListener
-    }
+
 }
 
 
