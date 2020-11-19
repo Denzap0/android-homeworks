@@ -14,18 +14,24 @@ import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import java.util.*
 
+interface ListItemActionListener {
+    fun onItemClicked(contact: Contact?)
+}
+
 class ContactsAdapter(
     contacts: List<Contact>?,
-    listItemActionListener: MainActivity.ListItemActionListener
+    listItemActionListener: ListItemActionListener
 ) :
     RecyclerView.Adapter<ContactsAdapter.ItemViewHolder>(), Filterable {
     private val contactsLocal = mutableListOf<Contact>()
     private val contactsAll = mutableListOf<Contact>()
-    private var listItemActionListener: MainActivity.ListItemActionListener
+    private var listItemActionListener: ListItemActionListener
         
     init {
-        contactsLocal.addAll(contacts!!)
-        contactsAll.addAll(contacts)
+        if(contacts != null) {
+            contactsLocal.addAll(contacts)
+            contactsAll.addAll(contacts)
+        }
         this.listItemActionListener = listItemActionListener
     }
     public fun setContacts(contacts: List<Contact>?) {
@@ -83,14 +89,14 @@ class ContactsAdapter(
 
     class ItemViewHolder(
         itemView: View,
-        listItemActionListener: MainActivity.ListItemActionListener?
+        listItemActionListener: ListItemActionListener?
     ) :
         RecyclerView.ViewHolder(itemView) {
         var contactElement: LinearLayout = itemView.findViewById(R.id.contact_element)
         var contactIcon: ImageView = itemView.findViewById(R.id.contact_icon)
         var contactName: TextView = itemView.findViewById(R.id.contact_name)
         var contactCommunication: TextView = itemView.findViewById(R.id.contact_communication)
-        private val listItemActionListener: MainActivity.ListItemActionListener? =
+        private val listItemActionListener: ListItemActionListener? =
             listItemActionListener
 
         fun bind(contact: Contact) {

@@ -26,9 +26,7 @@ class MainActivity : AppCompatActivity() {
     }
     private var adapter: ContactsAdapter? = null
 
-    interface ListItemActionListener {
-        fun onItemClicked(contact: Contact?)
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 adapter?.filter?.filter(newText)
-                contacts_list!!.adapter = adapter
+                contacts_list.adapter = adapter
                 return false
             }
         })

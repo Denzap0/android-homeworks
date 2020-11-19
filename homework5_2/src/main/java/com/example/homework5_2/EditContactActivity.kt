@@ -24,22 +24,18 @@ class EditContactActivity : AppCompatActivity() {
 
         if (intent != null) {
             bundle = intent.extras
-            contact = bundle!!.getSerializable("contact") as Contact
+            contact = bundle?.getSerializable("contact") as Contact
         }
-        if (bundle != null) {
-            edit_name.hint = contact?.name
-            edit_communication.hint = contact?.communication
-
-
-        }
-        edit_button.setOnClickListener(View.OnClickListener {
+        edit_name.hint = contact?.name
+        edit_communication.hint = contact?.communication
+        edit_button.setOnClickListener {
             if (edit_name.text.toString().isEmpty()) {
                 openAttentionEmptyDialog()
-            } else {
-                backToMainEdit(bundle!!)
-            }
-        })
-        remove_contact.setOnClickListener(View.OnClickListener { backToMainRemove(bundle!!) })
+            } else bundle?.let { backToMainEdit(it) }
+        }
+        remove_contact.setOnClickListener {
+            bundle?.let { backToMainRemove(it) }
+        }
     }
 
     private fun openAttentionEmptyDialog() {
@@ -48,20 +44,25 @@ class EditContactActivity : AppCompatActivity() {
     }
 
     private fun backToMainEdit(bundle: Bundle) {
-        val intent = Intent()
-        intent.putExtra("contact", contact)
-        intent.putExtra("new_name", edit_name!!.text.toString())
-        intent.putExtra("new_communication", edit_communication!!.text.toString())
-        intent.putExtra("isRemove", false)
-        intent.putExtra("connectType", if(switchConnect.isChecked) ConnectType.EMAIL else ConnectType.PHONE)
+        val intent = Intent().apply {
+            putExtra("contact", contact)
+            putExtra("new_name", edit_name!!.text.toString())
+            putExtra("new_communication", edit_communication!!.text.toString())
+            putExtra("isRemove", false)
+            putExtra(
+                "connectType",
+                if (switchConnect.isChecked) ConnectType.EMAIL else ConnectType.PHONE
+            )
+        }
         setResult(RESULT_OK, intent)
         finish()
     }
 
     private fun backToMainRemove(bundle: Bundle) {
-        val intent = Intent()
-        intent.putExtra("contact", contact)
-        intent.putExtra("isRemove", true)
+        val intent = Intent().apply {
+            putExtra("contact", contact)
+            putExtra("isRemove", true)
+        }
         setResult(RESULT_OK, intent)
         finish()
     }
