@@ -79,12 +79,12 @@ class MainActivity : AppCompatActivity() {
         }
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
             var contact: Contact = data.getSerializableExtra("contact") as Contact
-            for (i in 0 until contacts.size - 1) {
-                if (contacts[i].name == contact.name) {
-                    contacts.removeAt(i)
-                }
-            }
+
+            val c = contacts.find { item -> item.name == contact.name }
+            c?.run { contacts.remove(this) }
+
             if (!data.getBooleanExtra("isRemove", true)) {
+
                 contacts.add(
                     Contact(
                         data.getStringExtra("new_name").toString(),
@@ -93,9 +93,9 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
             }
-
             Collections.sort(contacts, comparator)
             adapter?.setContacts(contacts)
+
         }
     }
 
