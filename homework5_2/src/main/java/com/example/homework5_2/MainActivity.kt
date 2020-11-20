@@ -95,7 +95,6 @@ class MainActivity : AppCompatActivity() {
             }
             Collections.sort(contacts, comparator)
             adapter?.setContacts(contacts)
-
         }
     }
 
