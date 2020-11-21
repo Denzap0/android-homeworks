@@ -2,17 +2,12 @@ package com.example.homework5_2
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework5_2.AlertDialogs.AlertEmptyDialog
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.DataBase.DBService
-import kotlinx.android.synthetic.main.edit_contact_activity.edit_communication
-import kotlinx.android.synthetic.main.edit_contact_activity.edit_name
-import kotlinx.android.synthetic.main.edit_contact_activity.edit_button
-import kotlinx.android.synthetic.main.edit_contact_activity.remove_contact
-import kotlinx.android.synthetic.main.edit_contact_activity.switchConnect
+import kotlinx.android.synthetic.main.edit_contact_activity.*
 
 class EditContactActivity : AppCompatActivity() {
 
@@ -33,14 +28,14 @@ class EditContactActivity : AppCompatActivity() {
 
 
         }
-        edit_button.setOnClickListener(View.OnClickListener {
+        edit_button.setOnClickListener {
             if (edit_name.text.toString().isEmpty()) {
                 openAttentionEmptyDialog()
             } else {
-                backToMainEdit(bundle!!)
+                backToMainEdit()
             }
-        })
-        remove_contact.setOnClickListener(View.OnClickListener { backToMainRemove(bundle!!) })
+        }
+        remove_contact.setOnClickListener { backToMainRemove() }
     }
 
     private fun openAttentionEmptyDialog() {
@@ -48,7 +43,7 @@ class EditContactActivity : AppCompatActivity() {
         dialog.show(supportFragmentManager, "Alert dialog")
     }
 
-    private fun backToMainEdit(bundle: Bundle) {
+    private fun backToMainEdit() {
         val newContact  = Contact(edit_name!!.text.toString(), edit_communication!!.text.toString(), if(switchConnect.isChecked) ConnectType.EMAIL else ConnectType.PHONE)
         DBService.updateContactInDB(contact,
             newContact,
@@ -62,7 +57,7 @@ class EditContactActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun backToMainRemove(bundle: Bundle) {
+    private fun backToMainRemove() {
         val intent = Intent().apply {
             putExtra("old_contact", contact)
             putExtra("isRemove", true)

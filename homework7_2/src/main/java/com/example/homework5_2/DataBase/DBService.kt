@@ -9,13 +9,13 @@ class DBService {
 
     companion object {
 
-        public const val BASE_NAME = "ContactsBase"
-        public const val BASE_VERSION = 1
+        const val BASE_NAME = "ContactsBase"
+        const val BASE_VERSION = 1
 
-        public const val TABLE_ID = "_id"
-        public const val TABLE_NAME = "name"
-        public const val TABLE_COMMUNICATION = "communication"
-        public const val TABLE_CONNECT_TYPE = "connect_type"
+        const val TABLE_ID = "_id"
+        const val TABLE_NAME = "name"
+        const val TABLE_COMMUNICATION = "communication"
+        const val TABLE_CONNECT_TYPE = "connect_type"
 
         fun addContactToDB(contact: Contact, applicationContext: Context) {
             val contentValues = ContentValues().apply {

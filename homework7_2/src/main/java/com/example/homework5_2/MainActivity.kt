@@ -7,12 +7,11 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.Contact.ContactComparator
 import com.example.homework5_2.DataBase.DBService
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.Collections
+import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
@@ -83,15 +82,7 @@ class MainActivity : AppCompatActivity() {
             c?.run { contacts.remove(this) }
 
             if (!data.getBooleanExtra("isRemove", true)) {
-
-                contacts.add(
-//                    Contact(
-//                        data.getStringExtra("new_name").toString(),
-//                        data.getStringExtra("new_communication").toString(),
-//                        data.extras?.get("connectType") as ConnectType
-//                    )
-                    data.getSerializableExtra("new_contact") as Contact
-                )
+                contacts.add(data.getSerializableExtra("new_contact") as Contact)
             }
             Collections.sort(contacts, comparator)
             adapter?.setContacts(contacts)

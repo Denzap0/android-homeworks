@@ -3,12 +3,7 @@ package com.example.homework5_2
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filterable
-import android.widget.Filter
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
@@ -31,7 +26,7 @@ class ContactsAdapter(
         this.listItemActionListener = listItemActionListener
     }
 
-    public fun setContacts(contacts: List<Contact>?) {
+    fun setContacts(contacts: List<Contact>?) {
         contactsAll.clear()
         contactsLocal?.clear()
         if (contacts != null) {
