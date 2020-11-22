@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
             val intent: Intent = Intent(this@MainActivity, EditFileActivity::class.java)
             intent.putExtra("file", file)
             val namesArrayList: ArrayList<String> = ArrayList(fileNames)
-
             intent.putStringArrayListExtra("fileNames", namesArrayList)
             startActivityForResult(intent, 1)
         }
