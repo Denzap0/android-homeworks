@@ -1,24 +1,31 @@
 package com.example.homework5_2.Async
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
+import android.os.Handler
 import android.os.Looper
+import com.example.homework5_2.AlertDialogs.LoadingDialog
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.DataBase.App
-import java.util.concurrent.BlockingQueue
+import com.example.homework5_2.DataBase.DBService
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
-import android.os.Handler
-import com.example.homework5_2.AlertDialogs.LoadingDialog
 
 class DBThreadPoolExecutor(private val activity: Activity) : EDBService {
 
     private val ex = ThreadPoolExecutor(1, 3, 1, TimeUnit.MILLISECONDS, LinkedBlockingQueue())
-    private lateinit var handler : Handler
+    private lateinit var handler: Handler
+
+    fun prepareHandler(mainLooper: Looper) {
+        handler = Handler(mainLooper)
+    }
+
+    fun isStopped(): Boolean {
+        return ex.awaitTermination(20, TimeUnit.SECONDS)
+    }
 
     override fun addContactToDB(contact: Contact, applicationContext: Context) {
         val loadingDialog = LoadingDialog(activity)
@@ -26,9 +33,6 @@ class DBThreadPoolExecutor(private val activity: Activity) : EDBService {
             loadingDialog.startLoadingDialog()
         }
         ex.submit {
-            handler.post {
-
-            }
             val contentValues = ContentValues().apply {
                 put("name", contact.name)
                 put("communication", contact.communication)
@@ -49,12 +53,13 @@ class DBThreadPoolExecutor(private val activity: Activity) : EDBService {
     override fun updateContactInDB(
         oldContact: Contact,
         newContact: Contact,
-        applicationContext: Context) {
+        applicationContext: Context
+    ) {
         val loadingDialog = LoadingDialog(activity)
         handler.post {
             loadingDialog.startLoadingDialog()
         }
-        ex.submit{
+        ex.submit {
 
             val contentValues = ContentValues().apply {
                 put("name", newContact.name)
@@ -79,12 +84,8 @@ class DBThreadPoolExecutor(private val activity: Activity) : EDBService {
         handler.post {
             loadingDialog.startLoadingDialog()
         }
-        ex.submit{
-            (applicationContext as App).dbHelper?.writableDatabase?.delete(
-                "ContactsBase",
-                "name = ?",
-                arrayOf(contact.name)
-            )
+        ex.submit {
+            DBService.deleteContactFromDB(contact,applicationContext)
         }
         handler.post {
             loadingDialog.dismissDialog()
@@ -92,50 +93,21 @@ class DBThreadPoolExecutor(private val activity: Activity) : EDBService {
         ex.shutdown()
     }
 
-    override fun getContactsFromDB(contacts: MutableList<Contact>, applicationContext: Context) {
+    override fun getContactsFromDB(contacts: MutableList<Contact> , applicationContext: Context) {
         val loadingDialog = LoadingDialog(activity)
         handler.post {
             loadingDialog.startLoadingDialog()
         }
 
-        ex.submit{
-            contacts.clear()
-            val cursor = (applicationContext as App).dbHelper?.readableDatabase?.query(
-                "ContactsBase",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null)
-
-            if(cursor != null) {
-                val nameIndex = cursor.getColumnIndex("name")
-                val communicationIndex = cursor.getColumnIndex("communication")
-                val connectTypeIndex = cursor.getColumnIndex("connect_type")
-
-                while (cursor.moveToNext()){
-                    contacts.add(
-                        Contact(cursor.getString(nameIndex),
-                            cursor.getString(communicationIndex),
-                            if(cursor.getInt(connectTypeIndex) == 0) ConnectType.PHONE else ConnectType.EMAIL)
-                    )
-                }
-                cursor.close()
-            }
+        ex.submit {
+            DBService.getContactsFromDB(contacts,applicationContext)
         }
         handler.post {
             loadingDialog.dismissDialog()
         }
         ex.shutdown()
-
     }
 
-    override fun prepareHandler(mainLooper : Looper) {
-        handler = Handler(mainLooper)
-    }
 
-    override fun isTerminated() : Boolean{
-        return ex.awaitTermination(20, TimeUnit.SECONDS)
-    }
+
 }

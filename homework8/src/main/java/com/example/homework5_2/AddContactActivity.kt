@@ -1,5 +1,6 @@
 package com.example.homework5_2
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -7,10 +8,13 @@ import android.view.MenuItem
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework5_2.AlertDialogs.AlertEmptyDialog
+import com.example.homework5_2.Async.DBCompF_PoolExec
+import com.example.homework5_2.Async.DBRxJava
 import com.example.homework5_2.Async.DBThreadPoolExecutor
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.DataBase.DBService
+import com.example.homework5_2.Settings.AsyncSettingsPreference
 import kotlinx.android.synthetic.main.add_contact_activity.switchConnect
 import kotlinx.android.synthetic.main.add_contact_activity.edit_name
 import kotlinx.android.synthetic.main.add_contact_activity.edit_communication
@@ -23,8 +27,9 @@ class AddContactActivity : AppCompatActivity() {
         setContentView(R.layout.add_contact_activity)
 
         switchConnect.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            val iconId = if (isChecked) R.drawable.ic_baseline_mail_24 else R.drawable.ic_baseline_local_phone_24
-            edit_communication.setCompoundDrawablesWithIntrinsicBounds(iconId, 0,0,0)
+            val iconId =
+                if (isChecked) R.drawable.ic_baseline_mail_24 else R.drawable.ic_baseline_local_phone_24
+            edit_communication.setCompoundDrawablesWithIntrinsicBounds(iconId, 0, 0, 0)
         })
         bundle = if (intent != null) {
             intent.extras
@@ -56,21 +61,55 @@ class AddContactActivity : AppCompatActivity() {
     }
 
     private fun backToMain() {
-        val contactToAdd = Contact(edit_name.text.toString(),
+        val contactToAdd = Contact(
+            edit_name.text.toString(),
             edit_communication.text.toString(),
-            if (switchConnect.isChecked) ConnectType.EMAIL else ConnectType.PHONE)
-//        DBService.addContactToDB(contactToAdd, applicationContext)
-        val threadForAdd = DBThreadPoolExecutor(this@AddContactActivity).apply {
-            prepareHandler(mainLooper)
-            addContactToDB(contactToAdd, applicationContext)
-        }
-        while (!threadForAdd.isTerminated()){
+            if (switchConnect.isChecked) ConnectType.EMAIL else ConnectType.PHONE
+        )
+        addDBContactWithSavedAsyncType(contactToAdd)
+    }
 
+    private fun addDBContactWithSavedAsyncType(contactToAdd: Contact){
+        val asyncType = AsyncSettingsPreference(getSharedPreferences("asyncType", MODE_PRIVATE))
+        when (asyncType.loadAsyncType()) {
+            1 -> {
+                val threadForAdd = DBThreadPoolExecutor(this@AddContactActivity).apply {
+                    prepareHandler(mainLooper)
+                    addContactToDB(contactToAdd, applicationContext)
+                }
+                while (!threadForAdd.isStopped()) {
+                }
+                closeActivity(contactToAdd)
+            }
+            2 -> {
+                val threadForAdd = DBCompF_PoolExec(this@AddContactActivity, mainExecutor)
+                threadForAdd.addContactToDB(contactToAdd, applicationContext)
+                while (!threadForAdd.isDone()) {
+                }
+                closeActivity(contactToAdd)
+            }
+            3 -> {
+                val db = DBRxJava()
+                db.addContactToDB(contactToAdd, applicationContext)
+                db.getCompletable()
+                    .subscribe {
+                        closeActivity(contactToAdd)
+                    }
+
+            }
         }
+    }
+
+    private fun closeActivity(contactToAdd : Contact){
         val intent = Intent().apply {
             putExtra("contact", contactToAdd)
         }
         setResult(RESULT_OK, intent)
         finish()
     }
+
+
 }
+
+
+

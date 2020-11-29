@@ -16,4 +16,9 @@
     <string name="remove">Remove</string>
     <string name="email">EMAIL</string>
     <string name="phone">PHONE</string>
+    <string name="settings">Settings</string>
+    <string name="thread_pool_executor">Thread Pool Executor</string>
+    <string name="completable_future">Completable Future</string>
+    <string name="rx">RX</string>
+    <string name="back">Back</string>
 </resources>

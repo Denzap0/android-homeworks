@@ -1,24 +1,23 @@
-package com.example.homework5_2.DataBase
+package com.example.homework5_2.Async
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.util.Log
+import com.example.homework5_2.AlertDialogs.LoadingDialog
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
+import com.example.homework5_2.DataBase.App
+import java.util.concurrent.*
 
-class DBService {
+class DBCompF_PoolExec(private val activity: Activity, private val mainExecutor: Executor) : EDBService {
 
-    companion object {
+    private lateinit var future : CompletableFuture<Boolean>
 
-        const val BASE_NAME = "ContactsBase"
-        const val BASE_VERSION = 1
-
-        const val TABLE_ID = "_id"
-        const val TABLE_NAME = "name"
-        const val TABLE_COMMUNICATION = "communication"
-        const val TABLE_CONNECT_TYPE = "connect_type"
-
-        fun addContactToDB(contact: Contact, applicationContext: Context) {
+    override fun addContactToDB(contact: Contact, applicationContext: Context) {
+        val loadingDialog = LoadingDialog(activity)
+        loadingDialog.startLoadingDialog()
+        future = CompletableFuture.runAsync {
             val contentValues = ContentValues().apply {
                 put("name", contact.name)
                 put("communication", contact.communication)
@@ -29,13 +28,18 @@ class DBService {
                 null,
                 contentValues
             )
-        }
+        }.thenApply { true }
+        loadingDialog.dismissDialog()
+    }
 
-        fun updateContactInDB(
-            oldContact: Contact,
-            newContact: Contact,
-            applicationContext: Context
-        ) {
+    override fun updateContactInDB(
+        oldContact: Contact,
+        newContact: Contact,
+        applicationContext: Context
+    ) {
+        val loadingDialog = LoadingDialog(activity)
+        loadingDialog.startLoadingDialog()
+        future = CompletableFuture.runAsync{
             val contentValues = ContentValues().apply {
                 put("name", newContact.name)
                 put("communication", newContact.communication)
@@ -47,17 +51,27 @@ class DBService {
                 "name = ?",
                 arrayOf(oldContact.name)
             )
-        }
+        }.thenApply { true }
+        loadingDialog.dismissDialog()
+    }
 
-        fun deleteContactFromDB(contact: Contact, applicationContext: Context) {
+    override fun deleteContactFromDB(contact: Contact, applicationContext: Context) {
+        val loadingDialog = LoadingDialog(activity)
+        loadingDialog.startLoadingDialog()
+        future = CompletableFuture.runAsync{
             (applicationContext as App).dbHelper?.writableDatabase?.delete(
                 "ContactsBase",
                 "name = ?",
                 arrayOf(contact.name)
             )
-        }
+        }.thenApply { true }
+        loadingDialog.dismissDialog()
+    }
 
-        fun getContactsFromDB(contacts : MutableList<Contact>, applicationContext: Context){
+    override fun getContactsFromDB(contacts: MutableList<Contact>, applicationContext: Context) {
+        val loadingDialog = LoadingDialog(activity)
+        loadingDialog.startLoadingDialog()
+        future = CompletableFuture.supplyAsync {
             contacts.clear()
             val cursor = (applicationContext as App).dbHelper?.writableDatabase?.query(
                 "ContactsBase",
@@ -76,12 +90,18 @@ class DBService {
                 while (cursor.moveToNext()){
                     contacts.add(
                         Contact(cursor.getString(nameIndex),
-                        cursor.getString(communicationIndex),
-                        if(cursor.getInt(connectTypeIndex) == 0) ConnectType.PHONE else ConnectType.EMAIL)
+                            cursor.getString(communicationIndex),
+                            if(cursor.getInt(connectTypeIndex) == 0) ConnectType.PHONE else ConnectType.EMAIL)
                     )
                 }
                 cursor.close()
             }
+            return@supplyAsync true
         }
+        loadingDialog.dismissDialog()
+
     }
+
+    public fun isDone() : Boolean = future.getNow(false)
+
 }

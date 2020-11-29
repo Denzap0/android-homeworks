@@ -14,8 +14,4 @@ interface EDBService {
     fun deleteContactFromDB(contact: Contact, applicationContext: Context)
 
     fun getContactsFromDB(contacts : MutableList<Contact>, applicationContext: Context)
-
-    fun prepareHandler(mainLooper : Looper)
-
-    fun isTerminated() : Boolean
 }
