@@ -7,7 +7,6 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
-import java.util.*
 
 class ContactsAdapter(
     contacts: List<Contact>?,

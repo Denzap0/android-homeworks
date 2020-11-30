@@ -10,7 +10,11 @@ import com.example.homework5_2.Async.DBThreadPoolExecutor
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.Settings.AsyncSettingsPreference
-import kotlinx.android.synthetic.main.edit_contact_activity.*
+import kotlinx.android.synthetic.main.edit_contact_activity.edit_button
+import kotlinx.android.synthetic.main.edit_contact_activity.edit_name
+import kotlinx.android.synthetic.main.edit_contact_activity.edit_communication
+import kotlinx.android.synthetic.main.edit_contact_activity.remove_contact
+import kotlinx.android.synthetic.main.edit_contact_activity.switchConnect
 
 class EditContactActivity : AppCompatActivity() {
 

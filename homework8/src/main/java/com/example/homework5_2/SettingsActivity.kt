@@ -1,6 +1,5 @@
 package com.example.homework5_2
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity

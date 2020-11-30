@@ -2,7 +2,6 @@ package com.example.homework5_2.DataBase
 
 import android.content.ContentValues
 import android.content.Context
-import android.util.Log
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 

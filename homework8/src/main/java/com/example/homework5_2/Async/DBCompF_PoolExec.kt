@@ -3,12 +3,12 @@ package com.example.homework5_2.Async
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
-import android.util.Log
 import com.example.homework5_2.AlertDialogs.LoadingDialog
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.DataBase.App
-import java.util.concurrent.*
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executor
 
 class DBCompF_PoolExec(private val activity: Activity, private val mainExecutor: Executor) : EDBService {
 

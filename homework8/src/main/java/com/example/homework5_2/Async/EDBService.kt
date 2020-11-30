@@ -1,8 +1,6 @@
 package com.example.homework5_2.Async
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import com.example.homework5_2.Contact.Contact
 
 interface EDBService {

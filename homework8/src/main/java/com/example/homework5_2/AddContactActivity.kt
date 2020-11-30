@@ -1,6 +1,5 @@
 package com.example.homework5_2
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -13,11 +12,10 @@ import com.example.homework5_2.Async.DBRxJava
 import com.example.homework5_2.Async.DBThreadPoolExecutor
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
-import com.example.homework5_2.DataBase.DBService
 import com.example.homework5_2.Settings.AsyncSettingsPreference
 import kotlinx.android.synthetic.main.add_contact_activity.switchConnect
-import kotlinx.android.synthetic.main.add_contact_activity.edit_name
 import kotlinx.android.synthetic.main.add_contact_activity.edit_communication
+import kotlinx.android.synthetic.main.add_contact_activity.edit_name
 
 class AddContactActivity : AppCompatActivity() {
 

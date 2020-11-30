@@ -14,7 +14,8 @@ import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.Contact.ContactComparator
 import com.example.homework5_2.Settings.AsyncSettingsPreference
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import java.util.Collections
+
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     interface ListItemActionListener {
         fun onItemClicked(contact: Contact?)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
