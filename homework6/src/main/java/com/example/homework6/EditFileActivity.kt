@@ -35,30 +35,33 @@ class EditFileActivity : AppCompatActivity() {
             if (fileNames.contains(nameOfFileForEdit.text.toString()) && nameOfFileForEdit.text.toString() != file.name) {
                 showContainsDialog()
             } else {
-                file.delete()
                 val newFile : File = File(file.parentFile, nameOfFileForEdit.text.toString())
-                FileOutputStream(newFile)
-                    .bufferedWriter()
-                    .use { out ->
-                        out.write(text.text.toString())
-                    }
-                val intent: Intent = Intent()
-                intent.putExtra("oldFile", file)
-                intent.putExtra("newFile", newFile)
-                intent.putExtra("isRemove", false)
-                setResult(RESULT_OK, intent)
-                finish()
+                finishActivityEdit(newFile)
             }
         }
         deleteButton.setOnClickListener {
-            file.delete()
-            val intent: Intent = Intent()
-            intent.putExtra("oldFile", file)
-            intent.putExtra("isRemove", true)
-            setResult(RESULT_OK, intent)
-            finish()
+            finishActivityRemove()
         }
 
+    }
+
+    private fun finishActivityEdit(newFile : File){
+        FileService.updateFile(newFile, file, text.text.toString())
+        val intent: Intent = Intent()
+        intent.putExtra("oldFile", file)
+        intent.putExtra("newFile", newFile)
+        intent.putExtra("isRemove", false)
+        setResult(RESULT_OK, intent)
+        finish()
+    }
+
+    private fun finishActivityRemove(){
+        FileService.deleteFile(file)
+        val intent: Intent = Intent()
+        intent.putExtra("oldFile", file)
+        intent.putExtra("isRemove", true)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     private fun showContainsDialog() {

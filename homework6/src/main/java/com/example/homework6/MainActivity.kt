@@ -25,8 +25,8 @@ import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
-    private var files: MutableList<File> = ArrayList()
-    private var fileNames: MutableList<String> = ArrayList()
+    private var files = mutableListOf<File>()
+    private var fileNames = mutableListOf<String>()
     private val listItemActionListener: ListItemActionListener = object : ListItemActionListener {
         override fun onItemClicked(file: File) {
             val intent: Intent = Intent(this@MainActivity, EditFileActivity::class.java)
@@ -49,13 +49,14 @@ class MainActivity : AppCompatActivity() {
         if (File(storagePath, namesFile).exists()) {
             fileNames = readFileToList(namesFile)
         }
-        updateLocalFiles()
-        filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
-        filesRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-        add_file_button.setOnClickListener(View.OnClickListener {
+        FileService.updateLocalFiles(fileNames,files,storagePath,filesRecyclerView,listItemActionListener )
+        filesRecyclerView.apply {
+            adapter = FileRecyclerAdapter(files, listItemActionListener)
+            layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+        }
+        add_file_button.setOnClickListener {
             openAddFileDialog()
-        })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -68,8 +69,8 @@ class MainActivity : AppCompatActivity() {
             if (File(storagePath, namesFile).exists()) {
                 fileNames = readFileToList(namesFile)
             }
-            updateFileNames()
-            updateLocalFiles()
+            FileService.updateFileNames(storagePath,namesFile,fileNames)
+            FileService.updateLocalFiles(fileNames,files,storagePath,filesRecyclerView,listItemActionListener)
         }
 
 
@@ -109,9 +110,11 @@ class MainActivity : AppCompatActivity() {
         val textView: TextView = TextView(this)
         textView.setTextColor(Color.RED)
         val layout = LinearLayout(this)
-        layout.orientation = LinearLayout.VERTICAL
-        layout.addView(editText)
-        layout.addView(textView)
+        layout.apply {
+            orientation = LinearLayout.VERTICAL
+            addView(editText)
+            addView(textView)
+        }
         val dialog: AlertDialog? = AlertDialog.Builder(this)
             .setTitle("Add new file")
             .setView(layout)
@@ -120,10 +123,10 @@ class MainActivity : AppCompatActivity() {
         val btn: Button = dialog!!.getButton(AlertDialog.BUTTON_POSITIVE)
         btn.setOnClickListener(View.OnClickListener {
             if (!fileNames.contains(editText.text.toString())) {
-                addFile(File(storagePath, editText.text.toString()))
-                addFileNameInFiles(editText.text.toString())
-                updateFileNames()
-                updateLocalFiles()
+                FileService.addFile(File(storagePath, editText.text.toString()), files, fileNames,storagePath)
+                FileService.addFileNameInFiles(editText.text.toString(), storagePath, namesFile)
+                FileService.updateFileNames(storagePath, namesFile,fileNames)
+                FileService.updateLocalFiles(fileNames, files,storagePath,filesRecyclerView,listItemActionListener)
                 dialog.dismiss()
             } else {
                 textView.text = "File with this name already exist"
@@ -136,55 +139,16 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, 2)
     }
 
-    private fun addFile(file: File) {
-        file.createNewFile()
-        files.add(File(storagePath, file.name))
-        fileNames.add(file.name)
-
-    }
-
-    private fun updateLocalFiles() {
-        if (fileNames.isNotEmpty()) {
-            files.clear()
-            fileNames.forEach {
-                files.add(File(storagePath, it))
-            }
-        }
-        filesRecyclerView.adapter = FileRecyclerAdapter(files, listItemActionListener)
-    }
-
-    private fun updateFileNames() {
-        File(storagePath, namesFile).delete()
-        for (i in 0 until fileNames.size) {
-            FileOutputStream(File(storagePath, namesFile), true)
-                .bufferedWriter()
-                .use { out ->
-                    out.append(fileNames[i].toString())
-                    out.newLine()
-                }
-        }
-    }
-
-    private fun addFileNameInFiles(fileName: String) {
-        FileOutputStream(File(storagePath, namesFile), true)
-            .bufferedWriter()
-            .use { out ->
-                out.append(fileName)
-                out.newLine()
-            }
-    }
-
     private fun editContact(data: Intent?) {
         val oldFile = data?.extras?.get("oldFile") as File
         files.remove(oldFile)
         fileNames.remove(oldFile.name)
         if (!data.getBooleanExtra("isRemove", false)) {
             val newFile: File = data.extras?.get("newFile") as File
-            addFile(newFile)
-            addFileNameInFiles(newFile.name)
+            FileService.addFile(newFile, files, fileNames, storagePath)
+            FileService.addFileNameInFiles(newFile.name, namesFile, namesFile)
         }
-        updateFileNames()
-        updateLocalFiles()
+        FileService.updateFileNames(storagePath, namesFile, fileNames)
+        FileService.updateLocalFiles(fileNames, files, storagePath, filesRecyclerView, listItemActionListener)
     }
-
 }

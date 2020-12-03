@@ -14,7 +14,7 @@ class FileRecyclerAdapter(
     listItemActionListener: ListItemActionListener
 ) :
     RecyclerView.Adapter<FileRecyclerAdapter.ItemViewHolder>() {
-    private var files: MutableList<File>? = ArrayList()
+    private var files = mutableListOf<File>()
     private val listItemActionListener: ListItemActionListener
 
     init {
@@ -28,11 +28,11 @@ class FileRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(files!![position])
+        holder.bind(files[position])
     }
 
     override fun getItemCount(): Int {
-        return files?.size ?: 0
+        return files.size ?: 0
     }
 
     class ItemViewHolder(

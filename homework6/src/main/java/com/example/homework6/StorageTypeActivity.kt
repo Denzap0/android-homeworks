@@ -25,44 +25,32 @@ class StorageTypeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.storage_type_activity)
 
-        val sharedPrefs = getSharedPreferences("settingsFile", Context.MODE_PRIVATE)
-        isExternal = sharedPrefs.getBoolean("isExternal", false)
-        switchStorage.isChecked = sharedPrefs.getBoolean("isExternal", false)
+        val storageTypePreference = StorageTypePreference(getSharedPreferences("settingsFile", Context.MODE_PRIVATE))
+        isExternal = storageTypePreference.getIsExternal()
+        switchStorage.isChecked = storageTypePreference.getIsExternal()
 
 
         switchStorage.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 if (!isExternalStorageGranted()) {
                     switchStorage.isChecked = false
-                    requestPermissions(
-                        arrayOf(
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE
-                        ),
-                        1000
-                    )
+                    Permissions.askPermission(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE), this)
                     if (isExternalStorageGranted()) {
                         isExternal = true
-                        val editor = sharedPrefs.edit()
-                        editor.putBoolean("isExternal", true)
-                        editor.apply()
+                        storageTypePreference.saveIsExternal(true)
                     } else {
                         switchStorage.isChecked = false
-                        val toast : Toast = Toast.makeText(this, "No permissions", Toast.LENGTH_SHORT)
-                        toast.show()
+                        showNoPermissionsToast()
                     }
                 } else {
                     isExternal = true
-                    val editor = sharedPrefs.edit()
-                    editor.putBoolean("isExternal", true)
-                    editor.apply()
+                    storageTypePreference.saveIsExternal(true)
                 }
             }
             if (!isChecked) {
                 isExternal = false
-                val editor = sharedPrefs.edit()
-                editor.putBoolean("isExternal", false)
-                editor.apply()
+                storageTypePreference.saveIsExternal(false)
             }
         })
 
@@ -82,5 +70,12 @@ class StorageTypeActivity : AppCompatActivity() {
         return checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun showNoPermissionsToast(){
+        Toast.makeText(this, "No permissions", Toast.LENGTH_SHORT).apply {
+            show()
+        }
+
     }
 }
