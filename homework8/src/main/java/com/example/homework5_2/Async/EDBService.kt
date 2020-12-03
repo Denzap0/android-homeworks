@@ -2,6 +2,7 @@ package com.example.homework5_2.Async
 
 import android.content.Context
 import com.example.homework5_2.Contact.Contact
+import io.reactivex.Completable
 
 interface EDBService {
 

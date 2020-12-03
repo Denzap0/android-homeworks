@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             val contact: Contact = data.getSerializableExtra("contact") as Contact
 
             contacts.add(contact)
-            Collections.sort(contacts, comparator)
+//            Collections.sort(contacts, comparator)
             adapter?.setContacts(contacts)
         }
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
