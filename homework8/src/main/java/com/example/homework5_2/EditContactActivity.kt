@@ -85,6 +85,10 @@ class EditContactActivity : AppCompatActivity() {
                 closeActivityRemove()
             }
 
+            override fun getContacts(contacts: MutableList<Contact>) {
+
+            }
+
         }
         when (asyncType.loadAsyncType()) {
             1 -> {
@@ -131,6 +135,10 @@ class EditContactActivity : AppCompatActivity() {
             override fun onStop() {
                 loadingDialog.dismissDialog()
                 closeActivityEdit(newContact)
+            }
+
+            override fun getContacts(contacts: MutableList<Contact>) {
+
             }
 
         }

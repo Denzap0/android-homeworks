@@ -131,6 +131,10 @@ class MainActivity : AppCompatActivity() {
                 showRecycler()
             }
 
+            override fun getContacts(contacts : MutableList<Contact>) {
+                this@MainActivity.contacts = contacts
+            }
+
         }
         if(asyncType.loadAsyncType() == 0){
             asyncType.saveAsyncType(1)
@@ -139,11 +143,11 @@ class MainActivity : AppCompatActivity() {
 
             1 -> {
                 val db  = DBThreadPoolExecutor((application as App).dbHelper, asyncCustomListener, Handler(mainLooper))as EDBService
-                db.getContactsFromDB(contacts)
+                db.getContactsFromDB()
             }
             2 -> {
                 val db = DBCompF_PoolExec(mainExecutor, (application as App).dbHelper, asyncCustomListener)as EDBService
-                db.getContactsFromDB(contacts)
+                db.getContactsFromDB()
             }
             3 -> {
                 val getCompletableListener = object : GetCompletableListener{
@@ -152,7 +156,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 val db = DBRxJava((application as App).dbHelper, asyncCustomListener, getCompletableListener) as EDBService
-                db.getContactsFromDB(contacts)
+                db.getContactsFromDB()
             }
         }
     }

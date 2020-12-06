@@ -9,4 +9,6 @@ interface AsyncCustomListener {
 
     fun onStop()
 
+    fun getContacts(contacts : MutableList<Contact>)
+
 }

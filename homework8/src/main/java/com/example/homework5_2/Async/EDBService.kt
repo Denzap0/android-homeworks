@@ -13,5 +13,5 @@ interface EDBService {
 
     fun deleteContactFromDB(contact: Contact)
 
-    fun getContactsFromDB(contacts : MutableList<Contact>)
+    fun getContactsFromDB()
 }

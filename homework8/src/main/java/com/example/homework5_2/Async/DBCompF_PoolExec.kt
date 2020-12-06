@@ -61,13 +61,15 @@ class DBCompF_PoolExec(
             }, mainExecutor)
     }
 
-    override fun getContactsFromDB(contacts: MutableList<Contact>) {
+    override fun getContactsFromDB() {
+        var contacts = mutableListOf<Contact>()
         future = CompletableFuture.supplyAsync({
             asyncCustomListener.onStart()
         }, mainExecutor)
             .thenApplyAsync {
-                DBService.getContactsFromDB(contacts, dbHelper)
+                contacts = DBService.getContactsFromDB(dbHelper)
             }.thenApplyAsync({
+                asyncCustomListener.getContacts(contacts)
                 asyncCustomListener.onStop()
                 true
             }, mainExecutor)

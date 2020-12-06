@@ -87,6 +87,10 @@ class AddContactActivity : AppCompatActivity() {
                 closeActivity(contactToAdd)
             }
 
+            override fun getContacts(contacts: MutableList<Contact>) {
+
+            }
+
         }
         when (asyncType.loadAsyncType()) {
             1 -> {

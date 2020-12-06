@@ -60,15 +60,17 @@ class DBThreadPoolExecutor(private val dbHelper: DBHelper, private val asyncCust
         ex.shutdown()
     }
 
-    override fun getContactsFromDB(contacts: MutableList<Contact>) {
+    override fun getContactsFromDB() {
+        var contacts = mutableListOf<Contact>()
         handler.post {
             asyncCustomListener.onStart()
         }
 
         ex.submit {
-            DBService.getContactsFromDB(contacts, dbHelper)
+            contacts = DBService.getContactsFromDB(dbHelper)
         }
         handler.post {
+            asyncCustomListener.getContacts(contacts)
             asyncCustomListener.onStop()
         }
         ex.shutdown()

@@ -68,7 +68,8 @@ class DBRxJava(private val dbHelper: DBHelper, private val asyncCustomListener: 
         getCompletableListener.getCompletable(completable)
     }
 
-    override fun getContactsFromDB(contacts: MutableList<Contact>) {
+    override fun getContactsFromDB() {
+        var contacts = mutableListOf<Contact>()
         completable = Completable.complete()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
@@ -76,12 +77,14 @@ class DBRxJava(private val dbHelper: DBHelper, private val asyncCustomListener: 
             }
             .subscribeOn(Schedulers.io())
             .doOnComplete{
-                DBService.getContactsFromDB(contacts, dbHelper)
+                contacts = DBService.getContactsFromDB(dbHelper)
             }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
+                asyncCustomListener.getContacts(contacts)
                 asyncCustomListener.onStop()
             }
         getCompletableListener.getCompletable(completable)
+
     }
 }

@@ -56,8 +56,8 @@ class DBService {
             )
         }
 
-        fun getContactsFromDB(contacts : MutableList<Contact>, dbHelper: DBHelper){
-            contacts.clear()
+        fun getContactsFromDB(dbHelper: DBHelper) : MutableList<Contact>{
+            val contacts = mutableListOf<Contact>()
             val cursor = dbHelper.writableDatabase?.query(
                 "ContactsBase",
                 null,
@@ -81,6 +81,7 @@ class DBService {
                 }
                 cursor.close()
             }
+            return contacts
         }
     }
 }
