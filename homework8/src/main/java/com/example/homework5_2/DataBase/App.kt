@@ -4,5 +4,5 @@ import android.app.Application
 
 class App : Application() {
 
-    val dbHelper : DBHelper? = DBHelper(this)
+    val dbHelper : DBHelper = DBHelper(this)
 }

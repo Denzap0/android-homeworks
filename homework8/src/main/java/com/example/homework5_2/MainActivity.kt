@@ -1,18 +1,26 @@
 package com.example.homework5_2
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.homework5_2.AlertDialogs.LoadingDialog
 import com.example.homework5_2.Async.DBCompF_PoolExec
 import com.example.homework5_2.Async.DBRxJava
 import com.example.homework5_2.Async.DBThreadPoolExecutor
+import com.example.homework5_2.Async.EDBService
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.Contact.ContactComparator
+import com.example.homework5_2.DataBase.App
+import com.example.homework5_2.Listeners.AsyncCustomListener
+import com.example.homework5_2.Listeners.GetCompletableListener
 import com.example.homework5_2.Settings.AsyncSettingsPreference
+import io.reactivex.Completable
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.Collections
 
@@ -110,45 +118,50 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, 2)
     }
 
-    private fun showRecycler(){
-        Collections.sort(contacts, comparator)
-        adapter = ContactsAdapter(contacts, listItemActionListener)
-        contacts_list.adapter = adapter
-        contacts_list.layoutManager =
-            LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-    }
-
     private fun getContactsWithSavedAsyncType(){
         val asyncType = AsyncSettingsPreference(getSharedPreferences("asyncType", MODE_PRIVATE))
+        val loadingDialog = LoadingDialog(this)
+        val asyncCustomListener = object : AsyncCustomListener{
+            override fun onStart() {
+                loadingDialog.startLoadingDialog()
+            }
+
+            override fun onStop() {
+                loadingDialog.dismissDialog()
+                showRecycler()
+            }
+
+        }
         if(asyncType.loadAsyncType() == 0){
             asyncType.saveAsyncType(1)
         }
         when(asyncType.loadAsyncType()){
 
             1 -> {
-                val db  = DBThreadPoolExecutor(this)
-                db.prepareHandler(mainLooper)
-                db.getContactsFromDB(contacts, applicationContext)
-                while (!db.isStopped()){
-                }
-                showRecycler()
+                val db  = DBThreadPoolExecutor((application as App).dbHelper, asyncCustomListener, Handler(mainLooper))as EDBService
+                db.getContactsFromDB(contacts)
             }
             2 -> {
-                val db = DBCompF_PoolExec(this@MainActivity, mainExecutor)
-                db.getContactsFromDB(contacts, applicationContext)
-                comparator = ContactComparator()
-                while (!db.isDone()){
-                }
-                showRecycler()
+                val db = DBCompF_PoolExec(mainExecutor, (application as App).dbHelper, asyncCustomListener)as EDBService
+                db.getContactsFromDB(contacts)
             }
             3 -> {
-                val db = DBRxJava()
-                db.getContactsFromDB(contacts, applicationContext)
-                db.getCompletable()
-                    .subscribe{
-                        showRecycler()
+                val getCompletableListener = object : GetCompletableListener{
+                    override fun getCompletable(completable: Completable) {
+                        completable.subscribe()
                     }
+                }
+                val db = DBRxJava((application as App).dbHelper, asyncCustomListener, getCompletableListener) as EDBService
+                db.getContactsFromDB(contacts)
             }
         }
+    }
+
+    private fun showRecycler(){
+        Collections.sort(contacts, comparator)
+        adapter = ContactsAdapter(contacts, listItemActionListener)
+        contacts_list.adapter = adapter
+        contacts_list.layoutManager =
+            LinearLayoutManager(this, RecyclerView.VERTICAL, false)
     }
 }

@@ -2,15 +2,16 @@ package com.example.homework5_2.Async
 
 import android.content.Context
 import com.example.homework5_2.Contact.Contact
+import com.example.homework5_2.DataBase.DBHelper
 import io.reactivex.Completable
 
 interface EDBService {
 
-    fun addContactToDB(contact: Contact, applicationContext: Context)
+    fun addContactToDB(contact: Contact)
 
-    fun updateContactInDB(oldContact: Contact, newContact: Contact, applicationContext: Context)
+    fun updateContactInDB(oldContact: Contact, newContact: Contact)
 
-    fun deleteContactFromDB(contact: Contact, applicationContext: Context)
+    fun deleteContactFromDB(contact: Contact)
 
-    fun getContactsFromDB(contacts : MutableList<Contact>, applicationContext: Context)
+    fun getContactsFromDB(contacts : MutableList<Contact>)
 }

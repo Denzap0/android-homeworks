@@ -1,53 +1,87 @@
 package com.example.homework5_2.Async
 
-import android.content.Context
 import com.example.homework5_2.Contact.Contact
+import com.example.homework5_2.DataBase.DBHelper
 import com.example.homework5_2.DataBase.DBService
+import com.example.homework5_2.Listeners.AsyncCustomListener
+import com.example.homework5_2.Listeners.GetCompletableListener
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class DBRxJava : EDBService {
+class DBRxJava(private val dbHelper: DBHelper, private val asyncCustomListener: AsyncCustomListener,private val getCompletableListener: GetCompletableListener) : EDBService {
 
     private lateinit var completable: Completable
 
-    public fun getCompletable(): Completable = completable
 
-    override fun addContactToDB(contact: Contact, applicationContext: Context) {
+    override fun addContactToDB(contact: Contact) {
         completable = Completable.complete()
-            .doOnComplete{
-                DBService.addContactToDB(contact,applicationContext)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                asyncCustomListener.onStart()
             }
             .subscribeOn(Schedulers.io())
+            .doOnComplete{
+                DBService.addContactToDB(contact,dbHelper)
+            }
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                asyncCustomListener.onStop()
+            }
+        getCompletableListener.getCompletable(completable)
     }
 
     override fun updateContactInDB(
         oldContact: Contact,
-        newContact: Contact,
-        applicationContext: Context
+        newContact: Contact
     ) {
         completable = Completable.complete()
-            .doOnComplete{
-            DBService.updateContactInDB(oldContact, newContact, applicationContext)
-
-        }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-
-    }
-
-    override fun deleteContactFromDB(contact: Contact, applicationContext: Context) {
-        completable = Completable.complete()
-            .doOnComplete{
-            DBService.deleteContactFromDB(contact, applicationContext)
-        }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    override fun getContactsFromDB(contacts: MutableList<Contact>, applicationContext: Context) {
-        completable = Completable.complete()
-            .doOnComplete { getContactsFromDB(contacts, applicationContext) }
+            .doOnComplete {
+                asyncCustomListener.onStart()
+            }
             .subscribeOn(Schedulers.io())
+            .doOnComplete{
+                DBService.updateContactInDB(oldContact, newContact, dbHelper)
+            }
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                asyncCustomListener.onStop()
+            }
+        getCompletableListener.getCompletable(completable)
+    }
+
+    override fun deleteContactFromDB(contact: Contact) {
+        completable = Completable.complete()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                asyncCustomListener.onStart()
+            }
+            .subscribeOn(Schedulers.io())
+            .doOnComplete{
+                DBService.deleteContactFromDB(contact, dbHelper)
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                asyncCustomListener.onStop()
+            }
+        getCompletableListener.getCompletable(completable)
+    }
+
+    override fun getContactsFromDB(contacts: MutableList<Contact>) {
+        completable = Completable.complete()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                asyncCustomListener.onStart()
+            }
+            .subscribeOn(Schedulers.io())
+            .doOnComplete{
+                DBService.getContactsFromDB(contacts, dbHelper)
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+                asyncCustomListener.onStop()
+            }
+        getCompletableListener.getCompletable(completable)
     }
 }

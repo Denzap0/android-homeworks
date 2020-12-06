@@ -17,13 +17,13 @@ class DBService {
         const val TABLE_COMMUNICATION = "communication"
         const val TABLE_CONNECT_TYPE = "connect_type"
 
-        fun addContactToDB(contact: Contact, applicationContext: Context) {
+        fun addContactToDB(contact: Contact, dbHelper: DBHelper) {
             val contentValues = ContentValues().apply {
                 put("name", contact.name)
                 put("communication", contact.communication)
                 put("connect_type", if (contact.connectType == ConnectType.PHONE) 0 else 1)
             }
-            (applicationContext as App).dbHelper?.writableDatabase?.insert(
+            dbHelper.writableDatabase?.insert(
                 "ContactsBase",
                 null,
                 contentValues
@@ -33,14 +33,14 @@ class DBService {
         fun updateContactInDB(
             oldContact: Contact,
             newContact: Contact,
-            applicationContext: Context
+            dbHelper: DBHelper
         ) {
             val contentValues = ContentValues().apply {
                 put("name", newContact.name)
                 put("communication", newContact.communication)
                 put("connect_type", if (newContact.connectType == ConnectType.PHONE) 0 else 1)
             }
-            (applicationContext as App).dbHelper?.writableDatabase?.update(
+            dbHelper.writableDatabase?.update(
                 "ContactsBase",
                 contentValues,
                 "name = ?",
@@ -48,17 +48,17 @@ class DBService {
             )
         }
 
-        fun deleteContactFromDB(contact: Contact, applicationContext: Context) {
-            (applicationContext as App).dbHelper?.writableDatabase?.delete(
+        fun deleteContactFromDB(contact: Contact, dbHelper: DBHelper) {
+            dbHelper.writableDatabase?.delete(
                 "ContactsBase",
                 "name = ?",
                 arrayOf(contact.name)
             )
         }
 
-        fun getContactsFromDB(contacts : MutableList<Contact>, applicationContext: Context){
+        fun getContactsFromDB(contacts : MutableList<Contact>, dbHelper: DBHelper){
             contacts.clear()
-            val cursor = (applicationContext as App).dbHelper?.writableDatabase?.query(
+            val cursor = dbHelper.writableDatabase?.query(
                 "ContactsBase",
                 null,
                 null,

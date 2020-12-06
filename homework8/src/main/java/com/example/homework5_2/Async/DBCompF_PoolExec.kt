@@ -7,101 +7,71 @@ import com.example.homework5_2.AlertDialogs.LoadingDialog
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.DataBase.App
+import com.example.homework5_2.DataBase.DBHelper
+import com.example.homework5_2.DataBase.DBService
+import com.example.homework5_2.Listeners.AsyncCustomListener
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 
-class DBCompF_PoolExec(private val activity: Activity, private val mainExecutor: Executor) : EDBService {
+class DBCompF_PoolExec(
+    private val mainExecutor: Executor,
+    private val dbHelper: DBHelper,
+    private val asyncCustomListener: AsyncCustomListener
+) : EDBService {
 
-    private lateinit var future : CompletableFuture<Boolean>
+    private lateinit var future: CompletableFuture<Boolean>
 
-    override fun addContactToDB(contact: Contact, applicationContext: Context) {
-        val loadingDialog = LoadingDialog(activity)
-        loadingDialog.startLoadingDialog()
-        future = CompletableFuture.runAsync {
-            val contentValues = ContentValues().apply {
-                put("name", contact.name)
-                put("communication", contact.communication)
-                put("connect_type", if (contact.connectType == ConnectType.PHONE) 0 else 1)
-            }
-            (applicationContext as App).dbHelper?.writableDatabase?.insert(
-                "ContactsBase",
-                null,
-                contentValues
-            )
-        }.thenApply { true }
-        loadingDialog.dismissDialog()
+    override fun addContactToDB(contact: Contact) {
+        future = CompletableFuture.supplyAsync({
+            asyncCustomListener.onStart()
+        }, mainExecutor)
+            .thenApplyAsync {
+            DBService.addContactToDB(contact, dbHelper)
+        }.thenApplyAsync({
+                asyncCustomListener.onStop()
+                true
+            }, mainExecutor)
     }
 
     override fun updateContactInDB(
         oldContact: Contact,
-        newContact: Contact,
-        applicationContext: Context
+        newContact: Contact
     ) {
-        val loadingDialog = LoadingDialog(activity)
-        loadingDialog.startLoadingDialog()
-        future = CompletableFuture.runAsync{
-            val contentValues = ContentValues().apply {
-                put("name", newContact.name)
-                put("communication", newContact.communication)
-                put("connect_type", if (newContact.connectType == ConnectType.PHONE) 0 else 1)
-            }
-            (applicationContext as App).dbHelper?.writableDatabase?.update(
-                "ContactsBase",
-                contentValues,
-                "name = ?",
-                arrayOf(oldContact.name)
-            )
-        }.thenApply { true }
-        loadingDialog.dismissDialog()
-    }
-
-    override fun deleteContactFromDB(contact: Contact, applicationContext: Context) {
-        val loadingDialog = LoadingDialog(activity)
-        loadingDialog.startLoadingDialog()
-        future = CompletableFuture.runAsync{
-            (applicationContext as App).dbHelper?.writableDatabase?.delete(
-                "ContactsBase",
-                "name = ?",
-                arrayOf(contact.name)
-            )
-        }.thenApply { true }
-        loadingDialog.dismissDialog()
-    }
-
-    override fun getContactsFromDB(contacts: MutableList<Contact>, applicationContext: Context) {
-        val loadingDialog = LoadingDialog(activity)
-        loadingDialog.startLoadingDialog()
-        future = CompletableFuture.supplyAsync {
-            contacts.clear()
-            val cursor = (applicationContext as App).dbHelper?.writableDatabase?.query(
-                "ContactsBase",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null)
-
-            if(cursor != null) {
-                val nameIndex = cursor.getColumnIndex("name")
-                val communicationIndex = cursor.getColumnIndex("communication")
-                val connectTypeIndex = cursor.getColumnIndex("connect_type")
-
-                while (cursor.moveToNext()){
-                    contacts.add(
-                        Contact(cursor.getString(nameIndex),
-                            cursor.getString(communicationIndex),
-                            if(cursor.getInt(connectTypeIndex) == 0) ConnectType.PHONE else ConnectType.EMAIL)
-                    )
-                }
-                cursor.close()
-            }
-            return@supplyAsync true
-        }
-        loadingDialog.dismissDialog()
+        future = CompletableFuture.supplyAsync({
+            asyncCustomListener.onStart()
+        }, mainExecutor)
+            .thenApplyAsync {
+                DBService.updateContactInDB(oldContact, newContact, dbHelper)
+            }.thenApplyAsync({
+                asyncCustomListener.onStop()
+                true
+            }, mainExecutor)
 
     }
 
-    public fun isDone() : Boolean = future.getNow(false)
+    override fun deleteContactFromDB(contact: Contact) {
+        future = CompletableFuture.supplyAsync({
+            asyncCustomListener.onStart()
+        }, mainExecutor)
+            .thenApplyAsync {
+                DBService.deleteContactFromDB(contact, dbHelper)
+            }.thenApplyAsync({
+                asyncCustomListener.onStop()
+                true
+            }, mainExecutor)
+    }
+
+    override fun getContactsFromDB(contacts: MutableList<Contact>) {
+        future = CompletableFuture.supplyAsync({
+            asyncCustomListener.onStart()
+        }, mainExecutor)
+            .thenApplyAsync {
+                DBService.getContactsFromDB(contacts, dbHelper)
+            }.thenApplyAsync({
+                asyncCustomListener.onStop()
+                true
+            }, mainExecutor)
+    }
 
 }
+
