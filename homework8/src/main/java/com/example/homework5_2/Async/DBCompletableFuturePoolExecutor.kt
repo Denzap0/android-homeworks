@@ -1,27 +1,21 @@
 package com.example.homework5_2.Async
 
-import android.app.Activity
-import android.content.ContentValues
-import android.content.Context
-import com.example.homework5_2.AlertDialogs.LoadingDialog
-import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
-import com.example.homework5_2.DataBase.App
 import com.example.homework5_2.DataBase.DBHelper
 import com.example.homework5_2.DataBase.DBService
+import com.example.homework5_2.Listeners.AsyncCustomGetContactsListener
 import com.example.homework5_2.Listeners.AsyncCustomListener
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 
-class DBCompF_PoolExec(
+class DBCompletableFuturePoolExecutor(
     private val mainExecutor: Executor,
-    private val dbHelper: DBHelper,
-    private val asyncCustomListener: AsyncCustomListener
+    private val dbHelper: DBHelper
 ) : EDBService {
 
     private lateinit var future: CompletableFuture<Boolean>
 
-    override fun addContactToDB(contact: Contact) {
+    override fun addContactToDB(contact: Contact,asyncCustomListener: AsyncCustomListener) {
         future = CompletableFuture.supplyAsync({
             asyncCustomListener.onStart()
         }, mainExecutor)
@@ -35,7 +29,8 @@ class DBCompF_PoolExec(
 
     override fun updateContactInDB(
         oldContact: Contact,
-        newContact: Contact
+        newContact: Contact,
+        asyncCustomListener: AsyncCustomListener
     ) {
         future = CompletableFuture.supplyAsync({
             asyncCustomListener.onStart()
@@ -49,7 +44,7 @@ class DBCompF_PoolExec(
 
     }
 
-    override fun deleteContactFromDB(contact: Contact) {
+    override fun deleteContactFromDB(contact: Contact, asyncCustomListener: AsyncCustomListener) {
         future = CompletableFuture.supplyAsync({
             asyncCustomListener.onStart()
         }, mainExecutor)
@@ -61,16 +56,15 @@ class DBCompF_PoolExec(
             }, mainExecutor)
     }
 
-    override fun getContactsFromDB() {
+    override fun getContactsFromDB(asyncCustomGetContactsListener: AsyncCustomGetContactsListener) {
         var contacts = mutableListOf<Contact>()
         future = CompletableFuture.supplyAsync({
-            asyncCustomListener.onStart()
+            asyncCustomGetContactsListener.onStart()
         }, mainExecutor)
             .thenApplyAsync {
                 contacts = DBService.getContactsFromDB(dbHelper)
             }.thenApplyAsync({
-                asyncCustomListener.getContacts(contacts)
-                asyncCustomListener.onStop()
+                asyncCustomGetContactsListener.onStop(contacts)
                 true
             }, mainExecutor)
     }

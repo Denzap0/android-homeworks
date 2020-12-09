@@ -1,17 +1,16 @@
 package com.example.homework5_2.Async
 
-import android.content.Context
 import com.example.homework5_2.Contact.Contact
-import com.example.homework5_2.DataBase.DBHelper
-import io.reactivex.Completable
+import com.example.homework5_2.Listeners.AsyncCustomGetContactsListener
+import com.example.homework5_2.Listeners.AsyncCustomListener
 
 interface EDBService {
 
-    fun addContactToDB(contact: Contact)
+    fun addContactToDB(contact: Contact, asyncCustomListener: AsyncCustomListener)
 
-    fun updateContactInDB(oldContact: Contact, newContact: Contact)
+    fun updateContactInDB(oldContact: Contact, newContact: Contact, asyncCustomListener: AsyncCustomListener)
 
-    fun deleteContactFromDB(contact: Contact)
+    fun deleteContactFromDB(contact: Contact, asyncCustomListener: AsyncCustomListener)
 
-    fun getContactsFromDB()
+    fun getContactsFromDB(asyncCustomGetContactsListener: AsyncCustomGetContactsListener)
 }

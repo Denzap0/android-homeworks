@@ -1,4 +1,4 @@
-package com.example.homework5_2
+package com.example.homework5_2.Visibility
 
 import android.os.Bundle
 import android.view.LayoutInflater

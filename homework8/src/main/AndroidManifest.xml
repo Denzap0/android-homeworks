@@ -10,21 +10,21 @@
         android:roundIcon="@mipmap/ic_launcher_contact_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.homework5_2.MainActivity">
+        <activity android:name="com.example.homework5_2.Visibility.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.homework5_2.AddContactActivity">
+        <activity android:name="com.example.homework5_2.Visibility.AddContactActivity">
 
         </activity>
-        <activity android:name="com.example.homework5_2.EditContactActivity">
+        <activity android:name="com.example.homework5_2.Visibility.EditContactActivity">
 
         </activity>
 
-        <activity android:name=".SettingsActivity">
+        <activity android:name=".Visibility.SettingsActivity">
 
         </activity>
     </application>

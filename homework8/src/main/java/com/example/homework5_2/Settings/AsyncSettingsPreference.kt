@@ -7,9 +7,10 @@ class AsyncSettingsPreference(preferences: SharedPreferences) {
     private val sharedPrefs = preferences
 
     public fun saveAsyncType(asyncType: Int){
-        val editor = sharedPrefs.edit()
-        editor.putInt("asyncType", asyncType)
-        editor.apply()
+        val editor = sharedPrefs.edit().apply{
+            putInt("asyncType", asyncType)
+            apply()
+        }
     }
 
     public fun loadAsyncType() : Int = sharedPrefs.getInt("asyncType", 0)

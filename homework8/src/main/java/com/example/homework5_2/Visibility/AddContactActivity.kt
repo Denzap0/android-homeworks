@@ -1,15 +1,14 @@
-package com.example.homework5_2
+package com.example.homework5_2.Visibility
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework5_2.AlertDialogs.AlertEmptyDialog
 import com.example.homework5_2.AlertDialogs.LoadingDialog
-import com.example.homework5_2.Async.DBCompF_PoolExec
+import com.example.homework5_2.Async.DBCompletableFuturePoolExecutor
 import com.example.homework5_2.Async.DBRxJava
 import com.example.homework5_2.Async.DBThreadPoolExecutor
 import com.example.homework5_2.Async.EDBService
@@ -17,9 +16,8 @@ import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.DataBase.App
 import com.example.homework5_2.Listeners.AsyncCustomListener
-import com.example.homework5_2.Listeners.GetCompletableListener
+import com.example.homework5_2.R
 import com.example.homework5_2.Settings.AsyncSettingsPreference
-import io.reactivex.Completable
 import kotlinx.android.synthetic.main.add_contact_activity.switchConnect
 import kotlinx.android.synthetic.main.add_contact_activity.edit_communication
 import kotlinx.android.synthetic.main.add_contact_activity.edit_name
@@ -77,53 +75,58 @@ class AddContactActivity : AppCompatActivity() {
     private fun addDBContactWithSavedAsyncType(contactToAdd: Contact) {
         val asyncType = AsyncSettingsPreference(getSharedPreferences("asyncType", MODE_PRIVATE))
         val loadingDialog = LoadingDialog(this)
-        val asyncCustomListener = object : AsyncCustomListener {
-            override fun onStart() {
-                loadingDialog.startLoadingDialog()
-            }
-
-            override fun onStop() {
-                loadingDialog.dismissDialog()
-                closeActivity(contactToAdd)
-            }
-
-            override fun getContacts(contacts: MutableList<Contact>) {
-
-            }
-
-        }
         when (asyncType.loadAsyncType()) {
             1 -> {
                 val threadForAdd = DBThreadPoolExecutor(
                     (application as App).dbHelper,
-                    asyncCustomListener,
                     Handler(mainLooper)
                 ).apply {
-                    addContactToDB(contactToAdd)
+                    addContactToDB(contactToAdd, object : AsyncCustomListener{
+                        override fun onStart() {
+                            loadingDialog.startLoadingDialog()
+                        }
+
+                        override fun onStop() {
+                            loadingDialog.dismissDialog()
+                            closeActivity(contactToAdd)
+                        }
+
+                    })
                 } as EDBService
 
             }
             2 -> {
-                val threadForAdd = DBCompF_PoolExec(
+                val threadForAdd = DBCompletableFuturePoolExecutor(
                     mainExecutor,
-                    (application as App).dbHelper,
-                    asyncCustomListener
+                    (application as App).dbHelper
                 ) as EDBService
-                threadForAdd.addContactToDB(contactToAdd)
-            }
-            3 -> {
-                val getCompletableListener = object : GetCompletableListener {
-                    override fun getCompletable(completable: Completable) {
-                        completable.subscribe()
+                threadForAdd.addContactToDB(contactToAdd, object : AsyncCustomListener{
+                    override fun onStart() {
+                        loadingDialog.startLoadingDialog()
                     }
 
-                }
+                    override fun onStop() {
+                        loadingDialog.dismissDialog()
+                        closeActivity(contactToAdd)
+                    }
+
+                })
+            }
+            3 -> {
                 val db = DBRxJava(
-                    (application as App).dbHelper,
-                    asyncCustomListener,
-                    getCompletableListener
+                    (application as App).dbHelper
                 ) as EDBService
-                db.addContactToDB(contactToAdd)
+                db.addContactToDB(contactToAdd,  object : AsyncCustomListener{
+                    override fun onStart() {
+                        loadingDialog.startLoadingDialog()
+                    }
+
+                    override fun onStop() {
+                        loadingDialog.dismissDialog()
+                        closeActivity(contactToAdd)
+                    }
+
+                })
             }
         }
     }

@@ -1,23 +1,22 @@
 package com.example.homework5_2.Async
 
 import android.os.Handler
-import android.os.Looper
-import com.example.homework5_2.AlertDialogs.LoadingDialog
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.DataBase.DBHelper
 import com.example.homework5_2.DataBase.DBService
+import com.example.homework5_2.Listeners.AsyncCustomGetContactsListener
 import com.example.homework5_2.Listeners.AsyncCustomListener
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
-class DBThreadPoolExecutor(private val dbHelper: DBHelper, private val asyncCustomListener: AsyncCustomListener, private val handler : Handler) :
+class DBThreadPoolExecutor(private val dbHelper: DBHelper, private val handler : Handler) :
     EDBService {
 
 
     private val ex = ThreadPoolExecutor(1, 3, 1, TimeUnit.MILLISECONDS, LinkedBlockingQueue())
 
-    override fun addContactToDB(contact: Contact) {
+    override fun addContactToDB(contact: Contact, asyncCustomListener : AsyncCustomListener) {
         handler.post {
             asyncCustomListener.onStart()
         }
@@ -32,7 +31,8 @@ class DBThreadPoolExecutor(private val dbHelper: DBHelper, private val asyncCust
 
     override fun updateContactInDB(
         oldContact: Contact,
-        newContact: Contact
+        newContact: Contact,
+        asyncCustomListener : AsyncCustomListener
     ) {
         handler.post {
             asyncCustomListener.onStart()
@@ -46,7 +46,7 @@ class DBThreadPoolExecutor(private val dbHelper: DBHelper, private val asyncCust
         ex.shutdown()
     }
 
-    override fun deleteContactFromDB(contact: Contact) {
+    override fun deleteContactFromDB(contact: Contact, asyncCustomListener : AsyncCustomListener) {
 
         handler.post {
             asyncCustomListener.onStart()
@@ -60,18 +60,17 @@ class DBThreadPoolExecutor(private val dbHelper: DBHelper, private val asyncCust
         ex.shutdown()
     }
 
-    override fun getContactsFromDB() {
+    override fun getContactsFromDB(asyncCustomGetContactsListener: AsyncCustomGetContactsListener) {
         var contacts = mutableListOf<Contact>()
         handler.post {
-            asyncCustomListener.onStart()
+            asyncCustomGetContactsListener.onStart()
         }
 
         ex.submit {
             contacts = DBService.getContactsFromDB(dbHelper)
         }
         handler.post {
-            asyncCustomListener.getContacts(contacts)
-            asyncCustomListener.onStop()
+            asyncCustomGetContactsListener.onStop(contacts)
         }
         ex.shutdown()
     }

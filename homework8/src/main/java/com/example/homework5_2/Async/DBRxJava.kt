@@ -3,19 +3,17 @@ package com.example.homework5_2.Async
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.DataBase.DBHelper
 import com.example.homework5_2.DataBase.DBService
+import com.example.homework5_2.Listeners.AsyncCustomGetContactsListener
 import com.example.homework5_2.Listeners.AsyncCustomListener
-import com.example.homework5_2.Listeners.GetCompletableListener
 import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class DBRxJava(private val dbHelper: DBHelper, private val asyncCustomListener: AsyncCustomListener,private val getCompletableListener: GetCompletableListener) : EDBService {
+class DBRxJava(private val dbHelper: DBHelper) : EDBService {
 
-    private lateinit var completable: Completable
-
-
-    override fun addContactToDB(contact: Contact) {
-        completable = Completable.complete()
+    override fun addContactToDB(contact: Contact, asyncCustomListener: AsyncCustomListener ) {
+        val completable = Completable.complete()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
                 asyncCustomListener.onStart()
@@ -27,15 +25,15 @@ class DBRxJava(private val dbHelper: DBHelper, private val asyncCustomListener: 
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
                 asyncCustomListener.onStop()
-            }
-        getCompletableListener.getCompletable(completable)
+            }.subscribe()
     }
 
     override fun updateContactInDB(
         oldContact: Contact,
-        newContact: Contact
+        newContact: Contact,
+        asyncCustomListener: AsyncCustomListener
     ) {
-        completable = Completable.complete()
+        val completable = Completable.complete()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
                 asyncCustomListener.onStart()
@@ -47,12 +45,11 @@ class DBRxJava(private val dbHelper: DBHelper, private val asyncCustomListener: 
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
                 asyncCustomListener.onStop()
-            }
-        getCompletableListener.getCompletable(completable)
+            }.subscribe()
     }
 
-    override fun deleteContactFromDB(contact: Contact) {
-        completable = Completable.complete()
+    override fun deleteContactFromDB(contact: Contact, asyncCustomListener: AsyncCustomListener) {
+        val completable = Completable.complete()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
                 asyncCustomListener.onStart()
@@ -64,27 +61,31 @@ class DBRxJava(private val dbHelper: DBHelper, private val asyncCustomListener: 
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
                 asyncCustomListener.onStop()
-            }
-        getCompletableListener.getCompletable(completable)
+            }.subscribe()
     }
 
-    override fun getContactsFromDB() {
+    override fun getContactsFromDB(asyncCustomGetContactsListener: AsyncCustomGetContactsListener) {
         var contacts = mutableListOf<Contact>()
-        completable = Completable.complete()
+//        val completable = Completable.complete()
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .doOnComplete {
+//                asyncCustomGetContactsListener.onStart()
+//            }
+//            .subscribeOn(Schedulers.io())
+//            .doOnComplete{
+//                contacts = DBService.getContactsFromDB(dbHelper)
+//            }
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .doOnComplete {
+//                asyncCustomGetContactsListener.onStop(contacts)
+//            }
+        asyncCustomGetContactsListener.onStart()
+        Single.create<MutableList<Contact>> {
+            DBService.getContactsFromDB(dbHelper)
+        }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete {
-                asyncCustomListener.onStart()
-            }
-            .subscribeOn(Schedulers.io())
-            .doOnComplete{
-                contacts = DBService.getContactsFromDB(dbHelper)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete {
-                asyncCustomListener.getContacts(contacts)
-                asyncCustomListener.onStop()
-            }
-        getCompletableListener.getCompletable(completable)
+            .map { filledContacts -> asyncCustomGetContactsListener.onStop(filledContacts)}
+            .subscribe()
 
     }
 }

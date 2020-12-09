@@ -1,4 +1,4 @@
-package com.example.homework5_2
+package com.example.homework5_2.Visibility
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework5_2.AlertDialogs.AlertEmptyDialog
 import com.example.homework5_2.AlertDialogs.LoadingDialog
-import com.example.homework5_2.Async.DBCompF_PoolExec
+import com.example.homework5_2.Async.DBCompletableFuturePoolExecutor
 import com.example.homework5_2.Async.DBRxJava
 import com.example.homework5_2.Async.DBThreadPoolExecutor
 import com.example.homework5_2.Async.EDBService
@@ -14,14 +14,9 @@ import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.DataBase.App
 import com.example.homework5_2.Listeners.AsyncCustomListener
-import com.example.homework5_2.Listeners.GetCompletableListener
+import com.example.homework5_2.R
 import com.example.homework5_2.Settings.AsyncSettingsPreference
-import io.reactivex.Completable
-import kotlinx.android.synthetic.main.edit_contact_activity.edit_button
-import kotlinx.android.synthetic.main.edit_contact_activity.edit_name
-import kotlinx.android.synthetic.main.edit_contact_activity.edit_communication
-import kotlinx.android.synthetic.main.edit_contact_activity.remove_contact
-import kotlinx.android.synthetic.main.edit_contact_activity.switchConnect
+import kotlinx.android.synthetic.main.edit_contact_activity.*
 
 class EditContactActivity : AppCompatActivity() {
 
@@ -75,51 +70,56 @@ class EditContactActivity : AppCompatActivity() {
     private fun deleteDBContactWithSavedAsyncType() {
         val asyncType = AsyncSettingsPreference(getSharedPreferences("asyncType", MODE_PRIVATE))
         val loadingDialog = LoadingDialog(this)
-        val asyncCustomListener = object : AsyncCustomListener {
-            override fun onStart() {
-                loadingDialog.startLoadingDialog()
-            }
-
-            override fun onStop() {
-                loadingDialog.dismissDialog()
-                closeActivityRemove()
-            }
-
-            override fun getContacts(contacts: MutableList<Contact>) {
-
-            }
-
-        }
         when (asyncType.loadAsyncType()) {
             1 -> {
                 val dbThreadPoolExecutor = DBThreadPoolExecutor(
                     (application as App).dbHelper,
-                    asyncCustomListener,
                     Handler(mainLooper)
                 )as EDBService
-                dbThreadPoolExecutor.deleteContactFromDB(contact)
-            }
-            2 -> {
-                val db = DBCompF_PoolExec(
-                    mainExecutor,
-                    (application as App).dbHelper,
-                    asyncCustomListener
-                )as EDBService
-                db.deleteContactFromDB(contact)
-            }
-            3 -> {
-                val getCompletableListener = object : GetCompletableListener {
-                    override fun getCompletable(completable: Completable) {
-                        completable.subscribe()
+                dbThreadPoolExecutor.deleteContactFromDB(contact, object : AsyncCustomListener{
+                    override fun onStart() {
+                        loadingDialog.startLoadingDialog()
                     }
 
-                }
-                val db = DBRxJava(
-                    (application as App).dbHelper,
-                    asyncCustomListener,
-                    getCompletableListener
+                    override fun onStop() {
+                        loadingDialog.dismissDialog()
+                        closeActivityRemove()
+                    }
+
+                })
+            }
+            2 -> {
+                val db = DBCompletableFuturePoolExecutor(
+                    mainExecutor,
+                    (application as App).dbHelper
                 )as EDBService
-                db.deleteContactFromDB(contact)
+                db.deleteContactFromDB(contact, object : AsyncCustomListener{
+                    override fun onStart() {
+                        loadingDialog.startLoadingDialog()
+                    }
+
+                    override fun onStop() {
+                        loadingDialog.dismissDialog()
+                        closeActivityRemove()
+                    }
+
+                })
+            }
+            3 -> {
+                val db = DBRxJava(
+                    (application as App).dbHelper
+                )as EDBService
+                db.deleteContactFromDB(contact, object : AsyncCustomListener{
+                    override fun onStart() {
+                        loadingDialog.startLoadingDialog()
+                    }
+
+                    override fun onStop() {
+                        loadingDialog.dismissDialog()
+                        closeActivityRemove()
+                    }
+
+                })
             }
         }
     }
@@ -127,7 +127,7 @@ class EditContactActivity : AppCompatActivity() {
     private fun updateDBContactWithSavedAsyncType(newContact: Contact) {
         val asyncType = AsyncSettingsPreference(getSharedPreferences("asyncType", MODE_PRIVATE))
         val loadingDialog = LoadingDialog(this)
-        val asyncCustomListener = object : AsyncCustomListener {
+        val asyncCustomListener = object : AsyncCustomListener{
             override fun onStart() {
                 loadingDialog.startLoadingDialog()
             }
@@ -137,37 +137,25 @@ class EditContactActivity : AppCompatActivity() {
                 closeActivityEdit(newContact)
             }
 
-            override fun getContacts(contacts: MutableList<Contact>) {
-
-            }
-
         }
         when (asyncType.loadAsyncType()) {
             1 -> {
                 val dbThreadPoolExecutor = DBThreadPoolExecutor(
                     (application as App).dbHelper,
-                    asyncCustomListener,
                     Handler(mainLooper)
                 )as EDBService
-                dbThreadPoolExecutor.updateContactInDB(contact, newContact)
+                dbThreadPoolExecutor.updateContactInDB(contact, newContact, asyncCustomListener)
             }
             2 -> {
-                val db = DBCompF_PoolExec(
+                val db = DBCompletableFuturePoolExecutor(
                     mainExecutor,
-                    (application as App).dbHelper,
-                    asyncCustomListener
+                    (application as App).dbHelper
                 )as EDBService
-                db.updateContactInDB(contact, newContact)
+                db.updateContactInDB(contact, newContact, asyncCustomListener)
             }
             3 -> {
-                val getCompletableListener = object : GetCompletableListener{
-                    override fun getCompletable(completable: Completable) {
-                        completable.subscribe()
-                    }
-
-                }
-                val db = DBRxJava((application as App).dbHelper, asyncCustomListener, getCompletableListener)as EDBService
-                db.updateContactInDB(contact,newContact)
+                val db = DBRxJava((application as App).dbHelper)as EDBService
+                db.updateContactInDB(contact,newContact, asyncCustomListener)
             }
         }
     }

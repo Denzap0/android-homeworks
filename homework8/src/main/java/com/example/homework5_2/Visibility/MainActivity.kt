@@ -1,6 +1,5 @@
-package com.example.homework5_2
+package com.example.homework5_2.Visibility
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -10,20 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework5_2.AlertDialogs.LoadingDialog
-import com.example.homework5_2.Async.DBCompF_PoolExec
-import com.example.homework5_2.Async.DBRxJava
-import com.example.homework5_2.Async.DBThreadPoolExecutor
-import com.example.homework5_2.Async.EDBService
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.Contact.ContactComparator
 import com.example.homework5_2.DataBase.App
-import com.example.homework5_2.Listeners.AsyncCustomListener
-import com.example.homework5_2.Listeners.GetCompletableListener
+import com.example.homework5_2.Factories.DbFactory
+import com.example.homework5_2.Listeners.AsyncCustomGetContactsListener
+import com.example.homework5_2.R
 import com.example.homework5_2.Settings.AsyncSettingsPreference
-import io.reactivex.Completable
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.add_contact_button
+import kotlinx.android.synthetic.main.activity_main.contacts_list
 import java.util.Collections
-
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
@@ -67,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 adapter?.filter?.filter(newText)
-                contacts_list!!.adapter = adapter
+                contacts_list.adapter = adapter
                 return false
             }
         })
@@ -83,14 +78,12 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             val contact: Contact = data.getSerializableExtra("contact") as Contact
-
             contacts.add(contact)
             Collections.sort(contacts, comparator)
             adapter?.setContacts(contacts)
         }
         if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
             var contact: Contact = data.getSerializableExtra("old_contact") as Contact
-
             val c = contacts.find { item -> item.name == contact.name }
             c?.run { contacts.remove(this) }
 
@@ -118,54 +111,49 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, 2)
     }
 
-    private fun getContactsWithSavedAsyncType(){
+    private fun getContactsWithSavedAsyncType() {
         val asyncType = AsyncSettingsPreference(getSharedPreferences("asyncType", MODE_PRIVATE))
         val loadingDialog = LoadingDialog(this)
-        val asyncCustomListener = object : AsyncCustomListener{
+
+        val asyncCustomGetContactsListener = object : AsyncCustomGetContactsListener{
             override fun onStart() {
                 loadingDialog.startLoadingDialog()
             }
 
-            override fun onStop() {
+            override fun onStop(contacts: MutableList<Contact>) {
                 loadingDialog.dismissDialog()
+                this@MainActivity.contacts = contacts
                 showRecycler()
             }
 
-            override fun getContacts(contacts : MutableList<Contact>) {
-                this@MainActivity.contacts = contacts
-            }
-
         }
-        if(asyncType.loadAsyncType() == 0){
+
+        if (asyncType.loadAsyncType() == 0) {
             asyncType.saveAsyncType(1)
         }
-        when(asyncType.loadAsyncType()){
+        when (asyncType.loadAsyncType()) {
 
             1 -> {
-                val db  = DBThreadPoolExecutor((application as App).dbHelper, asyncCustomListener, Handler(mainLooper))as EDBService
-                db.getContactsFromDB()
+                DbFactory.getDBThreadPoolExecutor((application as App).dbHelper, Handler(mainLooper)).getContactsFromDB(asyncCustomGetContactsListener)
             }
             2 -> {
-                val db = DBCompF_PoolExec(mainExecutor, (application as App).dbHelper, asyncCustomListener)as EDBService
-                db.getContactsFromDB()
+                DbFactory.getDBCompletableFuturePoolExecutor((application as App).dbHelper, mainExecutor)
+                    .getContactsFromDB(asyncCustomGetContactsListener)
             }
             3 -> {
-                val getCompletableListener = object : GetCompletableListener{
-                    override fun getCompletable(completable: Completable) {
-                        completable.subscribe()
-                    }
-                }
-                val db = DBRxJava((application as App).dbHelper, asyncCustomListener, getCompletableListener) as EDBService
-                db.getContactsFromDB()
+                DbFactory.getDBRXJava((application as App).dbHelper)
+                    .getContactsFromDB(asyncCustomGetContactsListener)
             }
         }
     }
 
-    private fun showRecycler(){
+    private fun showRecycler() {
         Collections.sort(contacts, comparator)
         adapter = ContactsAdapter(contacts, listItemActionListener)
         contacts_list.adapter = adapter
         contacts_list.layoutManager =
             LinearLayoutManager(this, RecyclerView.VERTICAL, false)
     }
+
+
 }
