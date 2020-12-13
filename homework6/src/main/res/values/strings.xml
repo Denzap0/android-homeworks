@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">homework6</string>
+    <string name="add_file">Add file</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="external">External</string>
+    <string name="internal">Internal</string>
+    <string name="add">Add</string>
+    <string name="back">Back</string>
+</resources>
