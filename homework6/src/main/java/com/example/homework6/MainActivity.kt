@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         if (File(storagePath, namesFile).exists()) {
             fileNames = readFileToList(namesFile)
         }
-        FileService.updateLocalFiles(fileNames,files,storagePath,filesRecyclerView,listItemActionListener )
+        updateLocalFiles(fileNames,files,storagePath,filesRecyclerView,listItemActionListener )
         filesRecyclerView.apply {
             adapter = FileRecyclerAdapter(files, listItemActionListener)
             layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
@@ -69,8 +69,8 @@ class MainActivity : AppCompatActivity() {
             if (File(storagePath, namesFile).exists()) {
                 fileNames = readFileToList(namesFile)
             }
-            FileService.updateFileNames(storagePath,namesFile,fileNames)
-            FileService.updateLocalFiles(fileNames,files,storagePath,filesRecyclerView,listItemActionListener)
+            updateFileNames(storagePath,namesFile,fileNames)
+            updateLocalFiles(fileNames,files,storagePath,filesRecyclerView,listItemActionListener)
         }
 
 
@@ -123,10 +123,10 @@ class MainActivity : AppCompatActivity() {
         val btn: Button = dialog!!.getButton(AlertDialog.BUTTON_POSITIVE)
         btn.setOnClickListener(View.OnClickListener {
             if (!fileNames.contains(editText.text.toString())) {
-                FileService.addFile(File(storagePath, editText.text.toString()), files, fileNames,storagePath)
-                FileService.addFileNameInFiles(editText.text.toString(), storagePath, namesFile)
-                FileService.updateFileNames(storagePath, namesFile,fileNames)
-                FileService.updateLocalFiles(fileNames, files,storagePath,filesRecyclerView,listItemActionListener)
+                addFile(File(storagePath, editText.text.toString()), files, fileNames,storagePath)
+                addFileNameInFiles(editText.text.toString(), storagePath, namesFile)
+                updateFileNames(storagePath, namesFile,fileNames)
+                updateLocalFiles(fileNames, files,storagePath,filesRecyclerView,listItemActionListener)
                 dialog.dismiss()
             } else {
                 textView.text = "File with this name already exist"
@@ -145,10 +145,10 @@ class MainActivity : AppCompatActivity() {
         fileNames.remove(oldFile.name)
         if (!data.getBooleanExtra("isRemove", false)) {
             val newFile: File = data.extras?.get("newFile") as File
-            FileService.addFile(newFile, files, fileNames, storagePath)
-            FileService.addFileNameInFiles(newFile.name, namesFile, namesFile)
+            addFile(newFile, files, fileNames, storagePath)
+            addFileNameInFiles(newFile.name, namesFile, namesFile)
         }
-        FileService.updateFileNames(storagePath, namesFile, fileNames)
-        FileService.updateLocalFiles(fileNames, files, storagePath, filesRecyclerView, listItemActionListener)
+        updateFileNames(storagePath, namesFile, fileNames)
+        updateLocalFiles(fileNames, files, storagePath, filesRecyclerView, listItemActionListener)
     }
 }
