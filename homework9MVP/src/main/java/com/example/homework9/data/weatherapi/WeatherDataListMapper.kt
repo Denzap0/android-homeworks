@@ -1,10 +1,10 @@
-package com.example.homework9.Model
+package com.example.homework9.data.weatherapi
 
-import android.util.Log
+import com.example.homework9.data.WeatherData
 import org.json.JSONObject
 import java.util.*
 
-class WeatherDataMapper : (String) -> List<WeatherData> {
+class WeatherDataListMapper : (String) -> List<WeatherData> {
     override fun invoke(json: String): List<WeatherData> {
         val hoursList = mutableListOf<WeatherData>()
         val articles = JSONObject(json).getJSONArray("hourly")

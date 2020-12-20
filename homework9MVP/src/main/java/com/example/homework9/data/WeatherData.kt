@@ -1,7 +1,6 @@
-package com.example.homework9.Model
+package com.example.homework9.data
 
-import java.util.*
-import java.util.concurrent.TimeUnit
+import java.util.Date
 
 data class WeatherData(
     val date: Date,
