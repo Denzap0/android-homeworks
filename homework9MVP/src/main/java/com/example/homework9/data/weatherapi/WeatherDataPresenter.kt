@@ -1,4 +1,4 @@
-package com.example.homework9.presentation.weatherlist
+package com.example.homework9.data.weatherapi
 
 import java.util.Date
 

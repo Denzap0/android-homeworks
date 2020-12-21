@@ -13,5 +13,9 @@ interface CityDao {
     fun addCity(cityBaseData: CityBaseData)
 
     @Query("SELECT * FROM cities_table ORDER BY id ASC")
-    fun readAllCities() : LiveData<List<CityBaseData>>
+    fun readAllCities() : List<CityBaseData>
+
+    @Query("SELECT * FROM cities_table WHERE name=:city")
+    fun getCityData(city : String) : CityBaseData
+
 }

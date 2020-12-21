@@ -13,7 +13,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/weatherList"
         android:layout_marginBottom="100dp"
         android:text=""
         android:textSize="40sp" />
@@ -49,7 +48,7 @@
 
 
     <FrameLayout
-        android:id="@+id/weatherList"
+        android:id="@+id/weatherListFragment"
         android:layout_width="400dp"
         android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"

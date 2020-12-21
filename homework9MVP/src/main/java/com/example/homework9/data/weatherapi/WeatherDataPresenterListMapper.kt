@@ -1,4 +1,4 @@
-package com.example.homework9.presentation.weatherlist
+package com.example.homework9.data.weatherapi
 
 import com.example.homework9.data.TempUnitType
 import com.example.homework9.data.WeatherData

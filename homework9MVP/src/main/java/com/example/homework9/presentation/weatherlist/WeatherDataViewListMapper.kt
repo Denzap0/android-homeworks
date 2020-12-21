@@ -1,5 +1,6 @@
 package com.example.homework9.presentation.weatherlist
 
+import com.example.homework9.data.weatherapi.WeatherDataPresenter
 import com.example.homework9.view.WeatherDataView
 
 class WeatherDataViewListMapper : (List<WeatherDataPresenter>) -> List<WeatherDataView> {
