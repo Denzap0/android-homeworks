@@ -9,13 +9,13 @@ import androidx.room.Query
 @Dao
 interface CityDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     fun addCity(cityBaseData: CityBaseData)
 
     @Query("SELECT * FROM cities_table ORDER BY id ASC")
     fun readAllCities() : List<CityBaseData>
 
-    @Query("SELECT * FROM cities_table WHERE name=:city")
-    fun getCityData(city : String) : CityBaseData
+    @Query("SELECT * FROM cities_table WHERE name = :city")
+    fun getCityData(city : String) : CityBaseData?
 
 }

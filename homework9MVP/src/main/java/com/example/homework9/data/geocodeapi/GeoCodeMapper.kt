@@ -4,7 +4,7 @@ import org.json.JSONObject
 
 class GeoCodeMapper : (String) -> Pair<Double, Double> {
     override fun invoke(json: String): Pair<Double, Double> = Pair(
-        JSONObject(json).getDouble("longt"),
-        JSONObject(json).getDouble("latt")
+        JSONObject(json).getDouble("latt"),
+        JSONObject(json).getDouble("longt")
     )
 }

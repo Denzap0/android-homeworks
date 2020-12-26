@@ -14,11 +14,11 @@ import com.example.homework9.databinding.WeatherListFragmentBinding
 import com.example.homework9.view.WeatherDataView
 import com.example.homework9.view.WeatherListAdapter
 
-class WeatherListFragment(application: Application): Fragment(), WeatherListView {
+class WeatherListFragment(application: Application,private val showWeather: ShowWeather): Fragment(), WeatherListView {
 
-    private val presenter = WeatherListPresenterImpl(this,application,)
+    private val presenter = WeatherListPresenterImpl(this, application)
     private lateinit var recyclerView: RecyclerView
-    private val weatherListAdapter by lazy { WeatherListAdapter {data -> } }
+    private val weatherListAdapter by lazy { WeatherListAdapter {data -> showWeather.showWeather(data) } }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +34,6 @@ class WeatherListFragment(application: Application): Fragment(), WeatherListView
             layoutManager = LinearLayoutManager(this@WeatherListFragment.context,RecyclerView.VERTICAL,false)
         }
         presenter.fetchWeatherList()
-
     }
 
     override fun onDestroyView() {
@@ -52,6 +51,7 @@ class WeatherListFragment(application: Application): Fragment(), WeatherListView
 
     override fun showWeatherList(weatherList: List<WeatherDataView>) {
         weatherListAdapter.updateItems(weatherList)
+        showWeather.showWeather(weatherList[0])
     }
 
     override fun onError(message: String) {

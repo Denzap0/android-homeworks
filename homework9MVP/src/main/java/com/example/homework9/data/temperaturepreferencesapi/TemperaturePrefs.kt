@@ -4,7 +4,7 @@ import com.example.homework9.data.TempUnitType
 
 interface TemperaturePrefs {
 
-    fun getTemperatureType() : TempUnitType
+    fun isCelsius() : Boolean
 
-    fun setTemperatureType(tempUnitType: TempUnitType)
+    fun setIsCelsius(isCelsius : Boolean)
 }

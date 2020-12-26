@@ -1,17 +1,15 @@
 package com.example.homework9.data.citiesbaseapi
 
-import android.util.Log
+import com.example.homework9.presentation.citieslist.CityDataPresenter
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
-class CitiesBaseRepository(private val cityDao : CityDao) {
+interface CitiesBaseRepository {
+    fun readAllCities() : Single<List<CityDataPresenter>>
 
-    val readAllCities = cityDao.readAllCities()
+    fun addCity(city : CityBaseData) : Completable
 
-    fun addCity(city : CityBaseData){
-        cityDao.addCity(city)
-    }
+    fun getCity(nameOfCity : String) : Single<CityBaseData>
 
-    fun getCity(nameOfCity : String) : Pair<Double,Double>? {
-        val city = cityDao.getCityData(nameOfCity)
-        return Pair(city.lat,city.lon)
-    }
+
 }

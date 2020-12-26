@@ -7,13 +7,7 @@ import io.reactivex.rxjava3.core.Single
 interface WeatherListPresenter {
     fun fetchWeatherList()
 
-    fun getCityCoordinates(city : String) : Single<Pair<Double,Double>>
-
-    fun getWeatherList(coordinatesPair : Pair<Double,Double>)
-
-    fun addCityIntoBase(cityBaseData: CityBaseData) : Completable
-
-    fun getCitiesFromBase() : Single<List<CityBaseData>>
+    fun showWeatherList(coordinatesPair : Pair<Double,Double>)
 
     fun close()
 }

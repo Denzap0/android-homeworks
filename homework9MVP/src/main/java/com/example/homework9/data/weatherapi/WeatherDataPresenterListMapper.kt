@@ -40,5 +40,5 @@ class WeatherDataPresenterListMapper(private val tempUnitType: TempUnitType) : (
 
     private fun kelvinToCelsius(kelvin : Double ) = kelvin - 273.15
 
-    private fun kelvinToFahrenheit(kelvin : Double ) = kelvin - 459.67
+    private fun kelvinToFahrenheit(kelvin : Double ) = (kelvin - 273.15) * (9/5) + 32
 }

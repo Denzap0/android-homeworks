@@ -9,27 +9,6 @@ import androidx.room.RoomDatabase
 abstract class CitiesRoomDataBase : RoomDatabase() {
 
     abstract fun cityDao(): CityDao
-//
-//    companion object {
-//        @Volatile
-//        private var INSTANCE: CitiesRoomDataBase? = null
-//
-//        fun getDataBase(context: Context): CitiesRoomDataBase {
-//            val tempInstance = INSTANCE
-//            if (tempInstance != null) {
-//                return tempInstance
-//            }
-//            synchronized(this) {
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    CitiesRoomDataBase::class.java,
-//                    "cities_table"
-//                ).build()
-//                INSTANCE = instance
-//                return instance
-//            }
-//        }
-//    }
 
     companion object {
         private var citiesRoomDataBase: CitiesRoomDataBase? = null

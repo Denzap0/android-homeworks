@@ -19,7 +19,7 @@ class GeoCodeAPIImpl : GeoCodeAPI {
                     emitter.onSuccess((response.body as ResponseBody).string())
                 }
             }else{
-                emitter.onError(Throwable("API RESPONSE ERROR ${response.code}"))
+                emitter.onError(Throwable("THERE IS NO CITY WITH THIS NAME ${response.code}"))
             }
         }.map { json -> geoCodeMapper(json) }
             .subscribeOn(Schedulers.io())
