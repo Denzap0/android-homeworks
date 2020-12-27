@@ -1,15 +1,13 @@
-package com.example.homework9.presentation.citieslist
+package com.example.homework9.presentation.citieslist.citylist
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import com.example.homework9.data.citiesbaseapi.CitiesBaseRepositoryImpl
 import com.example.homework9.data.citiesbaseapi.CitiesRoomDataBase
 import com.example.homework9.data.citiesbaseapi.CityBaseData
 import com.example.homework9.data.citypreferencesapi.ChosenCityPreferences
 import com.example.homework9.data.citypreferencesapi.ChosenCityPreferencesImpl
 import com.example.homework9.data.geocodeapi.GeoCodeAPIImpl
-import com.example.homework9.view.CityDataView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers

@@ -1,9 +1,8 @@
-package com.example.homework9.presentation.citieslist
+package com.example.homework9.presentation.citieslist.citylist
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.EditText
@@ -12,7 +11,8 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 
 class AddCityDialog(
-    private val presenter: CitiesActivityPresenter) : DialogFragment() {
+    private val presenter: CitiesActivityPresenter
+) : DialogFragment() {
     @SuppressLint("SetTextI18n")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogLayout = LinearLayout(context).apply {

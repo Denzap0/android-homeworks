@@ -1,4 +1,4 @@
-package com.example.homework9.presentation.citieslist
+package com.example.homework9.presentation.citieslist.citylist
 
 import com.example.homework9.view.CityDataView
 

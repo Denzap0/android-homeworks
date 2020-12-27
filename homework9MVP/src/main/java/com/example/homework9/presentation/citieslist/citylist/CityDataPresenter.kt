@@ -1,4 +1,4 @@
-package com.example.homework9.presentation.citieslist
+package com.example.homework9.presentation.citieslist.citylist
 
 class CityDataPresenter (
     val name: String,

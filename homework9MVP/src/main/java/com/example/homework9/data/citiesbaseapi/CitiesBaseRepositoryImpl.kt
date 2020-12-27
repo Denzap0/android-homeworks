@@ -1,7 +1,6 @@
 package com.example.homework9.data.citiesbaseapi
 
-import android.util.Log
-import com.example.homework9.presentation.citieslist.CityDataPresenter
+import com.example.homework9.presentation.citieslist.citylist.CityDataPresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single

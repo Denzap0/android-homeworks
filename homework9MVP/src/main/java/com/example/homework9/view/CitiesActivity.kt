@@ -1,18 +1,16 @@
 package com.example.homework9.view
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework9.R
 import com.example.homework9.databinding.CitiesActivityBinding
-import com.example.homework9.presentation.citieslist.AddCityDialog
-import com.example.homework9.presentation.citieslist.CitiesActivityPresenter
-import com.example.homework9.presentation.citieslist.CitiesActivityPresenterImpl
-import com.example.homework9.presentation.citieslist.CitiesListView
+import com.example.homework9.presentation.citieslist.citylist.AddCityDialog
+import com.example.homework9.presentation.citieslist.citylist.CitiesActivityPresenter
+import com.example.homework9.presentation.citieslist.citylist.CitiesActivityPresenterImpl
+import com.example.homework9.presentation.citieslist.citylist.CitiesListView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CitiesActivity() : AppCompatActivity(), CitiesListView {
