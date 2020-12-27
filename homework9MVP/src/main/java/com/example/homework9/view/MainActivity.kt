@@ -1,13 +1,17 @@
 package com.example.homework9.view
 
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.example.homework9.R
 import com.example.homework9.databinding.ActivityMainBinding
@@ -25,6 +29,7 @@ class MainActivity : AppCompatActivity(), ShowWeather {
     private lateinit var cityTemp : TextView
     private lateinit var weatherDesc : TextView
     private lateinit var weatherImageView: ImageView
+    private lateinit var progressBar : ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +40,16 @@ class MainActivity : AppCompatActivity(), ShowWeather {
         cityTemp = findViewById(R.id.cityTemperature)
         weatherDesc = findViewById(R.id.weatherDescription)
         weatherImageView = findViewById(R.id.weatherImage)
-        showWeatherListFragment()
+        progressBar = findViewById(R.id.progressBar)
+
         citiesActivityButton.setOnClickListener {
             val intent = Intent(this@MainActivity, CitiesActivity::class.java)
 //            intent.putExtra("notify", notify)
             startActivityForResult(intent, 1000)
         }
-
+        progressBar.visibility = View.VISIBLE
+        showWeatherListFragment()
+        progressBar.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
