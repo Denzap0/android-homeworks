@@ -10,20 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.homework9.R
-import com.example.homework9.data.TempUnitType
-import com.example.homework9.data.citiesbaseapi.CitiesBaseRepository
-import com.example.homework9.data.citiesbaseapi.CitiesBaseRepositoryImpl
-import com.example.homework9.data.citiesbaseapi.CitiesRoomDataBase
-import com.example.homework9.data.citiesbaseapi.CityBaseData
-import com.example.homework9.data.citiesbaseapi.CityDao
-import com.example.homework9.data.geocodeapi.GeoCodeAPIImpl
-import com.example.homework9.data.weatherapi.WeatherApiImpl
 import com.example.homework9.databinding.ActivityMainBinding
-import com.example.homework9.presentation.weatherlist.ShowWeather
-import com.example.homework9.presentation.weatherlist.WeatherListFragment
+import com.example.homework9.presentation.citieslist.weatherlist.ShowWeather
+import com.example.homework9.presentation.citieslist.weatherlist.WeatherListFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.time.LocalDateTime
-import java.util.*
 
 private const val ICONS_URL = "http://openweathermap.org/img/w/%s.png"
 
@@ -46,16 +36,25 @@ class MainActivity : AppCompatActivity(), ShowWeather {
         weatherDesc = findViewById(R.id.weatherDescription)
         weatherImageView = findViewById(R.id.weatherImage)
         showWeatherListFragment()
+        citiesActivityButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, CitiesActivity::class.java)
+//            intent.putExtra("notify", notify)
+            startActivityForResult(intent, 1000)
+        }
 
-//        citiesActivityButton.setOnClickListener {
-//            startActivity(Intent(this@MainActivity, CitiesActivity::class.java))
-//        }
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1000 && resultCode == 1){
+            supportFragmentManager.beginTransaction().replace(R.id.weatherListFragment, WeatherListFragment(application))
+                .commit()
+        }
     }
 
     private fun showWeatherListFragment(){
         supportFragmentManager.beginTransaction()
-            .add(R.id.weatherListFragment, WeatherListFragment(application, this))
+            .add(R.id.weatherListFragment, WeatherListFragment(application))
             .commit()
     }
 
@@ -69,7 +68,8 @@ class MainActivity : AppCompatActivity(), ShowWeather {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun showWeather(weatherDataView: WeatherDataView) {
+    override fun showWeather(weatherDataView: WeatherDataView, cityName : String) {
+        this@MainActivity.cityName.text = cityName
         cityTemp.text = weatherDataView.temperature.toString()
         weatherDesc.text = weatherDataView.weather
         Glide.with(this.applicationContext).load(ICONS_URL.format(weatherDataView.iconType)).into(weatherImageView)

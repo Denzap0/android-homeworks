@@ -17,6 +17,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class CitiesActivityPresenterImpl(
     private val cityListView: CitiesListView,
     private val application: Application
+
 ) : CitiesActivityPresenter {
 
     private val chosenCityPreferencesImpl: ChosenCityPreferences = ChosenCityPreferencesImpl(
@@ -25,7 +26,7 @@ class CitiesActivityPresenterImpl(
             Context.MODE_PRIVATE
         )
     )
-    private lateinit var citiesRepository: CitiesBaseRepositoryImpl
+    private var citiesRepository: CitiesBaseRepositoryImpl
     private val cityDataViewMapper = CityDataViewMapper()
     private val geoCodeAPI: GeoCodeAPIImpl = GeoCodeAPIImpl()
 
@@ -55,44 +56,37 @@ class CitiesActivityPresenterImpl(
                     getChosenCity()
                 )
             }, {
-                it
+
             })
         cityListView.onStopLoading()
     }
 
     override fun addCity(cityName: String): Boolean {
         cityListView.onStartLoading()
-        var citiesList: List<CityDataView>? = null
-        geoCodeAPI.getTopHeadLines(cityName).subscribe({ coordinatesPair ->
-            citiesRepository.addCity(
-                CityBaseData(
-                    5,
-                    cityName,
-                    coordinatesPair.first,
-                    coordinatesPair.second
-                )
-            ).subscribe({
-                citiesRepository.readAllCities().map { list ->
-                    cityDataViewMapper(list)
-                }.subscribe { list ->
-                    citiesList = list
-                    chosenCityPreferencesImpl.setCity(cityName)
-                    cityListView.showCitiesList(list, getChosenCity())
-                }
-            }, {
-                "hi"
-            })
+        var check = true
+        geoCodeAPI.getTopHeadLines(cityName).subscribe(
 
-        }, {
-
-        })
+            { pair ->
+                citiesRepository.addCity(CityBaseData(null, cityName, pair.first, pair.second))
+                    .subscribe(
+                        {
+                            citiesRepository.readAllCities()
+                                .map { list -> cityDataViewMapper(list) }
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe { list ->
+                                    setChosenCity(cityName)
+                                    cityListView.showCitiesList(list, cityName)
+                                }
+                        }, {
+                            check = false
+                        })
+            },
+            {
+                check = false
+            }
+        )
         cityListView.onStopLoading()
-        return if (citiesList != null) {
-            cityListView.showCitiesList(citiesList!!, cityName)
-            true
-        } else {
-            false
-        }
+        return check
     }
 
     override fun getChosenCity(): String {

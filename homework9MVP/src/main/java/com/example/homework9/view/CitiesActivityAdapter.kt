@@ -33,6 +33,11 @@ class CitiesActivityAdapter(
         notifyDataSetChanged()
     }
 
+    fun updateChosenCity(name : String){
+        chosenCityName = name
+        notifyDataSetChanged()
+    }
+
     class ItemViewHolder(
         private val binding : ItemCityBinding,
         private val itemClickListener : (CityDataView) -> Unit
@@ -41,6 +46,7 @@ class CitiesActivityAdapter(
             with(binding){
                 cityName.text = cityDataView.name
                 isChosenCheck.visibility = if(isChosen) View.VISIBLE else View.INVISIBLE
+                root.setOnClickListener { itemClickListener(cityDataView) }
             }
         }
     }

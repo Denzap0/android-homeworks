@@ -20,18 +20,12 @@ class CitiesBaseRepositoryImpl(private val cityDao : CityDao) : CitiesBaseReposi
 
     override fun addCity(city : CityBaseData) : Completable =
         Completable.create {emitter ->
-//            if(cityDao.getCityData(city.name) == null){
-//                cityDao.addCity(city)
-//                if (cityDao.getCityData(city.name) != null){
-//                    emitter.onComplete()
-//                }else{
-//                    emitter.onError(Throwable("DB ADD ERROR"))
-//                }
-//
-//            }else{
-//                emitter.onError(Throwable("THIS CITY ALREADY EXIST"))
-//            }
-            cityDao.addCity(city)
+            if(cityDao.getCityData(city.name) == null){
+                cityDao.addCity(city)
+                emitter.onComplete()
+            }else{
+                emitter.onError(Throwable("THIS CITY ALREADY EXIST"))
+            }
 
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

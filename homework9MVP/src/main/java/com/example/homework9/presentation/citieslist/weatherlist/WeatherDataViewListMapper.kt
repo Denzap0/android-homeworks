@@ -1,14 +1,13 @@
-package com.example.homework9.presentation.weatherlist
+package com.example.homework9.presentation.citieslist.weatherlist
 
 import com.example.homework9.data.weatherapi.WeatherDataPresenter
-import com.example.homework9.view.WeatherDataView
 
-class WeatherDataViewListMapper : (List<WeatherDataPresenter>) -> List<WeatherDataView> {
-    override fun invoke(listWeatherDataPresenter: List<WeatherDataPresenter>): List<WeatherDataView> {
-        val listWeatherDataView = mutableListOf<WeatherDataView>()
+class WeatherDataViewListMapper : (List<WeatherDataPresenter>) -> List<com.example.homework9.view.WeatherDataView> {
+    override fun invoke(listWeatherDataPresenter: List<WeatherDataPresenter>): List<com.example.homework9.view.WeatherDataView> {
+        val listWeatherDataView = mutableListOf<com.example.homework9.view.WeatherDataView>()
         for (i in listWeatherDataPresenter.indices) {
             listWeatherDataView.add(
-                WeatherDataView(
+                com.example.homework9.view.WeatherDataView(
                     date = listWeatherDataPresenter[i].date,
                     temperature = listWeatherDataPresenter[i].temperature,
                     weather = listWeatherDataPresenter[i].weather,

@@ -1,4 +1,4 @@
-package com.example.homework9.presentation.weatherlist
+package com.example.homework9.presentation.citieslist.weatherlist
 
 import com.example.homework9.data.citiesbaseapi.CityBaseData
 import io.reactivex.rxjava3.core.Completable

@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.homework9.databinding.ItemWeatherBinding
-import io.reactivex.rxjava3.core.Completable
 import java.text.SimpleDateFormat
 private const val ICONS_URL = "http://openweathermap.org/img/w/%s.png"
 class WeatherListAdapter(private val itemClickListener: (WeatherDataView) -> Unit) :
