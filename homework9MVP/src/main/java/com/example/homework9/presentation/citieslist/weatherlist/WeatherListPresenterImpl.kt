@@ -2,7 +2,6 @@ package com.example.homework9.presentation.citieslist.weatherlist
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import com.example.homework9.data.TempUnitType
 import com.example.homework9.data.citiesbaseapi.CitiesBaseRepositoryImpl
 import com.example.homework9.data.citiesbaseapi.CitiesRoomDataBase
@@ -14,7 +13,6 @@ import com.example.homework9.data.temperaturepreferencesapi.TemperaturePrefsAPII
 import com.example.homework9.data.weatherapi.WeatherAPI
 import com.example.homework9.data.weatherapi.WeatherApiImpl
 import com.example.homework9.data.weatherapi.WeatherDataPresenter
-import com.example.homework9.view.CityChangedNotify
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable

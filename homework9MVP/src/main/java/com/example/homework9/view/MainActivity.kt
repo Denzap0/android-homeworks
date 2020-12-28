@@ -1,17 +1,14 @@
 package com.example.homework9.view
 
-import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.example.homework9.R
 import com.example.homework9.databinding.ActivityMainBinding
