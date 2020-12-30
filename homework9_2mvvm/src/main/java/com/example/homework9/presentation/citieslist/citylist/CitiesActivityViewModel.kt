@@ -1,6 +1,6 @@
 package com.example.homework9.presentation.citieslist.citylist
 
-interface CitiesActivityPresenter {
+interface CitiesActivityViewModel {
 
     fun fetchCitiesList()
 

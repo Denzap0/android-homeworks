@@ -40,6 +40,7 @@ class WeatherListPresenterImpl(
         )
     )
 
+
     init {
         val cityDao = CitiesRoomDataBase.getInstance(application).cityDao()
         repository = CitiesBaseRepositoryImpl(cityDao)
@@ -72,7 +73,7 @@ class WeatherListPresenterImpl(
 
     override fun showWeatherList(coordinatesPair: Pair<Double, Double>) {
 
-        weatherApi.getTopHeadLines(coordinatesPair, if(temperaturePrefs.isCelsius()) TempUnitType.CELSIUS else TempUnitType.FAHRENHEIT)
+        disposable = weatherApi.getTopHeadLines(coordinatesPair, if(temperaturePrefs.isCelsius()) TempUnitType.CELSIUS else TempUnitType.FAHRENHEIT)
             .subscribeOn(Schedulers.computation())
             .map { data -> weatherViewListMapper(data) }
             .observeOn(AndroidSchedulers.mainThread())

@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.homework9.R
 import com.example.homework9.databinding.CitiesActivityBinding
 import com.example.homework9.presentation.citieslist.citylist.AddCityDialog
-import com.example.homework9.presentation.citieslist.citylist.CitiesActivityPresenter
-import com.example.homework9.presentation.citieslist.citylist.CitiesActivityPresenterImpl
+import com.example.homework9.presentation.citieslist.citylist.CitiesActivityViewModel
+import com.example.homework9.presentation.citieslist.citylist.CitiesActivityViewModelmpl
 import com.example.homework9.presentation.citieslist.citylist.CitiesListView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CitiesActivity() : AppCompatActivity(), CitiesListView {
 
-    private lateinit var presenter : CitiesActivityPresenter
+    private lateinit var viewModel : CitiesActivityViewModel
     private lateinit var binding : CitiesActivityBinding
     private lateinit var recyclerView : RecyclerView
     private lateinit var adapter : CitiesActivityAdapter
@@ -28,14 +28,14 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
         setContentView(R.layout.cities_activity)
 
         binding = CitiesActivityBinding.inflate(layoutInflater)
-        presenter = CitiesActivityPresenterImpl(this, application)
+        viewModel = CitiesActivityViewModelmpl(this, application)
         addCityButton = findViewById(R.id.addCityButton)
         recyclerView = findViewById(R.id.citiesRecyclerView)
         saveButton = findViewById(R.id.save_button)
         adapter = CitiesActivityAdapter({data ->
-            presenter.setChosenCity(data.name)
+            viewModel.setChosenCity(data.name)
             adapter.updateChosenCity(data.name)
-        }, presenter.getChosenCity())
+        }, viewModel.getChosenCity())
         recyclerView.apply {
             adapter = this@CitiesActivity.adapter
             layoutManager = LinearLayoutManager(this@CitiesActivity, RecyclerView.VERTICAL, false)
@@ -48,7 +48,7 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
         addCityButton.setOnClickListener {
             showAddCityDialog()
         }
-        presenter.fetchCitiesList()
+        viewModel.fetchCitiesList()
     }
 
     override fun onStartLoading() {
@@ -68,7 +68,7 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
     }
 
     private fun showAddCityDialog(){
-        val addCityDialog = AddCityDialog(presenter)
+        val addCityDialog = AddCityDialog(viewModel)
         addCityDialog.show(supportFragmentManager, "dialog")
     }
 

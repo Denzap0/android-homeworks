@@ -69,7 +69,9 @@ class MainActivity : AppCompatActivity(), ShowWeather {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        startActivity(Intent(this@MainActivity, TemperatureTypeActivity::class.java))
+        if(item.itemId == R.menu.temperature_type_menu) {
+            startActivity(Intent(this@MainActivity, TemperatureTypeActivity::class.java))
+        }
         return super.onOptionsItemSelected(item)
     }
 

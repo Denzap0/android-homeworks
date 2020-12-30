@@ -1,11 +1,12 @@
-package com.example.homework9.presentation.citieslist.weatherlist
+package com.example.homework9.presentation.citieslist.citylist
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.homework9.presentation.citieslist.weatherlist.ViewModelFactory
 
-class ViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+class CitiesViewModelFactory(private val application: Application) : ViewModelProvider.Factory
+{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         modelClass.getConstructor(Application::class.java).newInstance(application)
-
 }

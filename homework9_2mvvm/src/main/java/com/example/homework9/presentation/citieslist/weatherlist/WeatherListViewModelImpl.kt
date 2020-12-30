@@ -70,14 +70,14 @@ class WeatherListViewModelImpl(
             }.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { coordinatesPair ->
-                    showWeatherList(coordinatesPair)
+                    showWeatherList(coordinatesPair, city)
                 }
         }
     }
 
-    override fun showWeatherList(coordinatesPair: Pair<Double, Double>) {
+    override fun showWeatherList(coordinatesPair: Pair<Double, Double>, cityName : String) {
 
-        disposable = weatherApi.getTopHeadLines(coordinatesPair, if(temperaturePrefs.isCelsius()) TempUnitType.CELSIUS else TempUnitType.FAHRENHEIT)
+        disposable = weatherApi.getTopHeadLines(coordinatesPair, if(temperaturePrefs.isCelsius()) TempUnitType.CELSIUS else TempUnitType.FAHRENHEIT, cityName)
             .subscribeOn(Schedulers.computation())
             .map { data -> weatherViewListMapper(data) }
             .observeOn(AndroidSchedulers.mainThread())
@@ -86,7 +86,7 @@ class WeatherListViewModelImpl(
                     mutableWeatherListLiveData.value = weatherList
                 },
                 {
-                    Log.d("AAAA", it.toString())
+                    Throwable(it)
                 }
             )
     }

@@ -12,11 +12,11 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class CitiesActivityPresenterImpl(
+class CitiesActivityViewModelmpl(
     private val cityListView: CitiesListView,
     private val application: Application
 
-) : CitiesActivityPresenter {
+) : CitiesActivityViewModel {
 
     private val chosenCityPreferencesImpl: ChosenCityPreferences = ChosenCityPreferencesImpl(
         application.getSharedPreferences(

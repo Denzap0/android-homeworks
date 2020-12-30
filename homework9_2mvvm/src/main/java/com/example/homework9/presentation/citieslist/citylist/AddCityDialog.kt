@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 
 class AddCityDialog(
-    private val presenter: CitiesActivityPresenter
+    private val presenter: CitiesActivityViewModel
 ) : DialogFragment() {
     @SuppressLint("SetTextI18n")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
