@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), ShowWeather {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 1000 && resultCode == 1){
+        if((requestCode == 1000 || requestCode == 999) && resultCode == 1){
             supportFragmentManager.beginTransaction().replace(R.id.weatherListFragment, WeatherListFragment(application))
                 .commit()
         }
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity(), ShowWeather {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        startActivity(Intent(this@MainActivity, TemperatureTypeActivity::class.java))
+        startActivityForResult(Intent(this@MainActivity, TemperatureTypeActivity::class.java), 999)
         return super.onOptionsItemSelected(item)
     }
 

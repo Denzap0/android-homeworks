@@ -32,7 +32,7 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
 
         citiesViewModelFactory = CitiesViewModelFactory(application)
         initViewModel()
-        binding = CitiesActivityBinding.inflate(layoutInflater)
+        binding = CitiesaActivityBinding.inflate(layoutInflater)
         addCityButton = findViewById(R.id.addCityButton)
         recyclerView = findViewById(R.id.citiesRecyclerView)
         saveButton = findViewById(R.id.save_button)
