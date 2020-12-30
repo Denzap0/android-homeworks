@@ -2,21 +2,24 @@ package com.example.homework9.presentation.citieslist.citylist
 
 import android.app.Application
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.homework9.data.citiesbaseapi.CitiesBaseRepositoryImpl
 import com.example.homework9.data.citiesbaseapi.CitiesRoomDataBase
 import com.example.homework9.data.citiesbaseapi.CityBaseData
 import com.example.homework9.data.citypreferencesapi.ChosenCityPreferences
 import com.example.homework9.data.citypreferencesapi.ChosenCityPreferencesImpl
 import com.example.homework9.data.geocodeapi.GeoCodeAPIImpl
+import com.example.homework9.view.CityDataView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class CitiesActivityViewModelmpl(
-    private val cityListView: CitiesListView,
     private val application: Application
 
-) : CitiesActivityViewModel {
+) : CitiesActivityViewModel, ViewModel() {
 
     private val chosenCityPreferencesImpl: ChosenCityPreferences = ChosenCityPreferencesImpl(
         application.getSharedPreferences(
@@ -27,6 +30,12 @@ class CitiesActivityViewModelmpl(
     private var citiesRepository: CitiesBaseRepositoryImpl
     private val cityDataViewMapper = CityDataViewMapper()
     private val geoCodeAPI: GeoCodeAPIImpl = GeoCodeAPIImpl()
+    private val citiesMutableLiveData = MutableLiveData<List<CityDataView>>()
+    public val citiesLiveData : LiveData<List<CityDataView>> = citiesMutableLiveData
+    private val isAddCityCompletedMutLiveData = MutableLiveData<Boolean>()
+    public val isAddCityCompletedMLiveData : LiveData<Boolean> = isAddCityCompletedMutLiveData
+    private val chosenCityMutLiveData = MutableLiveData<String>()
+    public val chosenCityLiveData : LiveData<String> = chosenCityMutLiveData
 
     init {
         val cityDao = CitiesRoomDataBase.getInstance(application.baseContext).cityDao()
@@ -34,7 +43,6 @@ class CitiesActivityViewModelmpl(
     }
 
     override fun fetchCitiesList() {
-        cityListView.onStartLoading()
         Single.create<List<CityDataPresenter>> { emitter ->
             citiesRepository.readAllCities().subscribe { list ->
                 if (list != null) {
@@ -49,18 +57,14 @@ class CitiesActivityViewModelmpl(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ list ->
-                cityListView.showCitiesList(
-                    list,
-                    getChosenCity()
-                )
+                citiesMutableLiveData.value = list
+                chosenCityMutLiveData.value = getChosenCity()
             }, {
 
             })
-        cityListView.onStopLoading()
     }
 
     override fun addCity(cityName: String): Boolean {
-        cityListView.onStartLoading()
         var check = true
         geoCodeAPI.getTopHeadLines(cityName).subscribe(
 
@@ -73,7 +77,8 @@ class CitiesActivityViewModelmpl(
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe { list ->
                                     setChosenCity(cityName)
-                                    cityListView.showCitiesList(list, cityName)
+                                    citiesMutableLiveData.value = list
+                                    chosenCityMutLiveData.value = cityName
                                 }
                         }, {
                             check = false
@@ -83,7 +88,6 @@ class CitiesActivityViewModelmpl(
                 check = false
             }
         )
-        cityListView.onStopLoading()
         return check
     }
 

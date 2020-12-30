@@ -3,6 +3,7 @@ package com.example.homework9.view
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework9.R
@@ -11,6 +12,7 @@ import com.example.homework9.presentation.citieslist.citylist.AddCityDialog
 import com.example.homework9.presentation.citieslist.citylist.CitiesActivityViewModel
 import com.example.homework9.presentation.citieslist.citylist.CitiesActivityViewModelmpl
 import com.example.homework9.presentation.citieslist.citylist.CitiesListView
+import com.example.homework9.presentation.citieslist.citylist.CitiesViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CitiesActivity() : AppCompatActivity(), CitiesListView {
@@ -21,14 +23,16 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
     private lateinit var adapter : CitiesActivityAdapter
     private lateinit var addCityButton : FloatingActionButton
     private lateinit var saveButton : Button
+    private lateinit var citiesViewModelFactory : CitiesViewModelFactory
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.cities_activity)
 
+        citiesViewModelFactory = CitiesViewModelFactory(application)
+        initViewModel()
         binding = CitiesActivityBinding.inflate(layoutInflater)
-        viewModel = CitiesActivityViewModelmpl(this, application)
         addCityButton = findViewById(R.id.addCityButton)
         recyclerView = findViewById(R.id.citiesRecyclerView)
         saveButton = findViewById(R.id.save_button)
@@ -70,6 +74,11 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
     private fun showAddCityDialog(){
         val addCityDialog = AddCityDialog(viewModel)
         addCityDialog.show(supportFragmentManager, "dialog")
+    }
+
+    private fun initViewModel(){
+        viewModel = ViewModelProvider(this, citiesViewModelFactory).get(CitiesActivityViewModelmpl::class.java)
+        (viewModel as CitiesActivityViewModelmpl).citiesLiveData.observe(this, {data -> showCitiesList(data, viewModel.getChosenCity())})
     }
 
 }
