@@ -33,11 +33,7 @@ class AddCityDialog(
         builder.setOnShowListener {
             val btn = (builder as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
             btn.setOnClickListener {
-                if (!presenter.addCity(editCityName.text.toString())){
-                    errorTextView.text = "There is no this name or name already exist "
-                }else{
-                    builder.dismiss()
-                }
+                presenter.addCity(editCityName.text.toString())
             }
         }
         return builder

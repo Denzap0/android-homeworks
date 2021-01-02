@@ -4,5 +4,5 @@ interface ChosenCityPreferences {
 
     fun setCity(city : String)
 
-    fun getCity() : String?
+    fun getCity() : String
 }

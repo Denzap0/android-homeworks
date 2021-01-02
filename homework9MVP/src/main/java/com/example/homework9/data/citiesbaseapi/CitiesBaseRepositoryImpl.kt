@@ -1,10 +1,10 @@
 package com.example.homework9.data.citiesbaseapi
 
 import com.example.homework9.presentation.citieslist.citylist.CityDataPresenter
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+
 
 class CitiesBaseRepositoryImpl(private val cityDao : CityDao) : CitiesBaseRepository {
 
@@ -15,7 +15,6 @@ class CitiesBaseRepositoryImpl(private val cityDao : CityDao) : CitiesBaseReposi
             emitter.onSuccess(cityDao.readAllCities())
         }.map { list -> cityDataPresenterListMapper(list) }
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
 
     override fun addCity(city : CityBaseData) : Completable =
         Completable.create {emitter ->
@@ -27,7 +26,6 @@ class CitiesBaseRepositoryImpl(private val cityDao : CityDao) : CitiesBaseReposi
             }
 
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
 
 
     override fun getCity(nameOfCity : String) : Single<CityBaseData> =
@@ -39,7 +37,6 @@ class CitiesBaseRepositoryImpl(private val cityDao : CityDao) : CitiesBaseReposi
                 emitter.onError(Throwable("THERE IS NO CITY WITH THIS NAME"))
             }
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
 
 
 }

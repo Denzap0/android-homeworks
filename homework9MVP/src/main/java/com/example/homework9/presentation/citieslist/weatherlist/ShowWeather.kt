@@ -5,5 +5,5 @@ import com.example.homework9.view.WeatherDataView
 
 interface ShowWeather {
 
-    fun showWeather(weatherDataView: WeatherDataView, cityName : String)
+    fun showWeather(weatherDataView: WeatherDataView)
 }

@@ -21,6 +21,8 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
     private lateinit var adapter : CitiesActivityAdapter
     private lateinit var addCityButton : FloatingActionButton
     private lateinit var saveButton : Button
+    private lateinit var addCityDialog : AddCityDialog
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +34,11 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
         addCityButton = findViewById(R.id.addCityButton)
         recyclerView = findViewById(R.id.citiesRecyclerView)
         saveButton = findViewById(R.id.save_button)
+        addCityDialog = AddCityDialog(presenter)
         adapter = CitiesActivityAdapter({data ->
             presenter.setChosenCity(data.name)
             adapter.updateChosenCity(data.name)
-        }, presenter.getChosenCity())
+        }, presenter.getChosenCity()!!)
         recyclerView.apply {
             adapter = this@CitiesActivity.adapter
             layoutManager = LinearLayoutManager(this@CitiesActivity, RecyclerView.VERTICAL, false)
@@ -46,30 +49,17 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
             finish()
         }
         addCityButton.setOnClickListener {
-            showAddCityDialog()
+            addCityDialog.show(supportFragmentManager,"Add city")
         }
         presenter.fetchCitiesList()
-    }
-
-    override fun onStartLoading() {
-
-    }
-
-    override fun onStopLoading() {
-
-    }
-
-    override fun onError(message: String) {
-
     }
 
     override fun showCitiesList(citiesList: List<CityDataView>, chosenCityName : String) {
         adapter.updateCitiesList(citiesList, chosenCityName)
     }
 
-    private fun showAddCityDialog(){
-        val addCityDialog = AddCityDialog(presenter)
-        addCityDialog.show(supportFragmentManager, "dialog")
+    override fun closeDialog() {
+        addCityDialog.dismiss()
     }
 
 }

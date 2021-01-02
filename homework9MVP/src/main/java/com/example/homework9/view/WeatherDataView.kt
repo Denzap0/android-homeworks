@@ -1,10 +1,11 @@
 package com.example.homework9.view
 
-import java.util.Date
+import java.util.*
 
- class WeatherDataView (
+class WeatherDataView(
+    val name: String,
     val date: Date,
     val temperature: Double,
     val weather: String,
-    val iconType : String
+    val iconType: String
 )

@@ -5,28 +5,26 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.homework9.R
-import com.example.homework9.data.temperaturepreferencesapi.TemperaturePrefsAPIImpl
 import com.example.homework9.databinding.TemperatureTypeActivityBinding
-import kotlinx.android.synthetic.main.temperature_type_activity.view.save_button
+import com.example.homework9.presentation.citieslist.TempPresent.TempPresent
+import com.example.homework9.presentation.citieslist.TempPresent.TempPresentImpl
 
 class TemperatureTypeActivity : AppCompatActivity() {
 
     private lateinit var binding : TemperatureTypeActivityBinding
-    private lateinit var temperaturePrefsAPI : TemperaturePrefsAPIImpl
     private lateinit var saveButton : Button
+    private lateinit var tempPresenter : TempPresent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        tempPresenter = TempPresentImpl(getSharedPreferences("isCelsius", Context.MODE_PRIVATE))
         binding = TemperatureTypeActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        temperaturePrefsAPI = TemperaturePrefsAPIImpl(getSharedPreferences("isCelsius", Context.MODE_PRIVATE))
-        binding.temperatureTypeSwitch.isChecked = temperaturePrefsAPI.isCelsius()
-
-        binding.temperatureTypeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            temperaturePrefsAPI.setIsCelsius(isChecked)
-        }
-
+        binding.temperatureTypeSwitch.isChecked = tempPresenter.getIsCelsius()
         saveButton = findViewById(R.id.save_button)
+        binding.temperatureTypeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            tempPresenter.setIsCelsius(isChecked)
+        }
         saveButton.setOnClickListener{
             setResult(1)
             finish()

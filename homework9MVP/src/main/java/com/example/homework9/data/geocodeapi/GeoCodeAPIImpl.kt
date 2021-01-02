@@ -1,6 +1,5 @@
 package com.example.homework9.data.geocodeapi
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -23,6 +22,5 @@ class GeoCodeAPIImpl : GeoCodeAPI {
             }
         }.map { json -> geoCodeMapper(json) }
             .subscribeOn(Schedulers.io())
-            .subscribeOn(AndroidSchedulers.mainThread())
     }
 }

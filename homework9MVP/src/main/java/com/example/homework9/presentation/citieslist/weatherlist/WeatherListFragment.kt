@@ -6,29 +6,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework9.R
+import com.example.homework9.data.citypreferencesapi.ChosenCityPreferences
+import com.example.homework9.data.citypreferencesapi.ChosenCityPreferencesImpl
+import com.example.homework9.data.temperaturepreferencesapi.TemperaturePrefs
+import com.example.homework9.data.temperaturepreferencesapi.TemperaturePrefsAPIImpl
 import com.example.homework9.view.WeatherDataView
 import com.example.homework9.view.WeatherListAdapter
 
 class WeatherListFragment(application: Application): Fragment(),
     WeatherListView {
-
-    private val presenter = WeatherListPresenterImpl(this, application)
+    private val chosenCityPreferences : ChosenCityPreferences = ChosenCityPreferencesImpl(application.getSharedPreferences("chosenCity", Context.MODE_PRIVATE))
+    private val temperaturePrefsAPI : TemperaturePrefs = TemperaturePrefsAPIImpl(application.getSharedPreferences("isCelsius", Context.MODE_PRIVATE))
+    private val presenter = WeatherListPresenterImpl(this, application,chosenCityPreferences,temperaturePrefsAPI )
     private lateinit var recyclerView: RecyclerView
     private lateinit var showWeather: ShowWeather
     private val weatherListAdapter by lazy {
         WeatherListAdapter { data ->
-            application.getSharedPreferences("chosenCity", Context.MODE_PRIVATE).getString("chosenCity", "Minsk")
-                ?.let {
-                    showWeather.showWeather(
-                        data, it
-                    )
-                }
+            showWeather.showWeather(data)
         }
     }
+    private lateinit var progressBar : ProgressBar
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,20 +60,12 @@ class WeatherListFragment(application: Application): Fragment(),
         presenter.close()
     }
 
-    override fun onStartLoading() {
-
-    }
-
-    override fun onStopLoading() {
-
-    }
-
     override fun showWeatherList(weatherList: List<WeatherDataView>, chosenCityName : String) {
         weatherListAdapter.updateItems(weatherList)
-        showWeather.showWeather(weatherList[0], chosenCityName)
+        showWeather.showWeather(weatherList[0])
     }
 
-    override fun onError(message: String) {
+    override fun changeCityNameInAdapter() {
 
     }
 

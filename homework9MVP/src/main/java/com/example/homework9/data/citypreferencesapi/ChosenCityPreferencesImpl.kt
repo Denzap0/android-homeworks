@@ -8,6 +8,12 @@ class ChosenCityPreferencesImpl(private val sharedPreferences: SharedPreferences
         sharedPreferences.edit().putString("chosenCity", city).apply()
     }
 
-    override fun getCity() : String? =
-        sharedPreferences.getString("chosenCity", null)
+    override fun getCity() : String {
+        var city = sharedPreferences.getString("chosenCity", null)
+        if(city == null){
+            city = "Minsk"
+            setCity(city)
+        }
+        return city
+    }
 }

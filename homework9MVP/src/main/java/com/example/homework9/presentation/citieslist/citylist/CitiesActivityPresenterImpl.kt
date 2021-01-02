@@ -34,7 +34,6 @@ class CitiesActivityPresenterImpl(
     }
 
     override fun fetchCitiesList() {
-        cityListView.onStartLoading()
         Single.create<List<CityDataPresenter>> { emitter ->
             citiesRepository.readAllCities().subscribe { list ->
                 if (list != null) {
@@ -49,20 +48,21 @@ class CitiesActivityPresenterImpl(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ list ->
-                cityListView.showCitiesList(
-                    list,
-                    getChosenCity()
-                )
+                getChosenCity()?.let {
+                    cityListView.showCitiesList(
+                        list,
+                        it
+                    )
+                }
             }, {
 
             })
-        cityListView.onStopLoading()
     }
 
-    override fun addCity(cityName: String): Boolean {
-        cityListView.onStartLoading()
-        var check = true
-        geoCodeAPI.getTopHeadLines(cityName).subscribe(
+    override fun addCity(cityName: String) {
+        geoCodeAPI.getTopHeadLines(cityName)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
 
             { pair ->
                 citiesRepository.addCity(CityBaseData(null, cityName, pair.first, pair.second))
@@ -75,38 +75,24 @@ class CitiesActivityPresenterImpl(
                                     setChosenCity(cityName)
                                     cityListView.showCitiesList(list, cityName)
                                 }
+                            cityListView.closeDialog()
                         }, {
-                            check = false
+//                            check = false
                         })
             },
             {
-                check = false
+//                check = false
             }
         )
-        cityListView.onStopLoading()
-        return check
     }
 
     override fun getChosenCity(): String {
-        return if (chosenCityPreferencesImpl.getCity() != null) {
-            chosenCityPreferencesImpl.getCity()!!
-        } else {
-            chosenCityPreferencesImpl.setCity("Minsk")
-            chosenCityPreferencesImpl.getCity()!!
-        }
+        return chosenCityPreferencesImpl.getCity()
     }
 
 
     override fun setChosenCity(chosenCityName: String) {
         chosenCityPreferencesImpl.setCity(chosenCityName)
-    }
-
-    override fun getCityCoordinates(cityName: String): Pair<Double, Double>? {
-        var pair: Pair<Double, Double>? = null
-        geoCodeAPI.getTopHeadLines(cityName).subscribe { coordinatesPair ->
-            pair = coordinatesPair
-        }
-        return pair
     }
 
 
