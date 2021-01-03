@@ -22,7 +22,6 @@ abstract class CitiesRoomDataBase : RoomDatabase() {
                     CitiesRoomDataBase::class.java,
                     name
                 )
-                    .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build()
             }

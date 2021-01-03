@@ -2,13 +2,12 @@ package com.example.homework9.presentation.citieslist.weatherlist
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.homework9.data.TempUnitType
 import com.example.homework9.data.citiesbaseapi.CitiesBaseRepositoryImpl
 import com.example.homework9.data.citiesbaseapi.CitiesRoomDataBase
-import com.example.homework9.data.citiesbaseapi.CityBaseData
 import com.example.homework9.data.citypreferencesapi.ChosenCityPreferences
 import com.example.homework9.data.citypreferencesapi.ChosenCityPreferencesImpl
 import com.example.homework9.data.temperaturepreferencesapi.TemperaturePrefs
@@ -22,6 +21,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
+const val ICONS_URL = "http://openweathermap.org/img/w/%s.png"
 class WeatherListViewModelImpl(
     application: Application
 ) : WeatherListViewModel, ViewModel() {
@@ -49,30 +49,23 @@ class WeatherListViewModelImpl(
     }
 
     private val mutableWeatherListLiveData = MutableLiveData<List<WeatherDataView>>()
-    val weatherListLiveData = mutableWeatherListLiveData
+    val weatherListLiveData : LiveData<List<WeatherDataView>> = mutableWeatherListLiveData
 
     private var disposable: Disposable? = null
 
     override fun fetchWeatherList() {
         var city = chosenCityPreferencesImpl.getCity()
-        if (city == null) {
-            chosenCityPreferencesImpl.setCity("Minsk")
-            repository.addCity(CityBaseData(null, "Minsk", 53.893009, 27.567444)).subscribe {
+        Single.create<Pair<Double, Double>> { emitter ->
+            repository.getCity(city).subscribe({ cityData ->
+                emitter.onSuccess(Pair(cityData.lat, cityData.lon))
+            }, {
+                emitter.onError(Throwable("COORDINATES PAIR RETURN NULL"))
+            })
+        }.subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { coordinatesPair ->
+                showWeatherList(coordinatesPair, city)
             }
-        }else {
-            Single.create<Pair<Double, Double>> { emitter ->
-
-                repository.getCity(city).subscribe({ cityData ->
-                    emitter.onSuccess(Pair(cityData.lat, cityData.lon))
-                }, {
-                    emitter.onError(Throwable("COORDINATES PAIR RETURN NULL"))
-                })
-            }.subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { coordinatesPair ->
-                    showWeatherList(coordinatesPair, city)
-                }
-        }
     }
 
     override fun showWeatherList(coordinatesPair: Pair<Double, Double>, cityName : String) {

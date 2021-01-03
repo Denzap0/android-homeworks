@@ -18,7 +18,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class CitiesActivityViewModelmpl(
     private val application: Application
-
 ) : CitiesActivityViewModel, ViewModel() {
 
     private val chosenCityPreferencesImpl: ChosenCityPreferences = ChosenCityPreferencesImpl(
@@ -31,11 +30,13 @@ class CitiesActivityViewModelmpl(
     private val cityDataViewMapper = CityDataViewMapper()
     private val geoCodeAPI: GeoCodeAPIImpl = GeoCodeAPIImpl()
     private val citiesMutableLiveData = MutableLiveData<List<CityDataView>>()
-    public val citiesLiveData : LiveData<List<CityDataView>> = citiesMutableLiveData
+    val citiesLiveData: LiveData<List<CityDataView>> = citiesMutableLiveData
     private val isAddCityCompletedMutLiveData = MutableLiveData<Boolean>()
-    public val isAddCityCompletedMLiveData : LiveData<Boolean> = isAddCityCompletedMutLiveData
+    val isAddCityCompletedMLiveData: LiveData<Boolean> = isAddCityCompletedMutLiveData
     private val chosenCityMutLiveData = MutableLiveData<String>()
-    public val chosenCityLiveData : LiveData<String> = chosenCityMutLiveData
+    val chosenCityLiveData: LiveData<String> = chosenCityMutLiveData
+    private val isAddDoneMutLiveData : MutableLiveData<Boolean> = MutableLiveData()
+    val isAddDoneLiveData : LiveData<Boolean> = isAddDoneMutLiveData
 
     init {
         val cityDao = CitiesRoomDataBase.getInstance(application.baseContext).cityDao()
@@ -64,12 +65,14 @@ class CitiesActivityViewModelmpl(
             })
     }
 
-    override fun addCity(cityName: String): Boolean {
-        var check = true
-        geoCodeAPI.getTopHeadLines(cityName).subscribe(
+    override fun addCity(cityName: String) {
+        geoCodeAPI.getTopHeadLines(cityName)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
 
             { pair ->
                 citiesRepository.addCity(CityBaseData(null, cityName, pair.first, pair.second))
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                         {
                             citiesRepository.readAllCities()
@@ -80,37 +83,23 @@ class CitiesActivityViewModelmpl(
                                     citiesMutableLiveData.value = list
                                     chosenCityMutLiveData.value = cityName
                                 }
+                            isAddDoneMutLiveData.value = true
                         }, {
-                            check = false
+                            isAddDoneMutLiveData.value = false
                         })
             },
             {
-                check = false
+                isAddDoneMutLiveData.value = false
             }
         )
-        return check
     }
 
-    override fun getChosenCity(): String {
-        return if (chosenCityPreferencesImpl.getCity() != null) {
-            chosenCityPreferencesImpl.getCity()!!
-        } else {
-            chosenCityPreferencesImpl.setCity("Minsk")
-            chosenCityPreferencesImpl.getCity()!!
-        }
-    }
+    override fun getChosenCity(): String =
+        chosenCityPreferencesImpl.getCity()
 
 
     override fun setChosenCity(chosenCityName: String) {
         chosenCityPreferencesImpl.setCity(chosenCityName)
-    }
-
-    override fun getCityCoordinates(cityName: String): Pair<Double, Double>? {
-        var pair: Pair<Double, Double>? = null
-        geoCodeAPI.getTopHeadLines(cityName).subscribe { coordinatesPair ->
-            pair = coordinatesPair
-        }
-        return pair
     }
 
 

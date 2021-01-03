@@ -23,6 +23,5 @@ class GeoCodeAPIImpl : GeoCodeAPI {
             }
         }.map { json -> geoCodeMapper(json) }
             .subscribeOn(Schedulers.io())
-            .subscribeOn(AndroidSchedulers.mainThread())
     }
 }

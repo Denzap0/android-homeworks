@@ -22,14 +22,7 @@ class WeatherListFragment(private val application: Application): Fragment(),
     private lateinit var recyclerView: RecyclerView
     private lateinit var showWeather: ShowWeather
     private val weatherListAdapter by lazy {
-        WeatherListAdapter { data ->
-            application.getSharedPreferences("chosenCity", Context.MODE_PRIVATE).getString("chosenCity", "Minsk")
-                ?.let {
-                    showWeather.showWeather(
-                        data
-                    )
-                }
-        }
+        WeatherListAdapter { data -> showWeather.showWeather(data) }
     }
 
     override fun onAttach(context: Context) {

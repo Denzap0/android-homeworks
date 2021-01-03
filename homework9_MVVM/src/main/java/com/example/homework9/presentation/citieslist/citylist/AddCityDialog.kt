@@ -11,15 +11,17 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 
 class AddCityDialog(
-    private val presenter: CitiesActivityViewModel
+    private val viewModel : CitiesActivityViewModel
 ) : DialogFragment() {
+    lateinit var editCityName : EditText
+    lateinit var errorTextView: TextView
     @SuppressLint("SetTextI18n")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
         }
-        var editCityName = EditText(context)
-        var errorTextView = TextView(context).apply {
+        editCityName = EditText(context)
+        errorTextView = TextView(context).apply {
             setTextColor(Color.RED)
         }
 
@@ -33,11 +35,7 @@ class AddCityDialog(
         builder.setOnShowListener {
             val btn = (builder as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
             btn.setOnClickListener {
-                if (!presenter.addCity(editCityName.text.toString())){
-                    errorTextView.text = "There is no this name or name already exist "
-                }else{
-                    builder.dismiss()
-                }
+                viewModel.addCity(editCityName.text.toString())
             }
         }
         return builder

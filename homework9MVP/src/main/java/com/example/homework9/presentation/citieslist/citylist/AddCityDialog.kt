@@ -13,13 +13,15 @@ import androidx.fragment.app.DialogFragment
 class AddCityDialog(
     private val presenter: CitiesActivityPresenter
 ) : DialogFragment() {
+    lateinit var editCityName : EditText
+    lateinit var errorTextView : TextView
     @SuppressLint("SetTextI18n")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialogLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
         }
-        var editCityName = EditText(context)
-        var errorTextView = TextView(context).apply {
+        editCityName = EditText(context)
+        errorTextView = TextView(context).apply {
             setTextColor(Color.RED)
         }
 
@@ -33,7 +35,6 @@ class AddCityDialog(
         builder.setOnShowListener {
             val btn = (builder as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
             btn.setOnClickListener {
-                presenter.addCity(editCityName.text.toString())
             }
         }
         return builder

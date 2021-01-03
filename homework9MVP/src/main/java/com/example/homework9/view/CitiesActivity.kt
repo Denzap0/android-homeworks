@@ -49,13 +49,22 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
             finish()
         }
         addCityButton.setOnClickListener {
-            addCityDialog.show(supportFragmentManager,"Add city")
+            openDialog()
         }
         presenter.fetchCitiesList()
     }
 
+
     override fun showCitiesList(citiesList: List<CityDataView>, chosenCityName : String) {
         adapter.updateCitiesList(citiesList, chosenCityName)
+    }
+
+    override fun openDialog() {
+        addCityDialog.show(supportFragmentManager,"Add city")
+    }
+
+    override fun showDialogError() {
+        addCityDialog.errorTextView.text = "Error"
     }
 
     override fun closeDialog() {

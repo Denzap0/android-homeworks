@@ -24,6 +24,7 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
     private lateinit var addCityButton : FloatingActionButton
     private lateinit var saveButton : Button
     private lateinit var citiesViewModelFactory : CitiesViewModelFactory
+    private lateinit var addCityDialog : AddCityDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,7 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
 
         citiesViewModelFactory = CitiesViewModelFactory(application)
         initViewModel()
-        binding = CitiesaActivityBinding.inflate(layoutInflater)
+        binding = CitiesActivityBinding.inflate(layoutInflater)
         addCityButton = findViewById(R.id.addCityButton)
         recyclerView = findViewById(R.id.citiesRecyclerView)
         saveButton = findViewById(R.id.save_button)
@@ -55,30 +56,26 @@ class CitiesActivity() : AppCompatActivity(), CitiesListView {
         viewModel.fetchCitiesList()
     }
 
-    override fun onStartLoading() {
-
-    }
-
-    override fun onStopLoading() {
-
-    }
-
-    override fun onError(message: String) {
-
-    }
-
     override fun showCitiesList(citiesList: List<CityDataView>, chosenCityName : String) {
         adapter.updateCitiesList(citiesList, chosenCityName)
     }
 
     private fun showAddCityDialog(){
-        val addCityDialog = AddCityDialog(viewModel)
+        addCityDialog = AddCityDialog(viewModel)
         addCityDialog.show(supportFragmentManager, "dialog")
     }
 
     private fun initViewModel(){
         viewModel = ViewModelProvider(this, citiesViewModelFactory).get(CitiesActivityViewModelmpl::class.java)
         (viewModel as CitiesActivityViewModelmpl).citiesLiveData.observe(this, {data -> showCitiesList(data, viewModel.getChosenCity())})
+        (viewModel as CitiesActivityViewModelmpl).isAddDoneLiveData.observe(this, {data -> if(data == true)dismissDialog() else showDialogError()} )
+    }
+
+    private fun showDialogError(){
+        addCityDialog.errorTextView.text = "Error"
+    }
+    private fun dismissDialog(){
+        addCityDialog.dismiss()
     }
 
 }

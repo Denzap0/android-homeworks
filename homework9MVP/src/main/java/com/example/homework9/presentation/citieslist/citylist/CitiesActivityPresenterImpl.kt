@@ -77,11 +77,11 @@ class CitiesActivityPresenterImpl(
                                 }
                             cityListView.closeDialog()
                         }, {
-//                            check = false
+                            cityListView.showDialogError()
                         })
             },
             {
-//                check = false
+                cityListView.showDialogError()
             }
         )
     }

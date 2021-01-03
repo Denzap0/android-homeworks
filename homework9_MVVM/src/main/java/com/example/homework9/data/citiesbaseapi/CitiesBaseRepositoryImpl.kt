@@ -15,7 +15,6 @@ class CitiesBaseRepositoryImpl(private val cityDao : CityDao) : CitiesBaseReposi
             emitter.onSuccess(cityDao.readAllCities())
         }.map { list -> cityDataPresenterListMapper(list) }
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
 
     override fun addCity(city : CityBaseData) : Completable =
         Completable.create {emitter ->
@@ -27,11 +26,13 @@ class CitiesBaseRepositoryImpl(private val cityDao : CityDao) : CitiesBaseReposi
             }
 
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
 
 
     override fun getCity(nameOfCity : String) : Single<CityBaseData> =
         Single.create<CityBaseData> { emitter ->
+            if(nameOfCity == "Minsk" && cityDao.getCityData(nameOfCity) == null){
+                cityDao.addCity(CityBaseData(null,"Minsk", 53.893009, 27.567444))
+            }
             val city = cityDao.getCityData(nameOfCity)
             if (city != null) {
                 emitter.onSuccess(city)
@@ -39,7 +40,4 @@ class CitiesBaseRepositoryImpl(private val cityDao : CityDao) : CitiesBaseReposi
                 emitter.onError(Throwable("THERE IS NO CITY WITH THIS NAME"))
             }
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-
-
 }

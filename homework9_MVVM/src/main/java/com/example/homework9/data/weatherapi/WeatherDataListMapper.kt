@@ -3,7 +3,7 @@ package com.example.homework9.data.weatherapi
 import android.util.Log
 import com.example.homework9.data.WeatherData
 import org.json.JSONObject
-import java.util.*
+import java.util.Date
 
 class WeatherDataListMapper : (String, String) -> List<WeatherData> {
     override fun invoke(json: String, cityName: String): List<WeatherData> {
