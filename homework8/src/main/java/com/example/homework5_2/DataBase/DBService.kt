@@ -1,6 +1,7 @@
 package com.example.homework5_2.DataBase
 
 import android.content.ContentValues
+import android.database.Cursor
 import com.example.homework5_2.Contact.ConnectType
 import com.example.homework5_2.Contact.Contact
 
@@ -81,6 +82,22 @@ class DBService {
                 cursor.close()
             }
             return contacts
+        }
+
+        fun getContactsFromDBCursor(dbHelper: DBHelper) : Cursor?{
+            val cursor = dbHelper.writableDatabase?.query(
+                "ContactsBase",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null)
+
+            if(cursor != null) {
+                return cursor
+            }
+            return null
         }
     }
 }

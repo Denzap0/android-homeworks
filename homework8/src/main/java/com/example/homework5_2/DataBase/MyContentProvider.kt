@@ -2,20 +2,26 @@ package com.example.homework5_2.DataBase
 
 import android.content.ContentProvider
 import android.content.ContentValues
+import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
+import com.example.homework5_2.Visibility.MainActivity
 
-class MyContentProvider() : ContentProvider() {
+public class MyContentProvider() : ContentProvider() {
 
     private lateinit var dbHelper: DBHelper
     companion object{
-        const val AUTHORITY = "com.denzap.provider"
-        const val CONTACTS_PATH = "contacts"
-        const val TABLE_NAME = "ContactsBase"
-        public val URI = Uri.parse("content://${AUTHORITY}/${CONTACTS_PATH}")
+        private const val AUTHORITY = "com.denzap.provider"
+        private const val CONTACTS_PATH = "contacts"
+        private const val TABLE_NAME = "ContactsBase"
+        private const val DATA_ACTION = 1
+        private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
+            addURI("com.homework11.contentprovider", "data", DATA_ACTION)
+        }
     }
     override fun onCreate(): Boolean {
-        dbHelper = App().getDBInstance()
+        dbHelper = (context?.applicationContext as App).dbHelper
         return true
     }
 
@@ -26,10 +32,10 @@ class MyContentProvider() : ContentProvider() {
         selectionArgs: Array<out String>?,
         sortOrder: String?
     ): Cursor? {
-        if (uri == URI){
-            return dbHelper.writableDatabase.query(TABLE_NAME,null,null,null,null,null,null,null)
+        return when(uriMatcher.match(uri)){
+            DATA_ACTION -> DBService.getContactsFromDBCursor(dbHelper)
+            else -> null
         }
-        return null
     }
 
     override fun getType(uri: Uri): String? {

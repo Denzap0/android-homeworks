@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.homework5_2">
-
     <application
         android:name=".DataBase.App"
         android:allowBackup="true"
@@ -12,10 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="ExtraText">
-        <provider
-            android:name=".DataBase.MyContentProvider"
-            android:authorities="com.denzap.provider" />
-
         <activity android:name="com.example.homework5_2.Visibility.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +28,10 @@
         <activity android:name=".Visibility.SettingsActivity">
 
         </activity>
+        <provider
+            android:name=".DataBase.MyContentProvider"
+            android:authorities="com.homework11.contentprovider"
+            android:exported="true"/>
     </application>
 
 </manifest>

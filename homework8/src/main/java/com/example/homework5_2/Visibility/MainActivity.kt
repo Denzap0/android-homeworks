@@ -1,8 +1,10 @@
 package com.example.homework5_2.Visibility
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +14,7 @@ import com.example.homework5_2.AlertDialogs.LoadingDialog
 import com.example.homework5_2.Contact.Contact
 import com.example.homework5_2.Contact.ContactComparator
 import com.example.homework5_2.DataBase.App
+import com.example.homework5_2.DataBase.DBHelper
 import com.example.homework5_2.Factories.DbFactory
 import com.example.homework5_2.Listeners.AsyncCustomGetContactsListener
 import com.example.homework5_2.R
@@ -20,7 +23,6 @@ import kotlinx.android.synthetic.main.activity_main.add_contact_button
 import kotlinx.android.synthetic.main.activity_main.contacts_list
 import java.util.Collections
 import kotlin.collections.ArrayList
-
 class MainActivity : AppCompatActivity() {
     private var contacts: MutableList<Contact> = ArrayList()
     private var comparator: ContactComparator? = ContactComparator()
@@ -32,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private var adapter: ContactsAdapter? = null
-
     interface ListItemActionListener {
         fun onItemClicked(contact: Contact?)
     }
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                 Intent(this@MainActivity, AddContactActivity::class.java)
             startActivityForResult(intent, 1)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
