@@ -11,11 +11,12 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.homework9.R
+import com.example.homework9.presentation.citieslist.weatherlist.ICONS_URL
 import com.example.homework9.presentation.citieslist.weatherlist.ShowWeather
 import com.example.homework9.presentation.citieslist.weatherlist.WeatherListFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-private const val ICONS_URL = "http://openweathermap.org/img/w/%s.png"
+
 
 class MainActivity : AppCompatActivity(), ShowWeather {
 
