@@ -7,9 +7,12 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    buildFeatures {
+        viewBinding true
+    }
     defaultConfig {
         applicationId "com.example.homework10"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
