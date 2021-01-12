@@ -9,7 +9,7 @@ class GeoCodeAPIImpl : GeoCodeAPI {
     private val requestFactory = RequestFactoryImpl()
     private val httpClient = OkHttpClient()
     private val geoCodeMapper = GeoCodeMapper()
-    override fun getTopHeadLines(city: String): Single<Pair<Double, Double>> {
+    override fun getCityCode(city: String): Single<Pair<Double, Double>> {
         val request = requestFactory.getTopLinesRequest(city)
         return Single.create<String> { emitter ->
             val response = httpClient.newCall(request).execute()

@@ -12,7 +12,7 @@ class WeatherApiImpl() : WeatherAPI {
     private val httpClient = OkHttpClient()
     private val weatherDataListMapper = WeatherDataListMapper()
 
-    override fun getTopHeadLines(
+    override fun getTopWeather(
         coordinatesPair: Pair<Double, Double>,
         tempUnitType: TempUnitType,
         cityName: String

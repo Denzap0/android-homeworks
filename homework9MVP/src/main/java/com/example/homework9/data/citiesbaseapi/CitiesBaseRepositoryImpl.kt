@@ -1,5 +1,6 @@
 package com.example.homework9.data.citiesbaseapi
 
+import android.util.Log
 import com.example.homework9.presentation.citieslist.citylist.CityDataPresenter
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -30,10 +31,19 @@ class CitiesBaseRepositoryImpl(private val cityDao : CityDao) : CitiesBaseReposi
 
     override fun getCity(nameOfCity : String) : Single<CityBaseData> =
         Single.create<CityBaseData> { emitter ->
-            val city = cityDao.getCityData(nameOfCity)
+            var city = cityDao.getCityData(nameOfCity)
             if (city != null) {
                 emitter.onSuccess(city)
-            }else {
+            } else if(nameOfCity == "Minsk"){
+                cityDao.addCity(CityBaseData(null,"Minsk", 53.893009, 27.567444))
+                city = cityDao.getCityData(nameOfCity)
+                if(city != null){
+                    emitter.onSuccess(city)
+                }else{
+                    emitter.onError(Throwable("THERE IS NO CITY WITH THIS NAME"))
+                }
+            }
+            else {
                 emitter.onError(Throwable("THERE IS NO CITY WITH THIS NAME"))
             }
         }.subscribeOn(Schedulers.io())

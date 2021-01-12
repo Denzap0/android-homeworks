@@ -39,7 +39,6 @@ class WeatherListPresenterImpl(
     override fun fetchWeatherList() {
         city = chosenCityPreferencesImpl.getCity()
         Single.create<Pair<Double, Double>> { emitter ->
-
             repository.getCity(city).subscribe({ cityData ->
                 emitter.onSuccess(Pair(cityData.lat, cityData.lon))
             }, {
@@ -54,7 +53,7 @@ class WeatherListPresenterImpl(
 
     override fun showWeatherList(coordinatesPair: Pair<Double, Double>) {
 
-        disposable = weatherApi.getTopHeadLines(coordinatesPair, if(temperaturePrefs.isCelsius()) TempUnitType.CELSIUS else TempUnitType.FAHRENHEIT, city)
+        disposable = weatherApi.getTopWeather(coordinatesPair, if(temperaturePrefs.isCelsius()) TempUnitType.CELSIUS else TempUnitType.FAHRENHEIT, city)
             .subscribeOn(Schedulers.computation())
             .map { data -> weatherViewListMapper(data) }
             .observeOn(AndroidSchedulers.mainThread())

@@ -4,5 +4,5 @@ import io.reactivex.rxjava3.core.Single
 
 interface GeoCodeAPI {
 
-    fun getTopHeadLines(city : String) : Single<Pair<Double, Double>>
+    fun getCityCode(city : String) : Single<Pair<Double, Double>>
 }

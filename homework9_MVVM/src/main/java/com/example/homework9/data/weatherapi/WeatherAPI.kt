@@ -5,5 +5,5 @@ import io.reactivex.rxjava3.core.Single
 
 interface WeatherAPI {
 
-    fun getTopHeadLines(coordinatesPair : Pair<Double,Double>, tempUnitType: TempUnitType, cityName : String) : Single<List<WeatherDataPresenter>>
+    fun getTopWeather(coordinatesPair : Pair<Double,Double>, tempUnitType: TempUnitType, cityName : String) : Single<List<WeatherDataPresenter>>
 }

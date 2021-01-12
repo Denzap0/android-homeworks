@@ -70,7 +70,7 @@ class WeatherListViewModelImpl(
 
     override fun showWeatherList(coordinatesPair: Pair<Double, Double>, cityName : String) {
 
-        disposable = weatherApi.getTopHeadLines(coordinatesPair, if(temperaturePrefs.isCelsius()) TempUnitType.CELSIUS else TempUnitType.FAHRENHEIT, cityName)
+        disposable = weatherApi.getTopWeather(coordinatesPair, if(temperaturePrefs.isCelsius()) TempUnitType.CELSIUS else TempUnitType.FAHRENHEIT, cityName)
             .subscribeOn(Schedulers.computation())
             .map { data -> weatherViewListMapper(data) }
             .observeOn(AndroidSchedulers.mainThread())

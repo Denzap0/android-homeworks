@@ -1,9 +1,13 @@
 package com.example.homework9.view
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.homework9.databinding.ItemWeatherBinding
+import com.bumptech.glide.Glide
+import com.example.homework9.R
 import java.text.SimpleDateFormat
 
 class WeatherListAdapter(private val itemClickListener: (WeatherDataView) -> Unit) :
@@ -12,8 +16,8 @@ class WeatherListAdapter(private val itemClickListener: (WeatherDataView) -> Uni
     private val weatherList = mutableListOf<WeatherDataView>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return ItemViewHolder(com.example.homework9.databinding.ItemWeatherBinding.inflate(inflater), itemClickListener)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_weather, parent, false)
+        return ItemViewHolder(view, itemClickListener)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
@@ -31,21 +35,24 @@ class WeatherListAdapter(private val itemClickListener: (WeatherDataView) -> Uni
     }
 
     class ItemViewHolder(
-        private val binding: ItemWeatherBinding,
+        private val view: View,
         private val itemClickListener: (WeatherDataView) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(view) {
 
         private val simpleDateFormat = SimpleDateFormat("HH:mm")
+        private val weatherImage = view.findViewById<ImageView>(R.id.weatherImage)
+        private val timeTextView = view.findViewById<TextView>(R.id.timeTextView)
+        private val weatherTextView = view.findViewById<TextView>(R.id.weatherTextView)
+        private val temperatureTextView = view.findViewById<TextView>(R.id.temperatureTextView)
         fun bind(weatherData: WeatherDataView) {
-            with(binding) {
-                Glide.with(root.context)
+                Glide.with(view.context)
                     .load(com.example.homework9.presentation.citieslist.weatherlist.IMAGE_URL.format(weatherData.iconType))
                     .into(weatherImage)
                 timeTextView.text = simpleDateFormat.format(weatherData.date).toString()
                 weatherTextView.text = weatherData.weather
                 temperatureTextView.text = weatherData.temperature.toString()
-                root.setOnClickListener { itemClickListener(weatherData) }
-            }
+                view.setOnClickListener { itemClickListener(weatherData) }
+
         }
     }
 }

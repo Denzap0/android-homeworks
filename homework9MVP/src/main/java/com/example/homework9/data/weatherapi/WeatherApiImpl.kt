@@ -12,7 +12,7 @@ class WeatherApiImpl() : WeatherAPI {
     private val httpClient = OkHttpClient()
     private val weatherDataListMapper = WeatherDataListMapper()
 
-    override fun getTopHeadLines(coordinatesPair : Pair<Double,Double>, tempUnitType: TempUnitType, cityName : String): Single<List<WeatherDataPresenter>> {
+    override fun getTopWeather(coordinatesPair : Pair<Double,Double>, tempUnitType: TempUnitType, cityName : String): Single<List<WeatherDataPresenter>> {
         val weatherDataPresentListMapper = WeatherDataPresenterListMapper(tempUnitType)
         val request = requestFactory.getTopHeadLinesRequest(coordinatesPair.first, coordinatesPair.second)
         return Single.create<String> { emitter ->
