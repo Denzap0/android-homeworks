@@ -38,17 +38,13 @@ class WeatherListPresenterImpl(
 
     override fun fetchWeatherList() {
         city = chosenCityPreferencesImpl.getCity()
-        Single.create<Pair<Double, Double>> { emitter ->
-            repository.getCity(city).subscribe({ cityData ->
-                emitter.onSuccess(Pair(cityData.lat, cityData.lon))
-            }, {
-                emitter.onError(Throwable("COORDINATES PAIR RETURN NULL"))
-            })
-        }.subscribeOn(Schedulers.computation())
+        repository.getCity(city)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { coordinatesPair ->
-                showWeatherList(coordinatesPair)
-            }
+            .subscribe({ cityData ->
+                showWeatherList(Pair(cityData.lat, cityData.lon))
+            }, {
+                (Throwable("COORDINATES PAIR RETURN NULL"))
+            })
     }
 
     override fun showWeatherList(coordinatesPair: Pair<Double, Double>) {

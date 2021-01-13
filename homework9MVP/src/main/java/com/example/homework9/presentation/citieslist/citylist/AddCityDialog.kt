@@ -35,6 +35,7 @@ class AddCityDialog(
         builder.setOnShowListener {
             val btn = (builder as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
             btn.setOnClickListener {
+                presenter.addCity(editCityName.text.toString())
             }
         }
         return builder

@@ -3,6 +3,7 @@ package com.example.homework9.data.citiesbaseapi
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface CityDao {

@@ -9,6 +9,8 @@ import com.example.homework9.data.citypreferencesapi.ChosenCityPreferences
 import com.example.homework9.data.citypreferencesapi.ChosenCityPreferencesImpl
 import com.example.homework9.data.geocodeapi.GeoCodeAPIImpl
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class CitiesActivityPresenterImpl(
@@ -50,11 +52,13 @@ class CitiesActivityPresenterImpl(
 
     override fun addCity(cityName: String) {
         geoCodeAPI.getCityCode(cityName)
+            .flatMap {
+                return@flatMap Single.create<Completable> { emitter -> emitter.onSuccess(citiesRepository.addCity(CityBaseData(null, cityName, it.first, it.second))) }
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { pair ->
-                citiesRepository.addCity(CityBaseData(null, cityName, pair.first, pair.second))
-                    .observeOn(AndroidSchedulers.mainThread())
+                {
+                    it.observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                         {
                             citiesRepository.readAllCities()
