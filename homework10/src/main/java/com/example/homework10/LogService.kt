@@ -51,5 +51,4 @@ class LogService : Service(), StorageChangedListener, ServiceActions {
 
     override fun getActionData(): String? = logText
 
-
 }
