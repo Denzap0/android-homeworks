@@ -44,6 +44,7 @@ class WeatherListAdapter(private val itemClickListener: (WeatherDataView) -> Uni
         private val timeTextView = view.findViewById<TextView>(R.id.timeTextView)
         private val weatherTextView = view.findViewById<TextView>(R.id.weatherTextView)
         private val temperatureTextView = view.findViewById<TextView>(R.id.temperatureTextView)
+
         fun bind(weatherData: WeatherDataView) {
                 Glide.with(view.context)
                     .load(com.example.homework9.presentation.citieslist.weatherlist.IMAGE_URL.format(weatherData.iconType))
