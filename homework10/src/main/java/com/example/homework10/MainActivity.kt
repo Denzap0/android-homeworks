@@ -1,15 +1,19 @@
 package com.example.homework10
 
+import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import com.example.homework10.databinding.MainactivityBinding
 import java.security.Permission
@@ -22,6 +26,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var isExternalService: IsExternalService
     private lateinit var myBroadcastReceiver: MyBroadcastReceiver
     private lateinit var myIntentFilter : IntentFilter
+    private lateinit var serviceIntent: Intent
+    private val serviceConnection = object: ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            showToast(name)
+            this@MainActivity.stopService(serviceIntent)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +73,11 @@ class MainActivity : AppCompatActivity() {
         myIntentFilter.addAction(Intent.ACTION_LOCALE_CHANGED)
         myBroadcastReceiver = MyBroadcastReceiver()
         this.registerReceiver(myBroadcastReceiver,myIntentFilter)
+        bindService(serviceIntent,serviceConnection,0)
+    }
+
+    private fun showToast(){
+        Toast.makeText(this, ( as LogService.LogServiceBinder).getServiceActions().getActionData().toString(), Toast.LENGTH_SHORT).show()
     }
 
     override fun onPause() {
